@@ -61,13 +61,23 @@ export default function RemediationHighlightsPage() {
           Back to Audit Report
         </Link>
 
-        <button
-          onClick={handlePrint}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 text-white hover:bg-slate-800 text-xs font-bold rounded-xl transition shadow-md"
-        >
-          <Printer className="h-4 w-4 text-amber-400" />
-          Print / Export Executive PDF
-        </button>
+        <div className="flex items-center gap-3">
+          <Link
+            href={`/final-report/${id}`}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-xs font-bold rounded-xl transition shadow-md shadow-emerald-500/10 hover:scale-105"
+          >
+            <Sparkles className="h-4 w-4" />
+            Final Multi-Signer Portal 🖋️
+          </Link>
+
+          <button
+            onClick={handlePrint}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 text-white hover:bg-slate-800 text-xs font-bold rounded-xl transition shadow-md"
+          >
+            <Printer className="h-4 w-4 text-amber-400" />
+            Print / Export Executive PDF
+          </button>
+        </div>
       </div>
 
       {/* Document Header */}
