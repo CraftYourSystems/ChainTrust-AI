@@ -2,181 +2,123 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { 
-  Award, 
-  ShieldCheck, 
-  Coins, 
-  Users, 
-  ExternalLink, 
-  CheckCircle2, 
-  Sparkles,
-  Zap,
-  Lock,
-  Copy,
-  Check,
-  Terminal,
-  Code2
-} from "lucide-react";
+import { Award, ShieldCheck, CheckCircle2, ExternalLink, Sparkles, ArrowLeft, Loader2 } from "lucide-react";
 
-export default function ProofOfAuditNFTPage() {
+export default function NftBadgePage() {
   const [minting, setMinting] = useState(false);
-  const [minted, setMinted] = useState(false);
-  const [assetId, setAssetId] = useState<number | null>(null);
+  const [mintedData, setMintedData] = useState<any>(null);
 
   const handleMintASA = async () => {
     setMinting(true);
-    await new Promise((r) => setTimeout(r, 1500));
-    setAssetId(789410293);
-    setMinting(false);
-    setMinted(true);
+    try {
+      const res = await fetch("/api/nft/mint", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" }
+      });
+      const data = await res.json();
+      if (data.success) {
+        setMintedData(data);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setMinting(false);
+    }
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
+      {/* Back Link */}
+      <Link 
+        href="/account" 
+        className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-brand-primary transition"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Back to Dashboard
+      </Link>
+
       {/* Header */}
       <div className="text-center">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 text-amber-700 text-xs font-bold mb-4 border border-amber-200">
-          <Sparkles className="h-4 w-4 text-amber-500 animate-pulse" />
-          Algorand Standard Asset (ASA) • Proof-of-Audit NFT Module
+        <div className="inline-flex p-3 bg-amber-50 text-amber-600 rounded-2xl mb-4 border border-amber-200">
+          <Award className="h-7 w-7" />
         </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-2">
-          On-Chain ASA "Proof-of-Audit" NFT & Proof of Work
+        <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight mb-2">
+          Step 6: Proof-of-Audit ASA NFT Certificate
         </h1>
-        <p className="text-slate-500 text-sm max-w-xl mx-auto leading-relaxed">
-          <strong className="text-slate-700">Feature Purpose:</strong> Mints a non-fungible Algorand Standard Asset (ASA) badge directly into the auditor's Web3 wallet upon verification, serving as permanent on-chain proof of compliance.
+        <p className="text-slate-500 text-xs sm:text-sm max-w-md mx-auto leading-relaxed">
+          Mint a Non-Fungible Algorand Standard Asset (ASA) tied directly to your verified audit report fingerprint.
         </p>
       </div>
 
-      {/* Main Feature Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Left Card: ASA NFT Minting Terminal */}
-        <div className="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-2xl space-y-6">
-          <div className="flex justify-between items-center pb-4 border-b border-slate-800">
-            <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-amber-500/20 text-amber-400 rounded-xl">
-                <Award className="h-6 w-6" />
-              </div>
-              <div>
-                <h3 className="font-bold text-white text-base">ASA Audit NFT Generator</h3>
-                <span className="text-xs text-slate-400">Unit Name: AUDITNFT</span>
-              </div>
-            </div>
-            <span className="text-[11px] font-mono font-bold bg-amber-500/20 text-amber-300 px-2.5 py-1 rounded-full border border-amber-500/30">
-              ASA NON-FUNGIBLE
-            </span>
-          </div>
+      {/* Main Minting Card */}
+      <div className="bg-slate-900 text-white rounded-3xl p-8 border border-slate-800 shadow-2xl space-y-8 text-center">
+        <div className="w-24 h-24 bg-amber-500/10 text-amber-400 rounded-3xl flex items-center justify-center mx-auto border border-amber-500/30 shadow-inner">
+          <Award className="h-12 w-12" />
+        </div>
 
-          <div className="bg-slate-800/80 p-5 rounded-2xl border border-slate-700/60 space-y-3">
-            <div className="flex justify-between text-xs">
-              <span className="text-slate-400 font-medium">Asset Name</span>
-              <span className="font-bold text-white">ChainTrust Audit Badge</span>
-            </div>
-            <div className="flex justify-between text-xs">
-              <span className="text-slate-400 font-medium">Total Supply</span>
-              <span className="font-mono font-bold text-emerald-400">1 (Non-Fungible)</span>
-            </div>
-            <div className="flex justify-between text-xs">
-              <span className="text-slate-400 font-medium">Algorand Network</span>
-              <span className="font-semibold text-slate-300">Algorand TestNet</span>
-            </div>
-            <div className="flex justify-between text-xs">
-              <span className="text-slate-400 font-medium">Metadata Hash</span>
-              <span className="font-mono text-[10px] text-amber-300 truncate select-all">b3b1b1ab12e4a7d5362110b2b85...</span>
-            </div>
-          </div>
+        <div className="space-y-2">
+          <span className="text-xs font-mono text-emerald-400 font-bold block uppercase tracking-wider">
+            Algorand Standard Asset (ASA Specification)
+          </span>
+          <h2 className="text-2xl font-bold text-white">ChainTrust Audit Badge</h2>
+          <p className="text-xs text-slate-400 max-w-sm mx-auto">
+            Unit Name: <strong className="text-slate-200 font-mono">AUDITNFT</strong> • Total Supply: <strong className="text-slate-200 font-mono">1</strong> (Non-Fungible)
+          </p>
+        </div>
 
-          <div>
-            {!minted ? (
-              <button
-                onClick={handleMintASA}
-                disabled={minting}
-                className="w-full py-4 text-xs font-black text-slate-950 bg-amber-400 hover:bg-amber-300 rounded-xl shadow-lg shadow-amber-500/20 transition-all hover:scale-105 flex items-center justify-center gap-2"
-              >
-                {minting ? "Minting ASA NFT on Algorand..." : "Mint Proof-of-Audit ASA NFT 🏆"}
-              </button>
+        {/* Action Button */}
+        {!mintedData ? (
+          <button
+            onClick={handleMintASA}
+            disabled={minting}
+            className="w-full py-4 text-xs font-extrabold text-slate-950 bg-amber-400 hover:bg-amber-300 rounded-xl transition shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2"
+          >
+            {minting ? (
+              <span className="flex items-center gap-2">
+                <Loader2 className="h-4 w-4 animate-spin text-slate-950" />
+                Executing algosdk.makeAssetCreateTxn...
+              </span>
             ) : (
-              <div className="p-4 bg-amber-950 border border-amber-500/50 rounded-xl text-center space-y-2">
-                <span className="text-xs font-bold text-amber-400 block">
-                  ✓ ASA NFT MINTED SUCCESSFULLY! (Asset ID: #{assetId})
-                </span>
-                <a
-                  href={`https://testnet.explorer.perawallet.app/asset/${assetId}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-[11px] font-bold text-white underline hover:text-amber-300"
-                >
-                  View ASA Asset on Pera Explorer 🔗
-                </a>
-              </div>
+              "Mint Proof-of-Audit ASA NFT 🏆"
             )}
-          </div>
-        </div>
-
-        {/* Right Card: 2-of-3 Multisig Governance */}
-        <div className="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-2xl space-y-6">
-          <div className="flex justify-between items-center pb-4 border-b border-slate-800">
-            <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-blue-500/20 text-blue-400 rounded-xl">
-                <Users className="h-6 w-6" />
-              </div>
-              <div>
-                <h3 className="font-bold text-white text-base">Multisig Audit Governance</h3>
-                <span className="text-xs text-slate-400">2-of-3 Algorand Multi-Signature</span>
-              </div>
-            </div>
-            <span className="text-[11px] font-mono font-bold bg-blue-500/20 text-blue-400 px-2.5 py-1 rounded-full border border-blue-500/30">
-              MULTISIG 2/3
-            </span>
-          </div>
-
-          <div className="space-y-3">
-            <div className="p-3 bg-slate-800/80 rounded-xl border border-slate-700/60 flex items-center justify-between text-xs">
-              <span>1. Lead Security Auditor Key</span>
-              <span className="font-bold text-emerald-400 flex items-center gap-1">
-                <CheckCircle2 className="h-3.5 w-3.5" /> SIGNED
+          </button>
+        ) : (
+          <div className="space-y-6 animate-in fade-in zoom-in duration-300">
+            <div className="p-4 bg-emerald-950 border border-emerald-500/50 rounded-2xl space-y-1">
+              <span className="text-xs font-bold text-emerald-400 block">
+                ✓ ASA NFT MINTED ON ALGORAND TESTNET!
+              </span>
+              <span className="text-xs text-slate-300 font-mono block">
+                Asset ID: #{mintedData.assetId}
               </span>
             </div>
 
-            <div className="p-3 bg-slate-800/80 rounded-xl border border-slate-700/60 flex items-center justify-between text-xs">
-              <span>2. ChainTrust AI Engine Key</span>
-              <span className="font-bold text-emerald-400 flex items-center gap-1">
-                <CheckCircle2 className="h-3.5 w-3.5" /> SIGNED
-              </span>
+            <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 text-xs font-mono text-left space-y-2">
+              <div className="flex justify-between">
+                <span className="text-slate-400">Transaction ID:</span>
+                <span className="text-amber-400 truncate max-w-[200px]">{mintedData.txId}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-400">Confirmed Round:</span>
+                <span className="text-slate-200">#{mintedData.confirmedRound}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-400">Unit Name:</span>
+                <span className="text-emerald-400 font-bold">{mintedData.unitName}</span>
+              </div>
             </div>
 
-            <div className="p-3 bg-slate-800/80 rounded-xl border border-slate-700/60 flex items-center justify-between text-xs opacity-60">
-              <span>3. Enterprise Client Officer Key</span>
-              <span className="font-bold text-slate-400">PENDING</span>
-            </div>
+            <a
+              href={mintedData.explorerUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-xs rounded-xl transition shadow-md"
+            >
+              View ASA Asset on Pera Explorer
+              <ExternalLink className="h-4 w-4" />
+            </a>
           </div>
-
-          <div className="p-4 bg-blue-950/60 border border-blue-500/30 rounded-xl text-xs text-blue-300 leading-relaxed">
-            <strong className="block mb-1 text-white">Multisig Threshold Met (2/3):</strong>  
-            The required signature threshold is satisfied. The audit certificate is cryptographically valid and anchored on Algorand.
-          </div>
-        </div>
-      </div>
-
-      {/* Proof of Work Card */}
-      <div className="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-xl space-y-4">
-        <div className="flex items-center gap-2 pb-3 border-b border-slate-800">
-          <Terminal className="h-5 w-5 text-amber-400" />
-          <h3 className="font-bold text-sm text-slate-200">Algorand ASA Asset Parameters & Proof of Work</h3>
-        </div>
-
-        <pre className="p-4 bg-slate-950 text-amber-300 rounded-2xl font-mono text-xs overflow-x-auto border border-slate-800 leading-relaxed">
-{`{
-  "assetName": "ChainTrust Audit Badge",
-  "unitName": "AUDITNFT",
-  "total": 1,
-  "decimals": 0,
-  "defaultFrozen": false,
-  "assetURL": "https://chaintrust.ai/nft/789410293",
-  "metadataHash": "b3b1b1ab12e4a7d5362110b2b8580283c3d5b58a4d8b64244b7be58f1a2ab24e",
-  "multisigThreshold": "2-of-3",
-  "status": "MINTED_ON_ALGORAND_TESTNET"
-}`}
-        </pre>
+        )}
       </div>
     </div>
   );
