@@ -110,7 +110,7 @@ export default function HomePage() {
 
           {/* Step 3 Button */}
           <Link
-            href="/demo"
+            href="/ai-ingestion"
             className="group bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-2 hover:border-purple-500 hover:ring-4 hover:ring-purple-500/10 transition-all duration-300 flex flex-col items-center text-center cursor-pointer min-h-[260px] justify-between"
           >
             <div className="flex flex-col items-center">
@@ -124,13 +124,13 @@ export default function HomePage() {
               </p>
             </div>
             <span className="text-xs font-bold text-purple-700 bg-purple-50 group-hover:bg-purple-600 group-hover:text-white px-3.5 py-1.5 rounded-full transition-colors duration-300">
-              Test AI Engine 🧠
+              Open AI Ingestion 🧠
             </span>
           </Link>
 
           {/* Step 4 Button */}
           <Link
-            href="/demo"
+            href="/notary"
             className="group bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-2 hover:border-emerald-500 hover:ring-4 hover:ring-emerald-500/10 transition-all duration-300 flex flex-col items-center text-center cursor-pointer min-h-[260px] justify-between"
           >
             <div className="flex flex-col items-center">
@@ -144,7 +144,7 @@ export default function HomePage() {
               </p>
             </div>
             <span className="text-xs font-bold text-emerald-700 bg-emerald-50 group-hover:bg-emerald-600 group-hover:text-white px-3.5 py-1.5 rounded-full transition-colors duration-300">
-              Test Ledger ⛓️
+              Open Ledger Notary ⛓️
             </span>
           </Link>
 
