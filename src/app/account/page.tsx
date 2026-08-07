@@ -48,6 +48,15 @@ export default function UserAccountPage() {
     },
   ]);
 
+  const [balance, setBalance] = useState("10.0");
+
+  useEffect(() => {
+    const cachedBalance = sessionStorage.getItem("wallet_balance");
+    if (cachedBalance) {
+      setBalance(cachedBalance);
+    }
+  }, []);
+
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Header */}
@@ -105,7 +114,7 @@ export default function UserAccountPage() {
           </div>
           <div className="bg-slate-50 p-3 rounded-xl border border-slate-100 flex justify-between items-center">
             <span className="text-xs text-slate-500 font-medium">TestNet Balance</span>
-            <span className="text-sm font-extrabold text-slate-900 font-mono">10.0 ALGO</span>
+            <span className="text-sm font-extrabold text-slate-900 font-mono">{balance} ALGO</span>
           </div>
         </div>
 

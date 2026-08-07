@@ -43,6 +43,7 @@ export default function CustomX402PaymentPage() {
   };
 
   const handleExecuteNativeFlow = async () => {
+    if (step !== "idle") return; // Prevent double payment execution
     setStep("requesting");
     await new Promise((r) => setTimeout(r, 600));
 
@@ -56,6 +57,8 @@ export default function CustomX402PaymentPage() {
     await new Promise((r) => setTimeout(r, 1000));
 
     setStep("success");
+    sessionStorage.setItem("wallet_balance", "9.0");
+    sessionStorage.setItem("payment_confirmed", "true");
 
     // Auto-advance to Step 3 AI Ingestion after 2 seconds
     setTimeout(() => {

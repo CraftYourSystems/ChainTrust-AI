@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { UploadBox } from "@/components/upload/UploadBox";
-import { ArrowLeft, Shield, FileCheck, CheckCircle2, Clock, Zap } from "lucide-react";
+import { ArrowLeft, Shield, FileCheck, Clock, Zap, AlertTriangle, RefreshCw } from "lucide-react";
 import Link from "next/link";
 import { setUploadedFile } from "@/services/fileStore";
 
@@ -11,11 +11,30 @@ export default function UploadPage() {
   const router = useRouter();
   const [parsing, setParsing] = useState(false);
   const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [countdown, setCountdown] = useState(3);
 
   const handleUpload = (file: File) => {
+    setErrorMsg(null);
+
+    // 1. File Size Validation (Max 10MB)
+    if (file.size > 10 * 1024 * 1024) {
+      setErrorMsg("File exceeds 10MB limit. Please upload a smaller contract document.");
+      return;
+    }
+
+    // 2. File Extension Validation (.sol, .teal, .pdf, .docx, .txt)
+    const validExts = [".sol", ".teal", ".pdf", ".docx", ".txt"];
+    const hasValidExt = validExts.some((ext) => file.name.toLowerCase().endsWith(ext));
+    if (!hasValidExt) {
+      setErrorMsg("Unsupported file format. Please upload a .sol, .teal, .pdf, or .docx contract file.");
+      return;
+    }
+
+    // Store File & Report ID in session
     setUploadedFile(file);
     setUploadedFileName(file.name);
+    sessionStorage.setItem("current_report_id", "ANL-58440");
     setParsing(true);
 
     // Auto-advance countdown
@@ -51,9 +70,25 @@ export default function UploadPage() {
             Step 1: Upload Contract Document
           </h1>
           <p className="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">
-            Upload your Solidity (`.sol`), PyTeal (`.teal`), or Legal Agreement PDF (`.pdf`). Your document is parsed locally with instant SHA-256 hash generation.
+            Upload your Solidity (`.sol`), PyTeal (`.teal`), or Legal Agreement PDF (`.pdf`). Files are validated and hashed locally.
           </p>
         </div>
+
+        {/* Error Recovery Box */}
+        {errorMsg && (
+          <div className="p-4 bg-red-50 border border-red-200 rounded-2xl flex items-center justify-between gap-3 text-xs text-red-800 animate-in fade-in">
+            <div className="flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-red-600 shrink-0" />
+              <span>{errorMsg}</span>
+            </div>
+            <button
+              onClick={() => setErrorMsg(null)}
+              className="px-3 py-1 bg-red-100 hover:bg-red-200 font-bold rounded-lg transition shrink-0"
+            >
+              Choose Another File
+            </button>
+          </div>
+        )}
 
         {/* Upload Box or Parsing Banner */}
         {!parsing ? (
