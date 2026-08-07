@@ -1,5 +1,4 @@
-import { DueDiligenceReport } from '../types/analysis';
-import { ProgressStep } from './mockAnalysis.service';
+import { DueDiligenceReport, ProgressStep } from '../types/analysis';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 

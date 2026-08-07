@@ -4,10 +4,9 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ProgressIndicator } from '@/components/loading/ProgressIndicator';
 import { StepsList } from '@/components/loading/StepsList';
-import { MockAnalysisService, ProgressStep } from '@/services/mockAnalysis.service';
+import { DueDiligenceReport, ProgressStep } from '@/types/analysis';
 import { AnalysisService } from '@/services/analysis.service';
 import { getUploadedFile } from '@/services/fileStore';
-import { DueDiligenceReport } from '@/types/analysis';
 import { BrainCircuit, Shield, AlertCircle, ArrowLeft, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/common/Button';
 
@@ -41,16 +40,7 @@ function LoadingContent() {
             }
           );
         } else {
-          // Fallback to mock analysis if no file in memory
-          report = await MockAnalysisService.analyzeContract(
-            fileName,
-            (step: ProgressStep) => {
-              if (active) {
-                setPercentage(step.percentage);
-                setCurrentStep(step.message);
-              }
-            }
-          );
+          throw new Error('No uploaded contract file found in session. Please go back to the upload page and select a file.');
         }
 
         if (active) {

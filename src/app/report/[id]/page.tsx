@@ -15,7 +15,6 @@ import { SummaryCard } from '@/components/report/SummaryCard';
 import { RiskGauge } from '@/components/report/RiskGauge';
 import { RiskCards } from '@/components/report/RiskCards';
 import { ActionItems } from '@/components/report/ActionItems';
-import { MockAnalysisService } from '@/services/mockAnalysis.service';
 import { DueDiligenceReport } from '@/types/analysis';
 
 import { AnalysisService } from '@/services/analysis.service';
@@ -31,16 +30,32 @@ export default function ReportDetailPage() {
   useEffect(() => {
     const fetchReport = async () => {
       setLoading(true);
-      let data = await AnalysisService.getReportById(id);
-      if (!data) {
-        data = await MockAnalysisService.getReportById(id);
-      }
+      const data = await AnalysisService.getReportById(id);
       setReport(data);
       setLoading(false);
     };
 
     fetchReport();
   }, [id]);
+
+  const getReportHash = () => {
+    if (report?.verification?.reportHash) {
+      return report.verification.reportHash;
+    }
+    if (!report) return '';
+    // Deterministic hash based on report content
+    const seed = report.executiveSummary + report.analysisId;
+    let hash = 0;
+    for (let i = 0; i < seed.length; i++) {
+      hash = (hash << 5) - hash + seed.charCodeAt(i);
+      hash |= 0;
+    }
+    const hex = Math.abs(hash).toString(16).padStart(8, '0') + 
+                Math.abs(hash * 31).toString(16).padStart(8, '0') +
+                Math.abs(hash * 17).toString(16).padStart(8, '0') +
+                Math.abs(hash * 13).toString(16).padStart(8, '0');
+    return hex.slice(0, 40);
+  };
 
 
   if (loading) {
@@ -137,7 +152,7 @@ export default function ReportDetailPage() {
                 <div className="text-xs">
                   <span className="text-slate-400 block mb-1">Report Hash</span>
                   <span className="font-mono text-slate-700 break-all select-all">
-                    f83a216c5d98e72c842b083c26d83a1b02cf8c3f
+                    {getReportHash()}
                   </span>
                 </div>
               </div>

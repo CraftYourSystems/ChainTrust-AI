@@ -1,4 +1,9 @@
-export type RiskLevel = 'Low' | 'Medium' | 'High';
+export type RiskLevel = 'Low' | 'Medium' | 'High' | 'Critical';
+
+export interface ProgressStep {
+  percentage: number;
+  message: string;
+}
 
 export interface ClauseAnalysis {
   title: string;
@@ -9,6 +14,7 @@ export interface ClauseAnalysis {
 
 export interface DueDiligenceReport {
   analysisId: string;
+  contractType?: string;
   overallRisk: number; // 0 - 100
   riskLevel: RiskLevel;
   executiveSummary: string;

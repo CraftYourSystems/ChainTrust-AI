@@ -1,6 +1,13 @@
 import React from 'react';
 import { CheckCircle2, Loader2, Circle } from 'lucide-react';
-import { LOADING_STEPS, ProgressStep } from '../../services/mockAnalysis.service';
+import { ProgressStep } from '@/types/analysis';
+
+const LOADING_STEPS: ProgressStep[] = [
+  { percentage: 15, message: 'Uploading contract to API server...' },
+  { percentage: 40, message: 'AI model analyzing document clauses & legal risks...' },
+  { percentage: 85, message: 'Structuring report response...' },
+  { percentage: 100, message: 'Ready' }
+];
 
 interface StepsListProps {
   currentPercentage: number;
