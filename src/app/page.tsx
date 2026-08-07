@@ -11,14 +11,20 @@ import {
   Zap, 
   Coins, 
   Database,
-  ArrowRight
+  ArrowRight,
+  Award,
+  Users,
+  Lock,
+  Cpu,
+  Sparkles,
+  CheckCircle2
 } from "lucide-react";
 
 export default function HomePage() {
   return (
     <div className="space-y-24 py-12">
       {/* Hero Section */}
-      <section className="relative overflow-hidden pt-12 pb-16">
+      <section className="relative overflow-hidden pt-8 pb-12">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-8">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 text-brand-primary text-xs font-bold border border-blue-100/80 shadow-sm">
             <Zap className="h-4 w-4 text-brand-primary animate-pulse" />
@@ -56,7 +62,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 5-Step Workflow Section with Breathable Cards */}
+      {/* 5-Step Workflow Section */}
       <section id="how-it-works" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16 space-y-3">
           <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">
@@ -124,7 +130,7 @@ export default function HomePage() {
               </p>
             </div>
             <span className="text-xs font-bold text-purple-700 bg-purple-50 group-hover:bg-purple-600 group-hover:text-white px-3.5 py-1.5 rounded-full transition-colors duration-300">
-              Open AI Ingestion 🧠
+              Open AI Engine 🧠
             </span>
           </Link>
 
@@ -144,7 +150,7 @@ export default function HomePage() {
               </p>
             </div>
             <span className="text-xs font-bold text-emerald-700 bg-emerald-50 group-hover:bg-emerald-600 group-hover:text-white px-3.5 py-1.5 rounded-full transition-colors duration-300">
-              Open Ledger Notary ⛓️
+              Open Notary ⛓️
             </span>
           </Link>
 
@@ -170,39 +176,134 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Feature Highlights Section with Generous Padding */}
-      <section id="features" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-        <div className="bg-slate-900 text-white rounded-3xl p-10 sm:p-14 shadow-2xl border border-slate-800">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            <div className="space-y-3">
-              <div className="p-3.5 bg-blue-500/10 text-blue-400 rounded-2xl w-fit border border-blue-500/20">
-                <BrainCircuit className="h-7 w-7" />
-              </div>
-              <h3 className="text-lg font-bold text-white">AI Clause Audit</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                Extracts indemnification liability, reentrancy risks, and compliance vectors automatically.
-              </p>
-            </div>
+      {/* Advanced Blockchain Features & Purpose Explanation Section */}
+      <section id="features" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16 space-y-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 text-emerald-400 text-xs font-mono font-bold">
+            <Cpu className="h-3.5 w-3.5" />
+            CORE ALGORAND ARCHITECTURE
+          </div>
+          <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">
+            Advanced Blockchain Features & Purpose
+          </h2>
+          <p className="text-slate-500 text-sm max-w-xl mx-auto leading-relaxed">
+            Detailed breakdown of every cryptographic and blockchain mechanism powering ChainTrust AI.
+          </p>
+        </div>
 
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Feature 1: x402 Pay-Gate */}
+          <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition space-y-4 flex flex-col justify-between">
             <div className="space-y-3">
-              <div className="p-3.5 bg-amber-500/10 text-amber-400 rounded-2xl w-fit border border-amber-500/20">
-                <Coins className="h-7 w-7" />
+              <div className="p-3 bg-amber-50 text-amber-600 rounded-2xl w-fit">
+                <Coins className="h-6 w-6" />
               </div>
-              <h3 className="text-lg font-bold text-white">x402 Pay-Per-Use</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                HTTP 402 pay-gated API endpoints with instant 1.0 ALGO micro-payments on Algorand TestNet.
+              <h3 className="text-lg font-bold text-slate-900">1. HTTP 402 Micro-Payment Protocol</h3>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                <strong className="text-slate-700">Purpose:</strong> Replaces expensive monthly subscriptions with per-request 1.0 ALGO micro-payments. API endpoints return <code className="text-amber-700 font-mono">HTTP 402 Payment Required</code> until confirmed on-chain.
               </p>
             </div>
+            <Link
+              href="/payment"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-700 hover:text-amber-800 pt-2"
+            >
+              Launch Payment Gateway ⚡ ➔
+            </Link>
+          </div>
 
+          {/* Feature 2: ASA Audit NFT Badges */}
+          <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition space-y-4 flex flex-col justify-between">
             <div className="space-y-3">
-              <div className="p-3.5 bg-emerald-500/10 text-emerald-400 rounded-2xl w-fit border border-emerald-500/20">
-                <Database className="h-7 w-7" />
+              <div className="p-3 bg-amber-50 text-amber-500 rounded-2xl w-fit">
+                <Award className="h-6 w-6" />
               </div>
-              <h3 className="text-lg font-bold text-white">Immutable Ledger Proof</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                SHA-256 canonical report fingerprints permanently anchored into Algorand transaction note fields.
+              <h3 className="text-lg font-bold text-slate-900">2. Algorand ASA "Proof-of-Audit" NFT</h3>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                <strong className="text-slate-700">Purpose:</strong> Mints an official Algorand Standard Asset (<code className="text-amber-700 font-mono">Unit: AUDITNFT</code>) directly into the auditor's Web3 wallet as non-fungible proof of compliance.
               </p>
             </div>
+            <Link
+              href="/nft-badge"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-600 hover:text-amber-700 pt-2"
+            >
+              Mint ASA Audit NFT 🏆 ➔
+            </Link>
+          </div>
+
+          {/* Feature 3: Multisig Governance */}
+          <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition space-y-4 flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="p-3 bg-blue-50 text-brand-primary rounded-2xl w-fit">
+                <Users className="h-6 w-6" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900">3. 2-of-3 Multisig Governance</h3>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                <strong className="text-slate-700">Purpose:</strong> Requires co-signatures from security auditor, AI key, and client officer before issuing enterprise-grade certificates on high-value contracts.
+              </p>
+            </div>
+            <Link
+              href="/nft-badge"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-primary hover:text-blue-700 pt-2"
+            >
+              Inspect Multisig Governance 🏛️ ➔
+            </Link>
+          </div>
+
+          {/* Feature 4: SHA-256 Canonical Notary */}
+          <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition space-y-4 flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="p-3 bg-emerald-50 text-emerald-600 rounded-2xl w-fit">
+                <Database className="h-6 w-6" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900">4. SHA-256 Canonical Notary</h3>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                <strong className="text-slate-700">Purpose:</strong> Implements RFC 8785 JSON canonicalization to compute deterministic 64-character report fingerprints anchored into Algorand transaction note fields.
+              </p>
+            </div>
+            <Link
+              href="/notary"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 hover:text-emerald-700 pt-2"
+            >
+              Open Ledger Notary ⛓️ ➔
+            </Link>
+          </div>
+
+          {/* Feature 5: Public Tamper Verification */}
+          <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition space-y-4 flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="p-3 bg-cyan-50 text-cyan-600 rounded-2xl w-fit">
+                <ShieldCheck className="h-6 w-6" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900">5. Public Tamper Verification</h3>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                <strong className="text-slate-700">Purpose:</strong> Allows anyone to upload a report JSON file to publicly verify its cryptographic SHA-256 hash against the Algorand blockchain in real-time.
+              </p>
+            </div>
+            <Link
+              href="/verify"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-600 hover:text-cyan-700 pt-2"
+            >
+              Open Verification Portal 🛡️ ➔
+            </Link>
+          </div>
+
+          {/* Feature 6: TEAL Smart Contract State */}
+          <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition space-y-4 flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="p-3 bg-purple-50 text-purple-600 rounded-2xl w-fit">
+                <BrainCircuit className="h-6 w-6" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900">6. AI Risk Scoring Engine</h3>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                <strong className="text-slate-700">Purpose:</strong> Evaluates legal clauses, reentrancy vulnerabilities, and compliance rulesets with structured executive summary outputs.
+              </p>
+            </div>
+            <Link
+              href="/ai-ingestion"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-purple-600 hover:text-purple-700 pt-2"
+            >
+              Open AI Ingestion Engine 🧠 ➔
+            </Link>
           </div>
         </div>
       </section>
