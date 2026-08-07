@@ -3,9 +3,9 @@ import { walletService } from "@/blockchain/wallet/service/wallet.service";
 import { withAddressValidation } from "@/blockchain/wallet/middleware/validation.middleware";
 import { ApiSuccessResponse } from "@/blockchain/wallet/dto/wallet.dto";
 
-async function getAssets(req: NextRequest, { params }: { params: { address?: string } }) {
-  const address = params.address!;
-  const info = await walletService.getWalletInfo(address);
+async function getAssets(req: NextRequest, { params }: { params: Promise<{ address?: string }> }) {
+  const { address } = await params;
+  const info = await walletService.getWalletInfo(address!);
 
   const serializedAssets = JSON.parse(JSON.stringify(info.assets, (key, value) =>
     typeof value === 'bigint' ? value.toString() : value

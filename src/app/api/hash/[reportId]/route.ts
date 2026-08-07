@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { hashRepository } from "@/blockchain/hashing/repository/hash.repository";
 
-export async function GET(req: NextRequest, { params }: { params: { reportId?: string } }) {
+export async function GET(req: NextRequest, context: { params: Promise<{ reportId: string }> }) {
   try {
-    const reportId = params.reportId;
+    const { reportId } = await context.params;
     if (!reportId) {
       return NextResponse.json({ success: false, error: { message: "reportId is required" } }, { status: 400 });
     }

@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verificationPortalService } from "@/verification/service/verification-portal.service";
 
-export async function GET(req: NextRequest, { params }: { params: { txId?: string } }) {
+export async function GET(req: NextRequest, context: { params: Promise<{ txId: string }> }) {
   try {
-    const txId = params.txId;
+    const { txId } = await context.params;
     if (!txId) {
       return NextResponse.json({ success: false, error: { message: "txId is required" } }, { status: 400 });
     }

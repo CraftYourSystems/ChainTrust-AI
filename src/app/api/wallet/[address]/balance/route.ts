@@ -3,9 +3,9 @@ import { walletService } from "@/blockchain/wallet/service/wallet.service";
 import { withAddressValidation } from "@/blockchain/wallet/middleware/validation.middleware";
 import { ApiSuccessResponse } from "@/blockchain/wallet/dto/wallet.dto";
 
-async function getBalance(req: NextRequest, { params }: { params: { address?: string } }) {
-  const address = params.address!;
-  const balance = await walletService.getBalance(address);
+async function getBalance(req: NextRequest, { params }: { params: Promise<{ address?: string }> }) {
+  const { address } = await params;
+  const balance = await walletService.getBalance(address!);
 
   const response: ApiSuccessResponse<{ balance: string }> = {
     success: true,
