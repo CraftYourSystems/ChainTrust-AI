@@ -35,7 +35,10 @@ class Settings(BaseSettings):
     llm_provider: Literal["gemini", "gpt"] = "gemini"
     gemini_api_key: str = ""
     openai_api_key: str = ""
-    gemini_model: str = "gemini-2.5-flash"
+    # Floating alias: Google points it at a currently-served flash model.
+    # Pinned versions get retired ("no longer available to new users") or run
+    # out of capacity, which surfaces as a 404 or 503 on every request.
+    gemini_model: str = "gemini-flash-latest"
     openai_model: str = "gpt-4o-mini"
 
     # --- LLM request behaviour ------------------------------------------
