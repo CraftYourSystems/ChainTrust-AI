@@ -104,108 +104,113 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 relative">
+          <div className="relative lg:h-[400px] w-full">
+            {/* Curvy Connecting Line (Desktop Only) */}
+            <svg
+              className="hidden lg:block absolute inset-0 w-full h-full pointer-events-none z-0"
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+            >
+              <defs>
+                <linearGradient id="flow-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#2563EB" />
+                  <stop offset="50%" stopColor="#8B5CF6" />
+                  <stop offset="100%" stopColor="#22C55E" />
+                </linearGradient>
+              </defs>
+              <path
+                d="M 10 25 C 20 25, 20 75, 30 75 C 40 75, 40 25, 50 25 C 60 25, 60 75, 70 75 C 80 75, 80 25, 90 25"
+                fill="none"
+                stroke="url(#flow-gradient)"
+                strokeWidth="2"
+                className="animate-flow-line opacity-60"
+              />
+            </svg>
 
-            {/* Step 1 */}
-            <div className="group flex flex-col items-center text-center bg-white border border-slate-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
-              <div className="relative mb-4">
-                <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center group-hover:bg-brand-primary transition-colors duration-300">
-                  <Upload className="h-6 w-6 text-brand-primary group-hover:text-white transition-colors duration-300" />
+            {/* Grid Container */}
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-6 h-full relative z-10">
+              
+              {/* Step 1 */}
+              <div className="group flex flex-col items-center text-center bg-white border border-slate-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 lg:self-start lg:h-[200px]">
+                <div className="relative mb-3">
+                  <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center group-hover:bg-brand-primary transition-colors duration-300">
+                    <Upload className="h-5.5 w-5.5 text-brand-primary group-hover:text-white transition-colors duration-300" />
+                  </div>
+                  <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-brand-primary text-white text-[10px] font-bold flex items-center justify-center">
+                    1
+                  </span>
                 </div>
-                <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-brand-primary text-white text-[10px] font-bold flex items-center justify-center">
-                  1
-                </span>
+                <h4 className="text-sm font-bold text-slate-900 mb-1">Upload Contract</h4>
+                <p className="text-[11px] text-slate-500 leading-relaxed">
+                  Submit your PDF or DOCX agreement to the secure ingestion pipeline.
+                </p>
               </div>
-              <h4 className="text-sm font-bold text-slate-900 mb-1.5">Upload Contract</h4>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                Submit your PDF or DOCX agreement to the secure ingestion pipeline.
-              </p>
-            </div>
 
-            {/* Arrow */}
-            <div className="hidden lg:flex items-center justify-center self-center">
-              <ChevronRight className="h-6 w-6 text-slate-300" />
-            </div>
-
-            {/* Step 2 */}
-            <div className="group flex flex-col items-center text-center bg-white border border-slate-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
-              <div className="relative mb-4">
-                <div className="w-14 h-14 rounded-2xl bg-amber-50 flex items-center justify-center group-hover:bg-brand-warning transition-colors duration-300">
-                  <Wallet className="h-6 w-6 text-brand-warning group-hover:text-white transition-colors duration-300" />
+              {/* Step 2 */}
+              <div className="group flex flex-col items-center text-center bg-white border border-slate-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 lg:self-end lg:h-[200px]">
+                <div className="relative mb-3">
+                  <div className="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center group-hover:bg-brand-warning transition-colors duration-300">
+                    <Wallet className="h-5.5 w-5.5 text-brand-warning group-hover:text-white transition-colors duration-300" />
+                  </div>
+                  <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-brand-primary text-white text-[10px] font-bold flex items-center justify-center">
+                    2
+                  </span>
                 </div>
-                <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-brand-primary text-white text-[10px] font-bold flex items-center justify-center">
-                  2
-                </span>
+                <h4 className="text-sm font-bold text-slate-900 mb-1">x402 Pay-Gate</h4>
+                <p className="text-[11px] text-slate-500 leading-relaxed">
+                  Authorize a secure micropayment on Algorand TestNet to unlock analysis.
+                </p>
               </div>
-              <h4 className="text-sm font-bold text-slate-900 mb-1.5">x402 Pay-Gate</h4>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                Authorize a secure micropayment on Algorand TestNet to unlock analysis.
-              </p>
-            </div>
 
-            {/* Arrow */}
-            <div className="hidden lg:flex items-center justify-center self-center">
-              <ChevronRight className="h-6 w-6 text-slate-300" />
-            </div>
-
-            {/* Step 3 */}
-            <div className="group flex flex-col items-center text-center bg-white border border-slate-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
-              <div className="relative mb-4">
-                <div className="w-14 h-14 rounded-2xl bg-purple-50 flex items-center justify-center group-hover:bg-purple-600 transition-colors duration-300">
-                  <BrainCircuit className="h-6 w-6 text-purple-600 group-hover:text-white transition-colors duration-300" />
+              {/* Step 3 */}
+              <div className="group flex flex-col items-center text-center bg-white border border-slate-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 lg:self-start lg:h-[200px]">
+                <div className="relative mb-3">
+                  <div className="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center group-hover:bg-purple-600 transition-colors duration-300">
+                    <BrainCircuit className="h-5.5 w-5.5 text-purple-600 group-hover:text-white transition-colors duration-300" />
+                  </div>
+                  <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-brand-primary text-white text-[10px] font-bold flex items-center justify-center">
+                    3
+                  </span>
                 </div>
-                <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-brand-primary text-white text-[10px] font-bold flex items-center justify-center">
-                  3
-                </span>
+                <h4 className="text-sm font-bold text-slate-900 mb-1">AI Ingestion</h4>
+                <p className="text-[11px] text-slate-500 leading-relaxed">
+                  Deep legal extraction engine processes and scores every contract clause.
+                </p>
               </div>
-              <h4 className="text-sm font-bold text-slate-900 mb-1.5">AI Ingestion</h4>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                Deep legal extraction engine processes and scores every contract clause.
-              </p>
-            </div>
 
-            {/* Arrow */}
-            <div className="hidden lg:flex items-center justify-center self-center">
-              <ChevronRight className="h-6 w-6 text-slate-300" />
-            </div>
-
-            {/* Step 4 */}
-            <div className="group flex flex-col items-center text-center bg-white border border-slate-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
-              <div className="relative mb-4">
-                <div className="w-14 h-14 rounded-2xl bg-green-50 flex items-center justify-center group-hover:bg-brand-success transition-colors duration-300">
-                  <Link2 className="h-6 w-6 text-brand-success group-hover:text-white transition-colors duration-300" />
+              {/* Step 4 */}
+              <div className="group flex flex-col items-center text-center bg-white border border-slate-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 lg:self-end lg:h-[200px]">
+                <div className="relative mb-3">
+                  <div className="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center group-hover:bg-brand-success transition-colors duration-300">
+                    <Link2 className="h-5.5 w-5.5 text-brand-success group-hover:text-white transition-colors duration-300" />
+                  </div>
+                  <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-brand-primary text-white text-[10px] font-bold flex items-center justify-center">
+                    4
+                  </span>
                 </div>
-                <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-brand-primary text-white text-[10px] font-bold flex items-center justify-center">
-                  4
-                </span>
+                <h4 className="text-sm font-bold text-slate-900 mb-1">On-Chain Notary</h4>
+                <p className="text-[11px] text-slate-500 leading-relaxed">
+                  Document and report hashes are permanently written to the Algorand ledger.
+                </p>
               </div>
-              <h4 className="text-sm font-bold text-slate-900 mb-1.5">On-Chain Notary</h4>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                Document and report hashes are permanently written to the Algorand ledger.
-              </p>
-            </div>
 
-            {/* Arrow */}
-            <div className="hidden lg:flex items-center justify-center self-center">
-              <ChevronRight className="h-6 w-6 text-slate-300" />
-            </div>
-
-            {/* Step 5 */}
-            <div className="group flex flex-col items-center text-center bg-white border border-slate-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
-              <div className="relative mb-4">
-                <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center group-hover:bg-brand-primary transition-colors duration-300">
-                  <ShieldCheck className="h-6 w-6 text-brand-primary group-hover:text-white transition-colors duration-300" />
+              {/* Step 5 */}
+              <div className="group flex flex-col items-center text-center bg-white border border-slate-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 lg:self-start lg:h-[200px]">
+                <div className="relative mb-3">
+                  <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center group-hover:bg-brand-primary transition-colors duration-300">
+                    <ShieldCheck className="h-5.5 w-5.5 text-brand-primary group-hover:text-white transition-colors duration-300" />
+                  </div>
+                  <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-brand-primary text-white text-[10px] font-bold flex items-center justify-center">
+                    5
+                  </span>
                 </div>
-                <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-brand-primary text-white text-[10px] font-bold flex items-center justify-center">
-                  5
-                </span>
+                <h4 className="text-sm font-bold text-slate-900 mb-1">Verified Audit</h4>
+                <p className="text-[11px] text-slate-500 leading-relaxed">
+                  Download your certified due diligence report with blockchain proof.
+                </p>
               </div>
-              <h4 className="text-sm font-bold text-slate-900 mb-1.5">Verified Audit</h4>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                Download your certified due diligence report with blockchain proof.
-              </p>
-            </div>
 
+            </div>
           </div>
         </div>
       </section>

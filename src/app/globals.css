@@ -38,3 +38,16 @@ body {
   animation: pulse-ring 2s infinite ease-in-out;
 }
 
+@keyframes flow-line {
+  0% {
+    stroke-dashoffset: 40;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-flow-line {
+  stroke-dasharray: 8, 8;
+  animation: flow-line 2s linear infinite;
+}
