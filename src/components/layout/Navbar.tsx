@@ -4,7 +4,12 @@ import React from 'react';
 import Link from 'next/link';
 import { ShieldCheck, ArrowRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { WalletConnectButton } from '@/blockchain/wallet/components/WalletConnectButton';
+import dynamic from 'next/dynamic';
+
+const WalletConnectButton = dynamic(
+  () => import('@/blockchain/wallet/components/WalletConnectButton').then(m => m.WalletConnectButton),
+  { ssr: false }
+);
 
 export const Navbar: React.FC = () => {
   const router = useRouter();
