@@ -32,23 +32,18 @@ function LoadingContent() {
     const runAnalysis = async () => {
       setError(null);
       try {
-        const uploadedFile = getUploadedFile();
-        let report: DueDiligenceReport;
+        const uploadedFile = getUploadedFile(fileName);
 
-        if (uploadedFile) {
-          // Real backend API analysis
-          report = await AnalysisService.analyzeContract(
-            uploadedFile,
-            (step: ProgressStep) => {
-              if (active) {
-                setPercentage(step.percentage);
-                setCurrentStep(step.message);
-              }
+        // Real backend API analysis
+        const report = await AnalysisService.analyzeContract(
+          uploadedFile,
+          (step: ProgressStep) => {
+            if (active) {
+              setPercentage(step.percentage);
+              setCurrentStep(step.message);
             }
-          );
-        } else {
-          throw new Error('No uploaded contract file found in session. Please go back to the upload page and select a file.');
-        }
+          }
+        );
 
         if (active) {
           // Store report ID so payment guard knows where to redirect
