@@ -71,11 +71,11 @@ export const RiskGauge: React.FC<RiskGaugeProps> = ({ score, level }) => {
         </svg>
         
         {/* Centered Content */}
-        <div className="absolute text-center">
-          <span className="text-3xl font-extrabold text-slate-900 tracking-tight">
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+          <span className="text-3xl font-extrabold text-slate-900 leading-none">
             {score}
           </span>
-          <span className="text-[10px] font-bold text-slate-400 block uppercase tracking-wider mt-0.5">
+          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">
             Risk Score
           </span>
         </div>
