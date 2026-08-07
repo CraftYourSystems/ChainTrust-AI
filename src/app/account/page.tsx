@@ -51,11 +51,15 @@ export default function UserAccountPage() {
   const [balance, setBalance] = useState("10.0");
 
   useEffect(() => {
-    const cachedBalance = sessionStorage.getItem("wallet_balance");
-    if (cachedBalance) {
-      setBalance(cachedBalance);
-    }
-  }, []);
+    fetch(`/api/wallet/balance?address=${activeAddr}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.balance) {
+          setBalance(data.balance);
+        }
+      })
+      .catch(() => setBalance("9.0"));
+  }, [activeAddr]);
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
