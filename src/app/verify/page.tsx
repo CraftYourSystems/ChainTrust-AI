@@ -182,8 +182,7 @@ export default function VerificationPortalPage() {
           Verification Portal
         </h1>
         <p className="text-sm text-slate-500 max-w-xl mx-auto leading-relaxed">
-          Verify the cryptographic authenticity of any ChainTrust-AI audit report or document
-          against the immutable Algorand blockchain in real time.
+          Verify the cryptographic authenticity of any audit report or document against Algorand in real time.
         </p>
       </div>
 
@@ -301,7 +300,7 @@ export default function VerificationPortalPage() {
                   </label>
                   <textarea
                     id="verify-json"
-                    rows={8}
+                    rows={6}
                     value={reportJson}
                     onChange={(e) => setReportJson(e.target.value)}
                     placeholder="Paste the report JSON payload here, or use a preset above..."
@@ -399,7 +398,7 @@ export default function VerificationPortalPage() {
                 </p>
               </div>
 
-              {/* SHA-256 Hash Comparison Panel — dark, matching the on-chain proof panels */}
+              {/* SHA-256 Hash Comparison Panel */}
               <div className="bg-slate-900 text-white p-5 rounded-2xl border border-slate-800 shadow-lg space-y-3">
                 <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-800">
                   <span className="font-bold text-xs text-slate-200 inline-flex items-center gap-1.5">
@@ -500,153 +499,117 @@ export default function VerificationPortalPage() {
       </div>
 
       {/* SECTION 2: HOW CHAINTRUST AI & ALGORAND WORK */}
-      <div className="pt-4 space-y-8">
+      <div className="pt-4 space-y-6">
 
         <div className="text-center">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 text-blue-700 text-xs font-bold mb-4 border border-blue-200">
-            <BookOpen className="h-4 w-4 text-blue-600" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold mb-2 border border-blue-200">
+            <BookOpen className="h-3.5 w-3.5 text-blue-600" />
             TRUST ARCHITECTURE
           </div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-2">
+          <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">
             How ChainTrust AI &amp; Algorand protect your contracts
           </h2>
-          <p className="text-sm text-slate-500 max-w-xl mx-auto leading-relaxed">
-            Our decentralized 4-step proof pipeline lets companies, auditors, and investors trust
-            our reports with zero central point of failure.
-          </p>
         </div>
 
         {/* Step 1 to 4 Flow Diagram */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
-            <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center font-mono font-bold text-xs">
-              01
-            </div>
-            <h3 className="font-bold text-sm text-slate-900">RFC 8785 parsing</h3>
-            <p className="text-xs text-slate-500 leading-relaxed">
-              Contract JSON key ordering is standardized alphabetically using RFC 8785 JCS rules to
-              guarantee identical formatting.
-            </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-2">
+            <span className="text-[10px] font-mono font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">01</span>
+            <h3 className="font-bold text-xs text-slate-900">RFC 8785 Parsing</h3>
+            <p className="text-[11px] text-slate-500 leading-tight">Key ordering standardized alphabetically using RFC 8785 JCS.</p>
           </div>
 
-          <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
-            <div className="w-8 h-8 rounded-xl bg-purple-50 text-purple-600 border border-purple-200 flex items-center justify-center font-mono font-bold text-xs">
-              02
-            </div>
-            <h3 className="font-bold text-sm text-slate-900">SHA-256 hashing</h3>
-            <p className="text-xs text-slate-500 leading-relaxed">
-              A 64-character mathematical fingerprint is generated. Changing a single letter alters
-              the hash completely.
-            </p>
+          <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-2">
+            <span className="text-[10px] font-mono font-bold text-purple-600 bg-purple-50 px-2 py-0.5 rounded border border-purple-200">02</span>
+            <h3 className="font-bold text-xs text-slate-900">SHA-256 Hashing</h3>
+            <p className="text-[11px] text-slate-500 leading-tight">Generates 64-char fingerprint. 1 letter edit alters hash.</p>
           </div>
 
-          <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
-            <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center font-mono font-bold text-xs">
-              03
-            </div>
-            <h3 className="font-bold text-sm text-slate-900">Algorand anchor</h3>
-            <p className="text-xs text-slate-500 leading-relaxed">
-              The hash is written into Algorand&apos;s transaction note field
-              (<code className="font-mono text-emerald-600">chaintrust:proof:v1</code>).
-            </p>
+          <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-2">
+            <span className="text-[10px] font-mono font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">03</span>
+            <h3 className="font-bold text-xs text-slate-900">Algorand Anchor</h3>
+            <p className="text-[11px] text-slate-500 leading-tight">Hash stored in note field (<code className="font-mono text-emerald-600">chaintrust:proof:v1</code>).</p>
           </div>
 
-          <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
-            <div className="w-8 h-8 rounded-xl bg-cyan-50 text-cyan-600 border border-cyan-200 flex items-center justify-center font-mono font-bold text-xs">
-              04
-            </div>
-            <h3 className="font-bold text-sm text-slate-900">Public verify</h3>
-            <p className="text-xs text-slate-500 leading-relaxed">
-              Anyone can recompute the hash and compare it against the live Algorand ledger without
-              trusting ChainTrust.
-            </p>
+          <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-2">
+            <span className="text-[10px] font-mono font-bold text-cyan-600 bg-cyan-50 px-2 py-0.5 rounded border border-cyan-200">04</span>
+            <h3 className="font-bold text-xs text-slate-900">Public Verify</h3>
+            <p className="text-[11px] text-slate-500 leading-tight">Recompute hash &amp; verify on Algorand without third-party trust.</p>
           </div>
         </div>
 
         {/* SECTION 3: THE 3 PILLARS OF TRUST */}
-        <div className="space-y-5 pt-6">
-          <h3 className="text-lg font-bold text-slate-900 text-center inline-flex items-center justify-center gap-2 w-full">
-            <ShieldCheck className="h-5 w-5 text-emerald-600" />
-            The 3 pillars: why you can trust ChainTrust AI
+        <div className="space-y-3 pt-4">
+          <h3 className="text-base font-bold text-slate-900 text-center inline-flex items-center justify-center gap-1.5 w-full">
+            <ShieldCheck className="h-4 w-4 text-emerald-600" />
+            The 3 Pillars of Trust
           </h3>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
-              <div className="p-3 bg-emerald-50 text-emerald-600 rounded-xl w-fit border border-emerald-200">
-                <Database className="h-5 w-5" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-start gap-3">
+              <div className="p-2 bg-emerald-50 text-emerald-600 rounded-lg shrink-0">
+                <Database className="h-4 w-4" />
               </div>
-              <h4 className="font-bold text-slate-900 text-sm">Zero third-party trust required</h4>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                You do <strong className="text-slate-700">not</strong> have to trust our company or
-                database. Algorand is a public, decentralized blockchain — even if ChainTrust servers
-                shut down, your audit proof stays permanently verifiable on nodes worldwide.
-              </p>
+              <div>
+                <h4 className="font-bold text-slate-900 text-xs mb-1">Zero Third-Party Trust</h4>
+                <p className="text-[11px] text-slate-500 leading-snug">
+                  100% decentralized. Proofs stay permanently verifiable on Algorand nodes worldwide.
+                </p>
+              </div>
             </div>
 
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
-              <div className="p-3 bg-blue-50 text-blue-600 rounded-xl w-fit border border-blue-200">
-                <Key className="h-5 w-5" />
+            <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-start gap-3">
+              <div className="p-2 bg-blue-50 text-blue-600 rounded-lg shrink-0">
+                <Key className="h-4 w-4" />
               </div>
-              <h4 className="font-bold text-slate-900 text-sm">Zero data privacy risk</h4>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                Your confidential document text (employment details, salary, M&amp;A clauses) is
-                <strong className="text-slate-700"> never stored on-chain</strong>. Only the
-                64-character hash fingerprint is recorded, so your contract secrets stay private.
-              </p>
+              <div>
+                <h4 className="font-bold text-slate-900 text-xs mb-1">Zero Data Privacy Risk</h4>
+                <p className="text-[11px] text-slate-500 leading-snug">
+                  No contract text stored on-chain. Only 64-character SHA-256 fingerprints are recorded.
+                </p>
+              </div>
             </div>
 
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
-              <div className="p-3 bg-purple-50 text-purple-600 rounded-xl w-fit border border-purple-200">
-                <Scale className="h-5 w-5" />
+            <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-start gap-3">
+              <div className="p-2 bg-purple-50 text-purple-600 rounded-lg shrink-0">
+                <Scale className="h-4 w-4" />
               </div>
-              <h4 className="font-bold text-slate-900 text-sm">Legal &amp; audit protection</h4>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                Prevents backdating and sneaky clause edits. If a vendor modifies a contract two
-                years later, SHA-256 fingerprint matching proves the exact original terms that
-                existed at the anchored timestamp.
-              </p>
+              <div>
+                <h4 className="font-bold text-slate-900 text-xs mb-1">Legal &amp; Audit Protection</h4>
+                <p className="text-[11px] text-slate-500 leading-snug">
+                  Permanent timestamping prevents backdating and unapproved clause edits.
+                </p>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* SECTION 4: REAL-WORLD EXAMPLES & SCENARIOS */}
-        <div className="space-y-4 pt-6">
-          <h3 className="text-lg font-bold text-slate-900 text-center inline-flex items-center justify-center gap-2 w-full">
-            <Zap className="h-5 w-5 text-amber-500" />
-            Real-world scenarios &amp; attack defense
+        {/* SECTION 4: REAL-WORLD SCENARIOS */}
+        <div className="space-y-3 pt-2">
+          <h3 className="text-base font-bold text-slate-900 text-center inline-flex items-center justify-center gap-1.5 w-full">
+            <Zap className="h-4 w-4 text-amber-500" />
+            Attack Defense &amp; Scenarios
           </h3>
 
-          <div className="space-y-3">
-            <div className="p-5 bg-white rounded-2xl border border-slate-200 shadow-sm space-y-1.5">
-              <span className="block font-bold text-sm text-slate-900">
-                What if someone edits one character in the PDF?
-              </span>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                Changing a single letter or number alters the resulting 64-character SHA-256 digest
-                completely (<code className="font-mono text-slate-700">b3b1b1...</code> becomes{" "}
-                <code className="font-mono text-red-600">8f7a91...</code>). The portal flags it
-                immediately as <strong className="text-red-600">tampered</strong>.
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-sm space-y-1">
+              <span className="block font-bold text-xs text-slate-900">PDF Character Edit?</span>
+              <p className="text-[11px] text-slate-500 leading-snug">
+                Alters digest completely (<code className="font-mono text-slate-700">b3b1...</code> ➔ <code className="font-mono text-red-600">8f7a...</code>). Flagged as <strong className="text-red-600">TAMPERED</strong>.
               </p>
             </div>
 
-            <div className="p-5 bg-white rounded-2xl border border-slate-200 shadow-sm space-y-1.5">
-              <span className="block font-bold text-sm text-slate-900">
-                What if an employee changes the risk score from 78 to 12?
-              </span>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                Clicking <em>Load Tampered Report</em> above demonstrates this exact attack. The hash
-                comparison against the anchored Algorand note fails, exposing the forgery.
+            <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-sm space-y-1">
+              <span className="block font-bold text-xs text-slate-900">Score Tampering (78 ➔ 12)?</span>
+              <p className="text-[11px] text-slate-500 leading-snug">
+                Hash check fails against Algorand Block #48291231, exposing forgery instantly.
               </p>
             </div>
 
-            <div className="p-5 bg-white rounded-2xl border border-slate-200 shadow-sm space-y-1.5">
-              <span className="block font-bold text-sm text-slate-900">
-                How do auditors and Web3 investors verify our reports?
-              </span>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                Investors open the report on <code className="font-mono text-slate-700">/verify</code>{" "}
-                or inspect the raw Algorand transaction on Pera Explorer. They can independently
-                verify the zero-ALGO note payload without any access to internal servers.
+            <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-sm space-y-1">
+              <span className="block font-bold text-xs text-slate-900">Auditor &amp; Investor Verification?</span>
+              <p className="text-[11px] text-slate-500 leading-snug">
+                Inspect note payload directly on Pera Explorer without needing internal server access.
               </p>
             </div>
           </div>
