@@ -25,9 +25,12 @@ export interface DueDiligenceReport {
     status: 'Pending' | 'Verified';
     walletAddress?: string;
     transactionId?: string;
+    confirmedRound?: number | string;
+    explorerUrl?: string;
     timestamp?: string;
     aiVersion?: string;
     reportHash?: string;
+    contractHash?: string;
     contractHealthScore?: number;
   };
 }
