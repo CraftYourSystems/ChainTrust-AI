@@ -130,85 +130,115 @@ export default function Home() {
             {/* Grid Container */}
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-6 h-full relative z-10">
               
-              {/* Step 1 */}
-              <div className="group flex flex-col items-center text-center bg-white border border-slate-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 lg:self-start lg:h-[200px]">
+              {/* Step 1 Button */}
+              <Link 
+                href="/upload"
+                className="group flex flex-col items-center text-center bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-1.5 hover:border-blue-500 hover:ring-2 hover:ring-blue-500/20 transition-all duration-300 lg:self-start lg:h-[230px] cursor-pointer"
+              >
                 <div className="relative mb-3">
-                  <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center group-hover:bg-brand-primary transition-colors duration-300">
+                  <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center group-hover:bg-brand-primary group-hover:scale-110 transition-all duration-300">
                     <Upload className="h-5.5 w-5.5 text-brand-primary group-hover:text-white transition-colors duration-300" />
                   </div>
-                  <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-brand-primary text-white text-[10px] font-bold flex items-center justify-center">
+                  <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-brand-primary text-white text-[10px] font-bold flex items-center justify-center shadow">
                     1
                   </span>
                 </div>
-                <h4 className="text-sm font-bold text-slate-900 mb-1">Upload Contract</h4>
-                <p className="text-[11px] text-slate-500 leading-relaxed">
+                <h4 className="text-sm font-bold text-slate-900 mb-1 group-hover:text-blue-600 transition-colors">Upload Contract</h4>
+                <p className="text-[11px] text-slate-500 leading-relaxed mb-3">
                   Submit your PDF or DOCX agreement to the secure ingestion pipeline.
                 </p>
-              </div>
+                <span className="mt-auto inline-flex items-center gap-1 text-[11px] font-extrabold text-brand-primary bg-blue-50 group-hover:bg-blue-600 group-hover:text-white px-3 py-1 rounded-full transition-colors">
+                  Try Upload ➔
+                </span>
+              </Link>
 
-              {/* Step 2 */}
-              <div className="group flex flex-col items-center text-center bg-white border border-slate-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 lg:self-end lg:h-[200px]">
+              {/* Step 2 Button */}
+              <Link 
+                href="/demo"
+                className="group flex flex-col items-center text-center bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-1.5 hover:border-amber-500 hover:ring-2 hover:ring-amber-500/20 transition-all duration-300 lg:self-end lg:h-[230px] cursor-pointer"
+              >
                 <div className="relative mb-3">
-                  <div className="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center group-hover:bg-brand-warning transition-colors duration-300">
-                    <Wallet className="h-5.5 w-5.5 text-brand-warning group-hover:text-white transition-colors duration-300" />
+                  <div className="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center group-hover:bg-amber-500 group-hover:scale-110 transition-all duration-300">
+                    <Wallet className="h-5.5 w-5.5 text-amber-500 group-hover:text-white transition-colors duration-300" />
                   </div>
-                  <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-brand-primary text-white text-[10px] font-bold flex items-center justify-center">
+                  <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-amber-500 text-white text-[10px] font-bold flex items-center justify-center shadow">
                     2
                   </span>
                 </div>
-                <h4 className="text-sm font-bold text-slate-900 mb-1">x402 Pay-Gate</h4>
-                <p className="text-[11px] text-slate-500 leading-relaxed">
+                <h4 className="text-sm font-bold text-slate-900 mb-1 group-hover:text-amber-600 transition-colors">x402 Pay-Gate</h4>
+                <p className="text-[11px] text-slate-500 leading-relaxed mb-3">
                   Authorize a secure micropayment on Algorand TestNet to unlock analysis.
                 </p>
-              </div>
+                <span className="mt-auto inline-flex items-center gap-1 text-[11px] font-extrabold text-amber-700 bg-amber-50 group-hover:bg-amber-500 group-hover:text-white px-3 py-1 rounded-full transition-colors">
+                  Test x402 Gate ⚡
+                </span>
+              </Link>
 
-              {/* Step 3 */}
-              <div className="group flex flex-col items-center text-center bg-white border border-slate-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 lg:self-start lg:h-[200px]">
+              {/* Step 3 Button */}
+              <Link 
+                href="/demo"
+                className="group flex flex-col items-center text-center bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-1.5 hover:border-purple-500 hover:ring-2 hover:ring-purple-500/20 transition-all duration-300 lg:self-start lg:h-[230px] cursor-pointer"
+              >
                 <div className="relative mb-3">
-                  <div className="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center group-hover:bg-purple-600 transition-colors duration-300">
+                  <div className="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center group-hover:bg-purple-600 group-hover:scale-110 transition-all duration-300">
                     <BrainCircuit className="h-5.5 w-5.5 text-purple-600 group-hover:text-white transition-colors duration-300" />
                   </div>
-                  <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-brand-primary text-white text-[10px] font-bold flex items-center justify-center">
+                  <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-purple-600 text-white text-[10px] font-bold flex items-center justify-center shadow">
                     3
                   </span>
                 </div>
-                <h4 className="text-sm font-bold text-slate-900 mb-1">AI Ingestion</h4>
-                <p className="text-[11px] text-slate-500 leading-relaxed">
+                <h4 className="text-sm font-bold text-slate-900 mb-1 group-hover:text-purple-600 transition-colors">AI Ingestion</h4>
+                <p className="text-[11px] text-slate-500 leading-relaxed mb-3">
                   Deep legal extraction engine processes and scores every contract clause.
                 </p>
-              </div>
+                <span className="mt-auto inline-flex items-center gap-1 text-[11px] font-extrabold text-purple-700 bg-purple-50 group-hover:bg-purple-600 group-hover:text-white px-3 py-1 rounded-full transition-colors">
+                  Test AI Engine 🧠
+                </span>
+              </Link>
 
-              {/* Step 4 */}
-              <div className="group flex flex-col items-center text-center bg-white border border-slate-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 lg:self-end lg:h-[200px]">
+              {/* Step 4 Button */}
+              <Link 
+                href="/demo"
+                className="group flex flex-col items-center text-center bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-1.5 hover:border-emerald-500 hover:ring-2 hover:ring-emerald-500/20 transition-all duration-300 lg:self-end lg:h-[230px] cursor-pointer"
+              >
                 <div className="relative mb-3">
-                  <div className="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center group-hover:bg-brand-success transition-colors duration-300">
-                    <Link2 className="h-5.5 w-5.5 text-brand-success group-hover:text-white transition-colors duration-300" />
+                  <div className="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center group-hover:bg-emerald-600 group-hover:scale-110 transition-all duration-300">
+                    <Link2 className="h-5.5 w-5.5 text-emerald-600 group-hover:text-white transition-colors duration-300" />
                   </div>
-                  <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-brand-primary text-white text-[10px] font-bold flex items-center justify-center">
+                  <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-emerald-600 text-white text-[10px] font-bold flex items-center justify-center shadow">
                     4
                   </span>
                 </div>
-                <h4 className="text-sm font-bold text-slate-900 mb-1">On-Chain Notary</h4>
-                <p className="text-[11px] text-slate-500 leading-relaxed">
+                <h4 className="text-sm font-bold text-slate-900 mb-1 group-hover:text-emerald-600 transition-colors">On-Chain Notary</h4>
+                <p className="text-[11px] text-slate-500 leading-relaxed mb-3">
                   Document and report hashes are permanently written to the Algorand ledger.
                 </p>
-              </div>
+                <span className="mt-auto inline-flex items-center gap-1 text-[11px] font-extrabold text-emerald-700 bg-emerald-50 group-hover:bg-emerald-600 group-hover:text-white px-3 py-1 rounded-full transition-colors">
+                  Test Ledger ⛓️
+                </span>
+              </Link>
 
-              {/* Step 5 */}
-              <div className="group flex flex-col items-center text-center bg-white border border-slate-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 lg:self-start lg:h-[200px]">
+              {/* Step 5 Button */}
+              <Link 
+                href="/verify"
+                className="group flex flex-col items-center text-center bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-1.5 hover:border-cyan-500 hover:ring-2 hover:ring-cyan-500/20 transition-all duration-300 lg:self-start lg:h-[230px] cursor-pointer"
+              >
                 <div className="relative mb-3">
-                  <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center group-hover:bg-brand-primary transition-colors duration-300">
-                    <ShieldCheck className="h-5.5 w-5.5 text-brand-primary group-hover:text-white transition-colors duration-300" />
+                  <div className="w-12 h-12 rounded-xl bg-cyan-50 flex items-center justify-center group-hover:bg-cyan-600 group-hover:scale-110 transition-all duration-300">
+                    <ShieldCheck className="h-5.5 w-5.5 text-cyan-600 group-hover:text-white transition-colors duration-300" />
                   </div>
-                  <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-brand-primary text-white text-[10px] font-bold flex items-center justify-center">
+                  <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-cyan-600 text-white text-[10px] font-bold flex items-center justify-center shadow">
                     5
                   </span>
                 </div>
-                <h4 className="text-sm font-bold text-slate-900 mb-1">Verified Audit</h4>
-                <p className="text-[11px] text-slate-500 leading-relaxed">
+                <h4 className="text-sm font-bold text-slate-900 mb-1 group-hover:text-cyan-600 transition-colors">Verified Audit</h4>
+                <p className="text-[11px] text-slate-500 leading-relaxed mb-3">
                   Download your certified due diligence report with blockchain proof.
                 </p>
-              </div>
+                <span className="mt-auto inline-flex items-center gap-1 text-[11px] font-extrabold text-cyan-700 bg-cyan-50 group-hover:bg-cyan-600 group-hover:text-white px-3 py-1 rounded-full transition-colors">
+                  Verify Portal 🛡️
+                </span>
+              </Link>
 
             </div>
           </div>
