@@ -109,7 +109,7 @@ function NotaryModal({
           </div>
 
           <a
-            href={`https://testnet.explorer.perawallet.app/tx/${txId || 'Awaiting on-chain record'}`}
+            href={txId ? `https://testnet.explorer.perawallet.app/tx/${txId}` : "https://testnet.explorer.perawallet.app/"}
             target="_blank"
             rel="noopener noreferrer"
             className="w-full inline-flex items-center justify-center gap-2 py-2.5 text-xs font-bold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 px-4 rounded-xl border border-slate-700 transition"
@@ -215,7 +215,7 @@ function VerifyModal({
           </button>
 
           <a
-            href={`https://testnet.explorer.perawallet.app/tx/${txId || 'Awaiting on-chain record'}`}
+            href={txId ? `https://testnet.explorer.perawallet.app/tx/${txId}` : "https://testnet.explorer.perawallet.app/"}
             target="_blank"
             rel="noopener noreferrer"
             className="w-full inline-flex items-center justify-center gap-2 py-2.5 text-xs font-bold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 px-4 rounded-xl border border-slate-700 transition"
