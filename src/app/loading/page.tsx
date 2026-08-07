@@ -10,16 +10,23 @@ import { getUploadedFile } from '@/services/fileStore';
 import { BrainCircuit, Shield, AlertCircle, ArrowLeft, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/common/Button';
 
+import { X402PaymentGateModal } from '@/components/payment/X402PaymentGateModal';
+
 function LoadingContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const fileName = searchParams.get('fileName') || 'contract.pdf';
   
+  const [showPaymentGate, setShowPaymentGate] = useState(true);
+  const [paymentPaid, setPaymentPaid] = useState(false);
+
   const [percentage, setPercentage] = useState(0);
-  const [currentStep, setCurrentStep] = useState('Uploading Contract...');
+  const [currentStep, setCurrentStep] = useState('x402 Payment Pending...');
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!paymentPaid) return; // Wait for x402 payment confirmation first!
+
     let active = true;
 
     const runAnalysis = async () => {
@@ -59,7 +66,7 @@ function LoadingContent() {
     return () => {
       active = false;
     };
-  }, [fileName, router]);
+  }, [fileName, router, paymentPaid]);
 
   if (error) {
     return (
@@ -87,6 +94,16 @@ function LoadingContent() {
 
   return (
     <div className="min-h-[80vh] flex flex-col items-center justify-center px-4 py-12">
+      {showPaymentGate && (
+        <X402PaymentGateModal
+          fileName={fileName}
+          onPaymentSuccess={() => {
+            setShowPaymentGate(false);
+            setPaymentPaid(true);
+          }}
+        />
+      )}
+
       <div className="w-full max-w-lg text-center">
         {/* Animated brain/shield icon */}
         <div className="inline-flex relative mb-8">

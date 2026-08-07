@@ -29,7 +29,7 @@ export const Navbar: React.FC = () => {
           </div>
 
           {/* Navigation Links */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-8" suppressHydrationWarning>
             <Link href="/#features" className="text-sm font-medium text-slate-600 hover:text-brand-primary transition-colors">
               Features
             </Link>
