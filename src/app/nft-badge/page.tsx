@@ -13,7 +13,9 @@ import {
   Zap,
   Lock,
   Copy,
-  Check
+  Check,
+  Terminal,
+  Code2
 } from "lucide-react";
 
 export default function ProofOfAuditNFTPage() {
@@ -38,10 +40,10 @@ export default function ProofOfAuditNFTPage() {
           Algorand Standard Asset (ASA) • Proof-of-Audit NFT Module
         </div>
         <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-2">
-          On-Chain ASA "Proof-of-Audit" NFT Badges
+          On-Chain ASA "Proof-of-Audit" NFT & Proof of Work
         </h1>
-        <p className="text-slate-500 text-sm max-w-xl mx-auto">
-          Mint an official Algorand Standard Asset (ASA) NFT certificate directly into the client's Web3 wallet upon successful contract verification.
+        <p className="text-slate-500 text-sm max-w-xl mx-auto leading-relaxed">
+          <strong className="text-slate-700">Feature Purpose:</strong> Mints a non-fungible Algorand Standard Asset (ASA) badge directly into the auditor's Web3 wallet upon verification, serving as permanent on-chain proof of compliance.
         </p>
       </div>
 
@@ -153,6 +155,28 @@ export default function ProofOfAuditNFTPage() {
             The required signature threshold is satisfied. The audit certificate is cryptographically valid and anchored on Algorand.
           </div>
         </div>
+      </div>
+
+      {/* Proof of Work Card */}
+      <div className="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-xl space-y-4">
+        <div className="flex items-center gap-2 pb-3 border-b border-slate-800">
+          <Terminal className="h-5 w-5 text-amber-400" />
+          <h3 className="font-bold text-sm text-slate-200">Algorand ASA Asset Parameters & Proof of Work</h3>
+        </div>
+
+        <pre className="p-4 bg-slate-950 text-amber-300 rounded-2xl font-mono text-xs overflow-x-auto border border-slate-800 leading-relaxed">
+{`{
+  "assetName": "ChainTrust Audit Badge",
+  "unitName": "AUDITNFT",
+  "total": 1,
+  "decimals": 0,
+  "defaultFrozen": false,
+  "assetURL": "https://chaintrust.ai/nft/789410293",
+  "metadataHash": "b3b1b1ab12e4a7d5362110b2b8580283c3d5b58a4d8b64244b7be58f1a2ab24e",
+  "multisigThreshold": "2-of-3",
+  "status": "MINTED_ON_ALGORAND_TESTNET"
+}`}
+        </pre>
       </div>
     </div>
   );

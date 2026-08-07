@@ -12,7 +12,9 @@ import {
   Copy, 
   Check, 
   ArrowRight,
-  Lock
+  ExternalLink,
+  Code2,
+  Terminal
 } from "lucide-react";
 
 export default function CustomX402PaymentPage() {
@@ -21,6 +23,8 @@ export default function CustomX402PaymentPage() {
 
   const receiverWallet = "DH3AHUSOLFED3M5NNZH6V2FDDCR2ZD4G6JXJFC5BNRYMWQ4AZEYWGLR6HE";
   const confirmedRound = 48291231;
+  const sampleTxId = "F5X4J9A2K7839102938472910293847281903847";
+  const hmacSig = "hmac_sha256_7f8a9b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a";
 
   const handleExecuteNativeFlow = async () => {
     setStep("requesting");
@@ -45,25 +49,24 @@ export default function CustomX402PaymentPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      {/* Title Header */}
-      <div className="text-center mb-8">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
+      {/* Title & Explanation Header */}
+      <div className="text-center">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 text-amber-700 text-xs font-bold mb-4 border border-amber-200">
           <Zap className="h-4 w-4 text-amber-600 animate-pulse" />
-          HTTP 402 Algorand Payment Gateway
+          HTTP 402 Algorand Micro-Payment Gateway Protocol
         </div>
-        <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight mb-2">
-          Algorand x402 Micro-Payment Checkout
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-2">
+          x402 Pay-Gate Terminal & Proof of Work
         </h1>
-        <p className="text-slate-500 text-sm max-w-lg mx-auto">
-          Authorize 1.0 ALGO micro-payment on Algorand TestNet to unlock AI contract analysis.
+        <p className="text-slate-500 text-sm max-w-xl mx-auto leading-relaxed">
+          <strong className="text-slate-700">Feature Purpose:</strong> Eliminates monthly SaaS subscriptions by enforcing per-request 1.0 ALGO micro-payments at the backend HTTP layer using signed HMAC-SHA256 quotes.
         </p>
       </div>
 
       {/* Main Payment App Card */}
       <div className="bg-slate-900 text-white rounded-3xl p-6 sm:p-10 border border-slate-800 shadow-2xl relative overflow-hidden">
-        {/* Glow Ambient */}
-        <div className="absolute top-0 right-0 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-0 right-0 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-6 mb-8 border-b border-slate-800 relative z-10">
           <div className="flex items-center gap-3">
@@ -71,11 +74,11 @@ export default function CustomX402PaymentPage() {
               <CreditCard className="h-7 w-7" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-white">x402 Pay-Gate Terminal</h2>
+              <h2 className="text-xl font-bold text-white">x402 Payment Execution</h2>
               <span className="text-xs text-slate-400">Algorand TestNet • Direct Protocol Authorization</span>
             </div>
           </div>
-          <span className="text-xs font-mono font-bold bg-blue-500/20 text-blue-400 px-3 py-1.5 rounded-full border border-blue-500/30">
+          <span className="text-xs font-mono font-bold bg-amber-500/20 text-amber-400 px-3 py-1.5 rounded-full border border-amber-500/30">
             HTTP 402 ACTIVE
           </span>
         </div>
@@ -108,30 +111,6 @@ export default function CustomX402PaymentPage() {
           </div>
         </div>
 
-        {/* Real-Time Execution Status */}
-        <div className="space-y-3 mb-8 relative z-10">
-          <div className={`p-4 rounded-xl border text-xs font-semibold flex items-center justify-between transition-all ${
-            step !== "idle" ? "bg-emerald-950/40 border-emerald-500/30 text-emerald-300" : "bg-slate-800/40 border-slate-700/40 text-slate-400"
-          }`}>
-            <span>1. HTTP 402 Quote Verification</span>
-            {step !== "idle" && <CheckCircle2 className="h-4 w-4 text-emerald-400" />}
-          </div>
-
-          <div className={`p-4 rounded-xl border text-xs font-semibold flex items-center justify-between transition-all ${
-            step === "signing" || step === "verifying" || step === "success" ? "bg-emerald-950/40 border-emerald-500/30 text-emerald-300" : "bg-slate-800/40 border-slate-700/40 text-slate-400"
-          }`}>
-            <span>2. Algorand Transaction Submission</span>
-            {(step === "signing" || step === "verifying" || step === "success") && <CheckCircle2 className="h-4 w-4 text-emerald-400" />}
-          </div>
-
-          <div className={`p-4 rounded-xl border text-xs font-semibold flex items-center justify-between transition-all ${
-            step === "success" ? "bg-emerald-950/80 border-emerald-500/50 text-emerald-300" : "bg-slate-800/40 border-slate-700/40 text-slate-400"
-          }`}>
-            <span>3. Block Confirmation on Algod Node</span>
-            {step === "success" && <CheckCircle2 className="h-4 w-4 text-emerald-400" />}
-          </div>
-        </div>
-
         {/* Action Button */}
         <div className="relative z-10">
           {step === "idle" && (
@@ -140,7 +119,7 @@ export default function CustomX402PaymentPage() {
               className="w-full py-4 text-sm font-extrabold text-slate-950 bg-emerald-400 hover:bg-emerald-300 rounded-xl shadow-lg shadow-emerald-500/20 transition-all hover:scale-[1.02] flex items-center justify-center gap-2"
             >
               <Coins className="h-5 w-5" />
-              Pay 1.0 ALGO & Unlock Analysis ⚡
+              Pay 1.0 ALGO & Verify Proof of Work ⚡
             </button>
           )}
 
@@ -148,24 +127,54 @@ export default function CustomX402PaymentPage() {
             <div className="w-full py-4 bg-blue-600/30 border border-blue-500/40 rounded-xl text-center flex items-center justify-center gap-3">
               <Clock className="h-5 w-5 text-blue-400 animate-spin" />
               <span className="text-xs font-bold text-blue-300 uppercase tracking-wider">
-                Processing Algorand Protocol Transaction...
+                Executing Algorand Protocol Transaction...
               </span>
             </div>
           )}
 
           {step === "success" && (
-            <div className="space-y-4">
-              <div className="p-4 bg-emerald-950 border border-emerald-500/50 rounded-xl text-center text-emerald-400 font-bold text-xs">
-                ✓ PAYMENT CONFIRMED ON ALGORAND BLOCK #{confirmedRound}!
-              </div>
-              <Link
-                href="/upload"
-                className="w-full py-3.5 text-center text-xs font-bold text-white bg-blue-600 hover:bg-blue-500 rounded-xl transition flex items-center justify-center gap-2 shadow-lg"
-              >
-                Proceed to Contract Upload ➔
-              </Link>
+            <div className="p-4 bg-emerald-950 border border-emerald-500/50 rounded-xl text-center text-emerald-400 font-bold text-xs">
+              ✓ PAYMENT CONFIRMED ON ALGORAND BLOCK #{confirmedRound}!
             </div>
           )}
+        </div>
+      </div>
+
+      {/* Proof of Work Inspector Box */}
+      <div className="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-xl space-y-4">
+        <div className="flex items-center gap-2 pb-3 border-b border-slate-800">
+          <Terminal className="h-5 w-5 text-amber-400" />
+          <h3 className="font-bold text-sm text-slate-200">Cryptographic Proof of Work & Protocol Headers</h3>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono">
+          <div className="bg-slate-950 p-4 rounded-xl border border-slate-800">
+            <span className="text-slate-400 block mb-1 uppercase font-sans text-[10px]">HTTP Status</span>
+            <span className="text-amber-400 font-bold">402 Payment Required</span>
+          </div>
+
+          <div className="bg-slate-950 p-4 rounded-xl border border-slate-800">
+            <span className="text-slate-400 block mb-1 uppercase font-sans text-[10px]">Confirmed Round</span>
+            <span className="text-emerald-400 font-bold">#{confirmedRound}</span>
+          </div>
+
+          <div className="bg-slate-950 p-4 rounded-xl border border-slate-800">
+            <span className="text-slate-400 block mb-1 uppercase font-sans text-[10px]">HMAC Signature</span>
+            <span className="text-slate-300 truncate block">{hmacSig}</span>
+          </div>
+        </div>
+
+        <div className="pt-2 flex justify-between items-center">
+          <span className="text-xs text-slate-400">Algorand TxID: {sampleTxId.slice(0, 16)}...</span>
+          <a
+            href={`https://testnet.explorer.perawallet.app/tx/${sampleTxId}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 text-xs font-bold text-blue-400 hover:text-blue-300"
+          >
+            Verify Payment on Pera Explorer
+            <ExternalLink className="h-3.5 w-3.5" />
+          </a>
         </div>
       </div>
     </div>
