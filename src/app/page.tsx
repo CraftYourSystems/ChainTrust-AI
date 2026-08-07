@@ -4,12 +4,13 @@ import {
   ShieldAlert, 
   BrainCircuit, 
   Wallet, 
-  Search, 
   ArrowRight, 
-  CheckCircle,
-  FileCheck,
   Zap,
-  Lock
+  Lock,
+  Upload,
+  ChevronRight,
+  Link2,
+  ShieldCheck
 } from 'lucide-react';
 import { FeatureCard } from '@/components/landing/FeatureCard';
 
@@ -92,7 +93,7 @@ export default function Home() {
       </section>
 
       {/* How it Works Section */}
-      <section id="how-it-works" className="py-20 bg-slate-50 border-t border-b border-slate-100">
+      <section id="how-it-works" className="py-24 bg-slate-50 border-t border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-4">
@@ -103,66 +104,108 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="relative">
-            {/* Connection Line */}
-            <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-slate-200 -translate-y-1/2 z-0" />
-            
-            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 relative z-10">
-              {/* Step 1 */}
-              <div className="flex flex-col items-center text-center group">
-                <div className="w-12 h-12 rounded-full bg-white border-2 border-slate-200 text-slate-400 group-hover:border-brand-primary group-hover:text-brand-primary flex items-center justify-center font-bold text-sm shadow-sm transition-all duration-300">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 relative">
+
+            {/* Step 1 */}
+            <div className="group flex flex-col items-center text-center bg-white border border-slate-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+              <div className="relative mb-4">
+                <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center group-hover:bg-brand-primary transition-colors duration-300">
+                  <Upload className="h-6 w-6 text-brand-primary group-hover:text-white transition-colors duration-300" />
+                </div>
+                <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-brand-primary text-white text-[10px] font-bold flex items-center justify-center">
                   1
-                </div>
-                <h4 className="text-sm font-bold text-slate-900 mt-4 mb-1">Upload</h4>
-                <p className="text-xs text-slate-500 max-w-[200px] leading-relaxed">
-                  Submit your PDF or DOCX agreement securely.
-                </p>
+                </span>
               </div>
-
-              {/* Step 2 */}
-              <div className="flex flex-col items-center text-center group">
-                <div className="w-12 h-12 rounded-full bg-white border-2 border-slate-200 text-slate-400 group-hover:border-brand-primary group-hover:text-brand-primary flex items-center justify-center font-bold text-sm shadow-sm transition-all duration-300">
-                  2
-                </div>
-                <h4 className="text-sm font-bold text-slate-900 mt-4 mb-1">x402 Pay-Gate</h4>
-                <p className="text-xs text-slate-500 max-w-[200px] leading-relaxed">
-                  Authorize a secure micropayment via Algorand.
-                </p>
-              </div>
-
-              {/* Step 3 */}
-              <div className="flex flex-col items-center text-center group">
-                <div className="w-12 h-12 rounded-full bg-white border-2 border-slate-200 text-slate-400 group-hover:border-brand-primary group-hover:text-brand-primary flex items-center justify-center font-bold text-sm shadow-sm transition-all duration-300">
-                  3
-                </div>
-                <h4 className="text-sm font-bold text-slate-900 mt-4 mb-1">AI Ingestion</h4>
-                <p className="text-xs text-slate-500 max-w-[200px] leading-relaxed">
-                  Deep legal extraction processes document clauses.
-                </p>
-              </div>
-
-              {/* Step 4 */}
-              <div className="flex flex-col items-center text-center group">
-                <div className="w-12 h-12 rounded-full bg-white border-2 border-slate-200 text-slate-400 group-hover:border-brand-primary group-hover:text-brand-primary flex items-center justify-center font-bold text-sm shadow-sm transition-all duration-300">
-                  4
-                </div>
-                <h4 className="text-sm font-bold text-slate-900 mt-4 mb-1">On-Chain Notary</h4>
-                <p className="text-xs text-slate-500 max-w-[200px] leading-relaxed">
-                  Report and document hashes are saved to Algorand.
-                </p>
-              </div>
-
-              {/* Step 5 */}
-              <div className="flex flex-col items-center text-center group">
-                <div className="w-12 h-12 rounded-full bg-white border-2 border-slate-200 text-slate-400 group-hover:border-brand-primary group-hover:text-brand-primary flex items-center justify-center font-bold text-sm shadow-sm transition-all duration-300">
-                  5
-                </div>
-                <h4 className="text-sm font-bold text-slate-900 mt-4 mb-1">Verified Audit</h4>
-                <p className="text-xs text-slate-500 max-w-[200px] leading-relaxed">
-                  Retrieve report and validation certificate.
-                </p>
-              </div>
+              <h4 className="text-sm font-bold text-slate-900 mb-1.5">Upload Contract</h4>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                Submit your PDF or DOCX agreement to the secure ingestion pipeline.
+              </p>
             </div>
+
+            {/* Arrow */}
+            <div className="hidden lg:flex items-center justify-center self-center">
+              <ChevronRight className="h-6 w-6 text-slate-300" />
+            </div>
+
+            {/* Step 2 */}
+            <div className="group flex flex-col items-center text-center bg-white border border-slate-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+              <div className="relative mb-4">
+                <div className="w-14 h-14 rounded-2xl bg-amber-50 flex items-center justify-center group-hover:bg-brand-warning transition-colors duration-300">
+                  <Wallet className="h-6 w-6 text-brand-warning group-hover:text-white transition-colors duration-300" />
+                </div>
+                <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-brand-primary text-white text-[10px] font-bold flex items-center justify-center">
+                  2
+                </span>
+              </div>
+              <h4 className="text-sm font-bold text-slate-900 mb-1.5">x402 Pay-Gate</h4>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                Authorize a secure micropayment on Algorand TestNet to unlock analysis.
+              </p>
+            </div>
+
+            {/* Arrow */}
+            <div className="hidden lg:flex items-center justify-center self-center">
+              <ChevronRight className="h-6 w-6 text-slate-300" />
+            </div>
+
+            {/* Step 3 */}
+            <div className="group flex flex-col items-center text-center bg-white border border-slate-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+              <div className="relative mb-4">
+                <div className="w-14 h-14 rounded-2xl bg-purple-50 flex items-center justify-center group-hover:bg-purple-600 transition-colors duration-300">
+                  <BrainCircuit className="h-6 w-6 text-purple-600 group-hover:text-white transition-colors duration-300" />
+                </div>
+                <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-brand-primary text-white text-[10px] font-bold flex items-center justify-center">
+                  3
+                </span>
+              </div>
+              <h4 className="text-sm font-bold text-slate-900 mb-1.5">AI Ingestion</h4>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                Deep legal extraction engine processes and scores every contract clause.
+              </p>
+            </div>
+
+            {/* Arrow */}
+            <div className="hidden lg:flex items-center justify-center self-center">
+              <ChevronRight className="h-6 w-6 text-slate-300" />
+            </div>
+
+            {/* Step 4 */}
+            <div className="group flex flex-col items-center text-center bg-white border border-slate-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+              <div className="relative mb-4">
+                <div className="w-14 h-14 rounded-2xl bg-green-50 flex items-center justify-center group-hover:bg-brand-success transition-colors duration-300">
+                  <Link2 className="h-6 w-6 text-brand-success group-hover:text-white transition-colors duration-300" />
+                </div>
+                <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-brand-primary text-white text-[10px] font-bold flex items-center justify-center">
+                  4
+                </span>
+              </div>
+              <h4 className="text-sm font-bold text-slate-900 mb-1.5">On-Chain Notary</h4>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                Document and report hashes are permanently written to the Algorand ledger.
+              </p>
+            </div>
+
+            {/* Arrow */}
+            <div className="hidden lg:flex items-center justify-center self-center">
+              <ChevronRight className="h-6 w-6 text-slate-300" />
+            </div>
+
+            {/* Step 5 */}
+            <div className="group flex flex-col items-center text-center bg-white border border-slate-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+              <div className="relative mb-4">
+                <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center group-hover:bg-brand-primary transition-colors duration-300">
+                  <ShieldCheck className="h-6 w-6 text-brand-primary group-hover:text-white transition-colors duration-300" />
+                </div>
+                <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-brand-primary text-white text-[10px] font-bold flex items-center justify-center">
+                  5
+                </span>
+              </div>
+              <h4 className="text-sm font-bold text-slate-900 mb-1.5">Verified Audit</h4>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                Download your certified due diligence report with blockchain proof.
+              </p>
+            </div>
+
           </div>
         </div>
       </section>
