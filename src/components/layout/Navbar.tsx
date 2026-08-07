@@ -39,6 +39,9 @@ export const Navbar: React.FC = () => {
             <Link href="/verify" className="text-sm font-semibold text-cyan-600 hover:text-cyan-700 transition-colors">
               Verify Portal
             </Link>
+            <Link href="/account" className="text-sm font-medium text-slate-600 hover:text-brand-primary transition-colors">
+              Account
+            </Link>
             <Link href="/demo" className="text-sm font-bold text-blue-600 bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-100 hover:bg-blue-100 transition-colors">
               Live Demo 🚀
             </Link>
