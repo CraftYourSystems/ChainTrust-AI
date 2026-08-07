@@ -20,7 +20,10 @@ import {
   BookOpen,
   Database,
   Key,
-  Scale
+  Scale,
+  Shield,
+  FileCheck,
+  AlertCircle
 } from "lucide-react";
 
 export default function VerificationPortalPage() {
@@ -168,17 +171,17 @@ export default function VerificationPortalPage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
 
       {/* SECTION 1: VERIFIER TOOL */}
 
       {/* Title Header */}
-      <div className="text-center">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-50 text-cyan-700 text-xs font-bold mb-4 border border-cyan-200">
+      <div className="text-center space-y-3">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-50 text-cyan-700 text-xs font-bold border border-cyan-200">
           <ShieldCheck className="h-4 w-4 text-cyan-600" />
           PUBLIC PROOF VERIFICATION
         </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-2">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
           Verification Portal
         </h1>
         <p className="text-sm text-slate-500 max-w-xl mx-auto leading-relaxed">
@@ -187,12 +190,12 @@ export default function VerificationPortalPage() {
       </div>
 
       {/* Network Status Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 bg-white border border-slate-200 shadow-sm px-4 py-3 rounded-2xl text-xs">
+      <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 bg-white border border-slate-200 shadow-sm px-5 py-3.5 rounded-2xl text-xs">
         <div className="flex items-center gap-2">
           <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
           <span className="font-bold text-slate-800">Algorand TestNet: Online</span>
         </div>
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-slate-500 font-mono">
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-1 text-slate-500 font-mono">
           <span>Algod Node <strong className="text-emerald-600">Active</strong></span>
           <span>Protocol <strong className="text-slate-700">RFC 8785 / ARC-0002</strong></span>
           <span>Block <strong className="text-slate-700">#48291322</strong></span>
@@ -200,7 +203,7 @@ export default function VerificationPortalPage() {
       </div>
 
       {/* 1-Click Interactive Demo Preset Buttons */}
-      <div className="bg-white border border-slate-200 shadow-sm p-5 rounded-2xl space-y-3">
+      <div className="bg-white border border-slate-200 shadow-sm p-6 rounded-2xl space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <span className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
             <Zap className="h-3.5 w-3.5 text-amber-500" />
@@ -213,17 +216,17 @@ export default function VerificationPortalPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <button
             onClick={handleLoadAuthenticPreset}
-            className="py-2.5 px-4 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-xl text-xs font-bold text-emerald-700 transition inline-flex items-center justify-center gap-2"
+            className="py-3 px-4 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-xl text-xs font-bold text-emerald-700 transition inline-flex items-center justify-center gap-2"
           >
             <CheckCircle2 className="h-4 w-4 text-emerald-600" />
-            Load Authentic Report
+            Load Authentic Report 🟢
           </button>
           <button
             onClick={handleLoadTamperedPreset}
-            className="py-2.5 px-4 bg-red-50 hover:bg-red-100 border border-red-200 rounded-xl text-xs font-bold text-red-700 transition inline-flex items-center justify-center gap-2"
+            className="py-3 px-4 bg-red-50 hover:bg-red-100 border border-red-200 rounded-xl text-xs font-bold text-red-700 transition inline-flex items-center justify-center gap-2"
           >
             <ShieldAlert className="h-4 w-4 text-red-600" />
-            Load Tampered Report
+            Load Tampered Report 🔴
           </button>
         </div>
       </div>
@@ -235,25 +238,25 @@ export default function VerificationPortalPage() {
         <div className="flex border-b border-slate-200 bg-slate-50/80 text-xs font-bold">
           <button
             onClick={() => setActiveTab("json")}
-            className={`py-3.5 px-5 sm:px-6 border-b-2 -mb-px transition inline-flex items-center gap-2 ${
+            className={`py-3.5 px-6 border-b-2 -mb-px transition inline-flex items-center gap-2 ${
               activeTab === "json"
                 ? "border-brand-primary text-brand-primary bg-white"
                 : "border-transparent text-slate-500 hover:text-slate-800"
             }`}
           >
             <FileText className="h-4 w-4" />
-            JSON &amp; TxID
+            JSON &amp; TxID Mode
           </button>
           <button
             onClick={() => setActiveTab("file")}
-            className={`py-3.5 px-5 sm:px-6 border-b-2 -mb-px transition inline-flex items-center gap-2 ${
+            className={`py-3.5 px-6 border-b-2 -mb-px transition inline-flex items-center gap-2 ${
               activeTab === "file"
                 ? "border-brand-primary text-brand-primary bg-white"
                 : "border-transparent text-slate-500 hover:text-slate-800"
             }`}
           >
             <Upload className="h-4 w-4" />
-            File / Document
+            File / Document Mode
           </button>
         </div>
 
@@ -345,7 +348,7 @@ export default function VerificationPortalPage() {
               ) : (
                 <>
                   <ShieldCheck className="h-4 w-4" />
-                  Verify Authenticity On-Chain
+                  Verify Authenticity On-Chain 🛡️
                 </>
               )}
             </button>
@@ -498,124 +501,171 @@ export default function VerificationPortalPage() {
         </div>
       </div>
 
-      {/* SECTION 2: HOW CHAINTRUST AI & ALGORAND WORK */}
-      <div className="pt-4 space-y-6">
+      {/* SECTION 2: HOW CHAINTRUST AI & ALGORAND WORK (CONNECTED HORIZONTAL TIMELINE) */}
+      <div className="pt-8 space-y-10">
 
-        <div className="text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold mb-2 border border-blue-200">
-            <BookOpen className="h-3.5 w-3.5 text-blue-600" />
+        <div className="text-center space-y-2">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 text-blue-700 text-xs font-bold border border-blue-200">
+            <BookOpen className="h-4 w-4 text-blue-600" />
             TRUST ARCHITECTURE
           </div>
-          <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
             How ChainTrust AI &amp; Algorand protect your contracts
           </h2>
         </div>
 
-        {/* Step 1 to 4 Flow Diagram */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-          <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-2">
-            <span className="text-[10px] font-mono font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">01</span>
-            <h3 className="font-bold text-xs text-slate-900">RFC 8785 Parsing</h3>
-            <p className="text-[11px] text-slate-500 leading-tight">Key ordering standardized alphabetically using RFC 8785 JCS.</p>
-          </div>
+        {/* Connected Horizontal Timeline without card borders */}
+        <div className="relative">
+          {/* Dashed Horizontal Line Connector (Visible on Desktop) */}
+          <div className="absolute top-6 left-12 right-12 h-[2px] border-t-2 border-dashed border-slate-300 hidden lg:block pointer-events-none z-0" />
 
-          <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-2">
-            <span className="text-[10px] font-mono font-bold text-purple-600 bg-purple-50 px-2 py-0.5 rounded border border-purple-200">02</span>
-            <h3 className="font-bold text-xs text-slate-900">SHA-256 Hashing</h3>
-            <p className="text-[11px] text-slate-500 leading-tight">Generates 64-char fingerprint. 1 letter edit alters hash.</p>
-          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
+            {/* Step 1 */}
+            <div className="flex flex-col items-center text-center space-y-3">
+              <div className="w-12 h-12 rounded-full bg-blue-600 text-white font-mono font-bold text-sm flex items-center justify-center border-4 border-white shadow-md z-10">
+                01
+              </div>
+              <h3 className="font-bold text-sm text-slate-900">RFC 8785 Parsing</h3>
+              <p className="text-xs text-slate-500 leading-relaxed max-w-[200px]">
+                Key ordering standardized alphabetically using RFC 8785 JCS.
+              </p>
+            </div>
 
-          <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-2">
-            <span className="text-[10px] font-mono font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">03</span>
-            <h3 className="font-bold text-xs text-slate-900">Algorand Anchor</h3>
-            <p className="text-[11px] text-slate-500 leading-tight">Hash stored in note field (<code className="font-mono text-emerald-600">chaintrust:proof:v1</code>).</p>
-          </div>
+            {/* Step 2 */}
+            <div className="flex flex-col items-center text-center space-y-3">
+              <div className="w-12 h-12 rounded-full bg-purple-600 text-white font-mono font-bold text-sm flex items-center justify-center border-4 border-white shadow-md z-10">
+                02
+              </div>
+              <h3 className="font-bold text-sm text-slate-900">SHA-256 Hashing</h3>
+              <p className="text-xs text-slate-500 leading-relaxed max-w-[200px]">
+                Generates 64-char fingerprint. 1 letter edit alters hash.
+              </p>
+            </div>
 
-          <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-2">
-            <span className="text-[10px] font-mono font-bold text-cyan-600 bg-cyan-50 px-2 py-0.5 rounded border border-cyan-200">04</span>
-            <h3 className="font-bold text-xs text-slate-900">Public Verify</h3>
-            <p className="text-[11px] text-slate-500 leading-tight">Recompute hash &amp; verify on Algorand without third-party trust.</p>
+            {/* Step 3 */}
+            <div className="flex flex-col items-center text-center space-y-3">
+              <div className="w-12 h-12 rounded-full bg-emerald-600 text-white font-mono font-bold text-sm flex items-center justify-center border-4 border-white shadow-md z-10">
+                03
+              </div>
+              <h3 className="font-bold text-sm text-slate-900">Algorand Anchor</h3>
+              <p className="text-xs text-slate-500 leading-relaxed max-w-[200px]">
+                Hash stored in note field (<code className="font-mono text-emerald-600">chaintrust:proof:v1</code>).
+              </p>
+            </div>
+
+            {/* Step 4 */}
+            <div className="flex flex-col items-center text-center space-y-3">
+              <div className="w-12 h-12 rounded-full bg-cyan-600 text-white font-mono font-bold text-sm flex items-center justify-center border-4 border-white shadow-md z-10">
+                04
+              </div>
+              <h3 className="font-bold text-sm text-slate-900">Public Verify</h3>
+              <p className="text-xs text-slate-500 leading-relaxed max-w-[200px]">
+                Recompute hash &amp; verify on Algorand without third-party trust.
+              </p>
+            </div>
           </div>
         </div>
+      </div>
 
-        {/* SECTION 3: THE 3 PILLARS OF TRUST */}
-        <div className="space-y-3 pt-4">
-          <h3 className="text-base font-bold text-slate-900 text-center inline-flex items-center justify-center gap-1.5 w-full">
-            <ShieldCheck className="h-4 w-4 text-emerald-600" />
+      {/* SECTION 3: THE 3 PILLARS OF TRUST (SOFT BG CARDS WITHOUT BORDERS) */}
+      <div className="pt-8 space-y-8">
+        <div className="text-center">
+          <h3 className="text-xl font-extrabold text-slate-900 inline-flex items-center justify-center gap-2">
+            <Shield className="h-5 w-5 text-emerald-600" />
             The 3 Pillars of Trust
           </h3>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-start gap-3">
-              <div className="p-2 bg-emerald-50 text-emerald-600 rounded-lg shrink-0">
-                <Database className="h-4 w-4" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-slate-50/80 hover:bg-slate-100/80 transition p-6 rounded-2xl space-y-3 flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="p-3 bg-emerald-100/80 text-emerald-700 rounded-xl w-fit">
+                <Database className="h-5 w-5" />
               </div>
-              <div>
-                <h4 className="font-bold text-slate-900 text-xs mb-1">Zero Third-Party Trust</h4>
-                <p className="text-[11px] text-slate-500 leading-snug">
-                  100% decentralized. Proofs stay permanently verifiable on Algorand nodes worldwide.
-                </p>
-              </div>
+              <h4 className="font-bold text-slate-900 text-sm">Zero Third-Party Trust</h4>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                100% decentralized. Proofs stay permanently verifiable on global Algorand nodes even if our servers shut down.
+              </p>
             </div>
+          </div>
 
-            <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-start gap-3">
-              <div className="p-2 bg-blue-50 text-blue-600 rounded-lg shrink-0">
-                <Key className="h-4 w-4" />
+          <div className="bg-slate-50/80 hover:bg-slate-100/80 transition p-6 rounded-2xl space-y-3 flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="p-3 bg-blue-100/80 text-blue-700 rounded-xl w-fit">
+                <Key className="h-5 w-5" />
               </div>
-              <div>
-                <h4 className="font-bold text-slate-900 text-xs mb-1">Zero Data Privacy Risk</h4>
-                <p className="text-[11px] text-slate-500 leading-snug">
-                  No contract text stored on-chain. Only 64-character SHA-256 fingerprints are recorded.
-                </p>
-              </div>
+              <h4 className="font-bold text-slate-900 text-sm">Zero Data Privacy Risk</h4>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                No contract text stored on-chain. Only 64-character SHA-256 fingerprints are recorded, keeping secrets private.
+              </p>
             </div>
+          </div>
 
-            <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-start gap-3">
-              <div className="p-2 bg-purple-50 text-purple-600 rounded-lg shrink-0">
-                <Scale className="h-4 w-4" />
+          <div className="bg-slate-50/80 hover:bg-slate-100/80 transition p-6 rounded-2xl space-y-3 flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="p-3 bg-purple-100/80 text-purple-700 rounded-xl w-fit">
+                <Scale className="h-5 w-5" />
               </div>
-              <div>
-                <h4 className="font-bold text-slate-900 text-xs mb-1">Legal &amp; Audit Protection</h4>
-                <p className="text-[11px] text-slate-500 leading-snug">
-                  Permanent timestamping prevents backdating and unapproved clause edits.
-                </p>
-              </div>
+              <h4 className="font-bold text-slate-900 text-sm">Legal &amp; Audit Protection</h4>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Permanent timestamping prevents backdating and unapproved clause edits by proving original contract state.
+              </p>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* SECTION 4: REAL-WORLD SCENARIOS */}
-        <div className="space-y-3 pt-2">
-          <h3 className="text-base font-bold text-slate-900 text-center inline-flex items-center justify-center gap-1.5 w-full">
-            <Zap className="h-4 w-4 text-amber-500" />
+      {/* SECTION 4: ATTACK DEFENSE & SCENARIOS (BORDERLESS ACCORDION / LIST PATTERN) */}
+      <div className="pt-8 space-y-8">
+        <div className="text-center">
+          <h3 className="text-xl font-extrabold text-slate-900 inline-flex items-center justify-center gap-2">
+            <Zap className="h-5 w-5 text-amber-500" />
             Attack Defense &amp; Scenarios
           </h3>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-sm space-y-1">
-              <span className="block font-bold text-xs text-slate-900">PDF Character Edit?</span>
-              <p className="text-[11px] text-slate-500 leading-snug">
-                Alters digest completely (<code className="font-mono text-slate-700">b3b1...</code> ➔ <code className="font-mono text-red-600">8f7a...</code>). Flagged as <strong className="text-red-600">TAMPERED</strong>.
+        <div className="space-y-4 max-w-3xl mx-auto">
+          {/* Scenario 1 */}
+          <div className="p-5 bg-white rounded-2xl border-l-4 border-l-red-500 shadow-sm flex items-start gap-4">
+            <div className="p-2.5 bg-red-50 text-red-600 rounded-xl shrink-0">
+              <AlertCircle className="h-5 w-5" />
+            </div>
+            <div className="space-y-1">
+              <h4 className="font-bold text-sm text-slate-900">What if someone edits 1 character in the PDF?</h4>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Alters digest completely (<code className="font-mono text-slate-800 font-bold bg-slate-100 px-1.5 py-0.5 rounded">b3b1...</code> ➔ <code className="font-mono text-red-600 font-bold bg-red-50 px-1.5 py-0.5 rounded">8f7a...</code>). Flagged immediately as <strong className="text-red-600 uppercase tracking-wider">TAMPERED</strong>.
               </p>
             </div>
+          </div>
 
-            <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-sm space-y-1">
-              <span className="block font-bold text-xs text-slate-900">Score Tampering (78 ➔ 12)?</span>
-              <p className="text-[11px] text-slate-500 leading-snug">
-                Hash check fails against Algorand Block #48291231, exposing forgery instantly.
+          {/* Scenario 2 */}
+          <div className="p-5 bg-white rounded-2xl border-l-4 border-l-amber-500 shadow-sm flex items-start gap-4">
+            <div className="p-2.5 bg-amber-50 text-amber-600 rounded-xl shrink-0">
+              <ShieldAlert className="h-5 w-5" />
+            </div>
+            <div className="space-y-1">
+              <h4 className="font-bold text-sm text-slate-900">What if someone modifies the risk score (78 ➔ 12)?</h4>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Hash check fails comparison against Algorand Block #48291231, exposing the forgery instantly.
               </p>
             </div>
+          </div>
 
-            <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-sm space-y-1">
-              <span className="block font-bold text-xs text-slate-900">Auditor &amp; Investor Verification?</span>
-              <p className="text-[11px] text-slate-500 leading-snug">
-                Inspect note payload directly on Pera Explorer without needing internal server access.
+          {/* Scenario 3 */}
+          <div className="p-5 bg-white rounded-2xl border-l-4 border-l-blue-500 shadow-sm flex items-start gap-4">
+            <div className="p-2.5 bg-blue-50 text-blue-600 rounded-xl shrink-0">
+              <FileCheck className="h-5 w-5" />
+            </div>
+            <div className="space-y-1">
+              <h4 className="font-bold text-sm text-slate-900">How do auditors &amp; Web3 investors verify our reports?</h4>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Inspect the raw Algorand note payload directly on Pera Explorer anytime without needing internal server access.
               </p>
             </div>
           </div>
         </div>
-
       </div>
+
     </div>
   );
 }
