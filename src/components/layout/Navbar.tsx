@@ -30,9 +30,6 @@ export const Navbar: React.FC = () => {
             <Link href="/#how-it-works" className="text-sm font-medium text-slate-600 hover:text-brand-primary transition-colors">
               How It Works
             </Link>
-            <span className="text-xs font-semibold text-brand-primary bg-blue-50 px-2 py-0.5 rounded-full">
-              Phase 1 MVP
-            </span>
           </div>
 
           {/* CTA Buttons */}

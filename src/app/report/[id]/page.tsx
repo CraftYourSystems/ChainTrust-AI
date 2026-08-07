@@ -5,14 +5,10 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { 
   ArrowLeft, 
-  Download, 
-  RefreshCw, 
   ShieldAlert, 
-  ShieldCheck, 
   Calendar,
-  AlertTriangle,
-  ExternalLink,
-  Award
+  Award,
+  RefreshCw
 } from 'lucide-react';
 import { Button } from '@/components/common/Button';
 import { SummaryCard } from '@/components/report/SummaryCard';
@@ -41,19 +37,6 @@ export default function ReportDetailPage() {
     fetchReport();
   }, [id]);
 
-  const handleDownload = () => {
-    // Phase 1 download mock JSON representation
-    if (!report) return;
-    const jsonString = `data:text/json;charset=utf-8,${encodeURIComponent(
-      JSON.stringify(report, null, 2)
-    )}`;
-    const downloadAnchor = document.createElement('a');
-    downloadAnchor.setAttribute('href', jsonString);
-    downloadAnchor.setAttribute('download', `ChainTrust_Report_${report.analysisId}.json`);
-    document.body.appendChild(downloadAnchor);
-    downloadAnchor.click();
-    downloadAnchor.remove();
-  };
 
   if (loading) {
     return (
@@ -95,23 +78,7 @@ export default function ReportDetailPage() {
           Analyze another contract
         </Link>
 
-        <div className="flex flex-wrap items-center gap-3">
-          <Button 
-            variant="outline" 
-            onClick={handleDownload}
-            className="inline-flex items-center gap-2"
-          >
-            <Download className="h-4 w-4" />
-            Download JSON Schema
-          </Button>
-          <Button 
-            onClick={() => router.push('/upload')}
-            className="inline-flex items-center gap-2"
-          >
-            <RefreshCw className="h-4 w-4" />
-            New Analysis
-          </Button>
-        </div>
+
       </div>
 
       {/* Main Grid Layout */}
