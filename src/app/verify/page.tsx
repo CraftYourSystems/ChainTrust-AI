@@ -9,16 +9,21 @@ import {
   ExternalLink, 
   FileText, 
   Upload, 
-  Terminal, 
   Lock, 
   Activity,
-  RefreshCw,
   Award,
   Users,
   Copy,
   Check,
   Zap,
-  ShieldAlert
+  ShieldAlert,
+  HelpCircle,
+  BookOpen,
+  ArrowRight,
+  Database,
+  Key,
+  FileCheck2,
+  Scale
 } from "lucide-react";
 
 export default function VerificationPortalPage() {
@@ -166,7 +171,9 @@ export default function VerificationPortalPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 py-10 px-4 sm:px-6 lg:px-8 flex flex-col items-center">
+    <div className="min-h-screen bg-slate-950 text-slate-100 py-10 px-4 sm:px-6 lg:px-8 flex flex-col items-center space-y-12">
+      
+      {/* SECTION 1: VERIFIER TOOL CARD */}
       <div className="max-w-4xl w-full space-y-8">
         
         {/* Top Network Status Bar */}
@@ -328,10 +335,9 @@ export default function VerificationPortalPage() {
             </button>
           </form>
 
-          {/* Comprehensive Results Panel */}
+          {/* Results Display */}
           {result && (
             <div className="space-y-6 pt-4 animate-in fade-in zoom-in duration-300 border-t border-slate-800">
-              {/* Primary Status Banner */}
               <div className={`p-5 rounded-2xl border ${
                 result.isAuthentic 
                   ? "bg-emerald-950/80 border-emerald-500/60 text-emerald-300" 
@@ -395,7 +401,6 @@ export default function VerificationPortalPage() {
 
               {/* Algorand Ledger & Blockchain Proof Grid */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono text-xs">
-                {/* Block Notarization */}
                 <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-1">
                   <span className="text-[10px] font-sans text-slate-400 uppercase font-bold block flex items-center gap-1">
                     <Activity className="h-3 w-3 text-emerald-400" />
@@ -405,7 +410,6 @@ export default function VerificationPortalPage() {
                   <span className="text-[10px] text-slate-500 block truncate">TxID: {result.proofDetails?.txId || "F5X4J9..."}</span>
                 </div>
 
-                {/* ASA NFT Proof */}
                 <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-1">
                   <span className="text-[10px] font-sans text-slate-400 uppercase font-bold block flex items-center gap-1">
                     <Award className="h-3 w-3 text-amber-400" />
@@ -415,7 +419,6 @@ export default function VerificationPortalPage() {
                   <span className="text-[10px] text-slate-500 block">Unit: AUDITNFT</span>
                 </div>
 
-                {/* Multi-Sig Consensus */}
                 <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-1">
                   <span className="text-[10px] font-sans text-slate-400 uppercase font-bold block flex items-center gap-1">
                     <Users className="h-3 w-3 text-blue-400" />
@@ -426,7 +429,6 @@ export default function VerificationPortalPage() {
                 </div>
               </div>
 
-              {/* Pera Explorer Link */}
               <div className="pt-2 flex justify-end">
                 <a
                   href={result.proofDetails?.explorerUrl || "https://testnet.explorer.perawallet.app/tx/F5X4J9A2K7839102938472910293847281903847"}
@@ -441,6 +443,144 @@ export default function VerificationPortalPage() {
             </div>
           )}
         </div>
+      </div>
+
+      {/* SECTION 2: HOW CHAINTRUST AI & ALGORAND WORK (EXPLANATION & TRUST GUIDE) */}
+      <div className="max-w-4xl w-full bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-10 shadow-2xl space-y-10">
+        
+        <div className="text-center space-y-2">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-blue-500/10 text-blue-400 rounded-full text-xs font-bold border border-blue-500/20 mb-2">
+            <BookOpen className="h-4 w-4 text-blue-400" />
+            EDUCATIONAL TRUST ARCHITECTURE
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+            How ChainTrust AI & Algorand Protect Your Contracts
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-400 max-w-xl mx-auto leading-relaxed">
+            Understand how our decentralized 4-step proof pipeline works and why companies, auditors, and investors can trust our reports with zero central vulnerability.
+          </p>
+        </div>
+
+        {/* Step 1 to 4 Flow Diagram */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
+            <div className="w-8 h-8 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-xs font-mono">
+              01
+            </div>
+            <h3 className="font-bold text-sm text-white">1. RFC 8785 Parsing</h3>
+            <p className="text-[11px] text-slate-400 leading-relaxed">
+              Contract JSON key ordering is standardized alphabetically using RFC 8785 JCS rules to ensure identical formatting.
+            </p>
+          </div>
+
+          <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
+            <div className="w-8 h-8 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-xs font-mono">
+              02
+            </div>
+            <h3 className="font-bold text-sm text-white">2. SHA-256 Hashing</h3>
+            <p className="text-[11px] text-slate-400 leading-relaxed">
+              A 64-character mathematical fingerprint is generated. Changing 1 single letter alters the hash completely.
+            </p>
+          </div>
+
+          <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
+            <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs font-mono">
+              03
+            </div>
+            <h3 className="font-bold text-sm text-white">3. Algorand Anchor</h3>
+            <p className="text-[11px] text-slate-400 leading-relaxed">
+              The hash is written into Algorand's transaction note field (<code className="text-emerald-400">chaintrust:proof:v1</code>) at Block #48291231.
+            </p>
+          </div>
+
+          <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
+            <div className="w-8 h-8 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-xs font-mono">
+              04
+            </div>
+            <h3 className="font-bold text-sm text-white">4. Public Verify</h3>
+            <p className="text-[11px] text-slate-400 leading-relaxed">
+              Anyone can re-calculate the hash and compare it against the live Algorand ledger without trusting ChainTrust!
+            </p>
+          </div>
+        </div>
+
+        {/* SECTION 3: THE 3 PILLARS OF TRUST */}
+        <div className="space-y-6 pt-6 border-t border-slate-800">
+          <h3 className="text-lg font-bold text-white text-center flex items-center justify-center gap-2">
+            <ShieldCheck className="h-5 w-5 text-emerald-400" />
+            The 3 Pillars: Why You Can Trust ChainTrust AI
+          </h3>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
+            {/* Pillar A */}
+            <div className="bg-slate-950 p-6 rounded-2xl border border-slate-800 space-y-3">
+              <div className="p-3 bg-emerald-500/10 text-emerald-400 rounded-xl w-fit border border-emerald-500/20">
+                <Database className="h-5 w-5" />
+              </div>
+              <h4 className="font-bold text-white text-sm">Pillar 1: Zero Third-Party Trust Required</h4>
+              <p className="text-slate-400 leading-relaxed">
+                You do <strong>NOT</strong> have to trust our company or database. Algorand is a public, global, decentralized blockchain. Even if ChainTrust servers were shut down, your audit proof remains permanently verifiable on Algorand nodes worldwide.
+              </p>
+            </div>
+
+            {/* Pillar B */}
+            <div className="bg-slate-950 p-6 rounded-2xl border border-slate-800 space-y-3">
+              <div className="p-3 bg-blue-500/10 text-blue-400 rounded-xl w-fit border border-blue-500/20">
+                <Key className="h-5 w-5" />
+              </div>
+              <h4 className="font-bold text-white text-sm">Pillar 2: Zero Data Privacy Risk</h4>
+              <p className="text-slate-400 leading-relaxed">
+                Your confidential document text (employment details, salary, M&A clauses) is <strong>NEVER stored on-chain</strong>. Only the 64-character mathematical hash fingerprint is recorded. Your sensitive contract secrets remain 100% private.
+              </p>
+            </div>
+
+            {/* Pillar C */}
+            <div className="bg-slate-950 p-6 rounded-2xl border border-slate-800 space-y-3">
+              <div className="p-3 bg-purple-500/10 text-purple-400 rounded-xl w-fit border border-purple-500/20">
+                <Scale className="h-5 w-5" />
+              </div>
+              <h4 className="font-bold text-white text-sm">Pillar 3: Legal & Audit Protection</h4>
+              <p className="text-slate-400 leading-relaxed">
+                Prevents backdating and sneaky clause edits. If an employee or vendor modifies a contract 2 years later, our SHA-256 fingerprint matching instantly proves the exact original terms that existed at timestamp T.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* SECTION 4: REAL-WORLD EXAMPLES & SCENARIOS */}
+        <div className="space-y-4 pt-6 border-t border-slate-800">
+          <h3 className="text-lg font-bold text-white text-center flex items-center justify-center gap-2">
+            <Zap className="h-5 w-5 text-amber-400" />
+            Real-World Scenarios & Attack Defense Examples
+          </h3>
+
+          <div className="space-y-3 text-xs">
+            {/* Scenario 1 */}
+            <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-1">
+              <span className="font-bold text-amber-400 block">Scenario 1: "What if someone edits 1 character in the PDF?"</span>
+              <p className="text-slate-300 leading-relaxed">
+                <strong>Result:</strong> Changing a single letter or number alters the resulting 64-character SHA-256 digest completely (e.g. <code className="text-cyan-300">b3b1b1...</code> becomes <code className="text-red-400">8f7a91...</code>). The verification portal flags it immediately as <strong className="text-red-400">TAMPERED DOCUMENT DETECTED ✕</strong>.
+              </p>
+            </div>
+
+            {/* Scenario 2 */}
+            <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-1">
+              <span className="font-bold text-amber-400 block">Scenario 2: "What if an employee changes the Risk Score from 78 to 18?"</span>
+              <p className="text-slate-300 leading-relaxed">
+                <strong>Result:</strong> Clicking <em>Load Tampered Report Preset 🔴</em> above demonstrates this exact attack! The hash computation fails comparison against Algorand Block #48291231, exposing the forgery.
+              </p>
+            </div>
+
+            {/* Scenario 3 */}
+            <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-1">
+              <span className="font-bold text-amber-400 block">Scenario 3: "How do auditors and Web3 investors verify our reports?"</span>
+              <p className="text-slate-300 leading-relaxed">
+                <strong>Result:</strong> Investors simply open the report on <code className="text-emerald-400">/verify</code> or inspect the raw Algorand transaction on Pera Explorer. They can independently verify the zero-ALGO note payload without needing access to internal servers.
+              </p>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   );
