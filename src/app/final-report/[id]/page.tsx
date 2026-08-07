@@ -9,13 +9,12 @@ import {
   CheckCircle2, 
   Users, 
   Award, 
-  Key, 
   ExternalLink, 
   Sparkles, 
   Printer,
-  Zap,
   Lock,
-  FileCheck
+  FileCheck,
+  Clock
 } from "lucide-react";
 import { AnalysisService } from "@/services/analysis.service";
 import { DueDiligenceReport } from "@/types/analysis";
@@ -76,6 +75,7 @@ export default function FinalMultiSigReportPage() {
   }
 
   const sha256Hash = txDetails?.sha256Fingerprint || "b3b1b1ab12e4a7d5362110b2b8580283c3d5b58a4d8b64244b7be58f1a2ab24e";
+  const progressPct = Math.round((signedCount / 3) * 100);
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
@@ -108,18 +108,24 @@ export default function FinalMultiSigReportPage() {
               FINAL AI AUDIT BRIEF & MULTI-SIGNER CERTIFICATE
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-              Executive AI Risk Brief & On-Chain Notary
+              Executive Multi-Signature Board
             </h1>
             <p className="text-xs text-slate-500 font-mono">
               Report ID: {report?.analysisId || id} • Network: Algorand TestNet
             </p>
           </div>
 
-          <div className="text-right bg-slate-900 text-white px-4 py-2.5 rounded-2xl border border-slate-800">
-            <span className="text-[10px] text-slate-400 block uppercase font-mono">Multi-Sig Consensus</span>
-            <span className="text-lg font-black text-emerald-400 font-mono">
-              {signedCount} / 3 SIGNATURES
-            </span>
+          <div className="text-right bg-slate-900 text-white px-5 py-3 rounded-2xl border border-slate-800 space-y-1">
+            <div className="flex justify-between items-center gap-4 text-xs">
+              <span className="text-slate-400 font-mono">CONSENSUS</span>
+              <span className="font-mono font-bold text-emerald-400">{signedCount}/3 ({progressPct}%)</span>
+            </div>
+            <div className="w-32 bg-slate-800 rounded-full h-2 overflow-hidden">
+              <div
+                className="bg-emerald-400 h-full rounded-full transition-all duration-500"
+                style={{ width: `${progressPct}%` }}
+              />
+            </div>
           </div>
         </div>
 
@@ -165,11 +171,11 @@ export default function FinalMultiSigReportPage() {
           </div>
         </div>
 
-        {/* Section 3: Multi-Signer Approval Workflow */}
+        {/* Section 3: Multi-Signer Approval Board & Activity Timeline */}
         <div className="space-y-4">
           <h2 className="text-base font-bold text-slate-900 flex items-center gap-2 uppercase tracking-wider text-xs">
             <Users className="h-4 w-4 text-blue-600" />
-            Algorand Multi-Signature (2-of-3) Approval Workflow
+            Algorand Multi-Signature Approval Board
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

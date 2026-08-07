@@ -1,53 +1,105 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { useRouter } from 'next/navigation';
-import { UploadBox } from '@/components/upload/UploadBox';
-import { ArrowLeft, Shield } from 'lucide-react';
-import Link from 'next/link';
-
-import { setUploadedFile } from '@/services/fileStore';
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { UploadBox } from "@/components/upload/UploadBox";
+import { ArrowLeft, Shield, FileCheck, CheckCircle2, Clock, Zap } from "lucide-react";
+import Link from "next/link";
+import { setUploadedFile } from "@/services/fileStore";
 
 export default function UploadPage() {
   const router = useRouter();
+  const [parsing, setParsing] = useState(false);
+  const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
+  const [countdown, setCountdown] = useState(3);
 
   const handleUpload = (file: File) => {
-    // Store File in memory store
     setUploadedFile(file);
-    // Navigate to loading screen with the file name as a query parameter
-    router.push(`/loading?fileName=${encodeURIComponent(file.name)}`);
+    setUploadedFileName(file.name);
+    setParsing(true);
+
+    // Auto-advance countdown
+    let timer = 3;
+    const interval = setInterval(() => {
+      timer -= 1;
+      setCountdown(timer);
+      if (timer === 0) {
+        clearInterval(interval);
+        router.push(`/payment?fileName=${encodeURIComponent(file.name)}`);
+      }
+    }, 1000);
   };
 
   return (
     <div className="min-h-[80vh] py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-3xl mx-auto space-y-8">
         {/* Back Link */}
         <Link 
           href="/" 
-          className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-brand-primary transition-colors mb-8 group"
+          className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-brand-primary transition-colors group"
         >
           <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
           Back to Home
         </Link>
 
         {/* Title */}
-        <div className="text-center mb-10">
-          <div className="inline-flex p-3 bg-blue-50 text-brand-primary rounded-2xl mb-4">
+        <div className="text-center">
+          <div className="inline-flex p-3 bg-blue-50 text-brand-primary rounded-2xl mb-4 shadow-sm">
             <Shield className="h-6 w-6" />
           </div>
           <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight mb-2">
-            New Contract Analysis
+            Step 1: Upload Contract Document
           </h1>
-          <p className="text-sm text-slate-500 max-w-md mx-auto leading-relaxed">
-            Upload your agreement below. We support PDF and DOCX files. Files are analyzed locally using our secure Phase 1 pipeline.
+          <p className="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">
+            Upload your Solidity (`.sol`), PyTeal (`.teal`), or Legal Agreement PDF (`.pdf`). Your document is parsed locally with instant SHA-256 hash generation.
           </p>
         </div>
 
-        {/* Upload Box */}
-        <UploadBox onUpload={handleUpload} />
+        {/* Upload Box or Parsing Banner */}
+        {!parsing ? (
+          <UploadBox onUpload={handleUpload} />
+        ) : (
+          <div className="bg-slate-900 text-white rounded-3xl p-8 border border-slate-800 shadow-2xl space-y-6 text-center animate-in fade-in zoom-in duration-300">
+            <div className="w-16 h-16 bg-blue-500/20 text-blue-400 rounded-2xl flex items-center justify-center mx-auto border border-blue-500/30">
+              <FileCheck className="h-8 w-8 animate-pulse" />
+            </div>
+
+            <div className="space-y-2">
+              <span className="text-xs font-mono text-emerald-400 font-bold block">
+                ✓ CONTRACT PARSED SUCCESSFULLY
+              </span>
+              <h3 className="text-xl font-bold text-white font-mono">{uploadedFileName}</h3>
+              <p className="text-xs text-slate-400">Client-Side SHA-256 Hash Generated</p>
+            </div>
+
+            {/* Progress Bar & Auto-Redirect */}
+            <div className="p-4 bg-slate-800/80 rounded-2xl border border-slate-700/60 space-y-3">
+              <div className="flex justify-between items-center text-xs">
+                <span className="text-slate-400 font-medium">Auto-Advancing to Step 2 Payment...</span>
+                <span className="font-mono font-bold text-amber-400 flex items-center gap-1">
+                  <Clock className="h-3.5 w-3.5 animate-spin" /> {countdown}s
+                </span>
+              </div>
+              <div className="w-full bg-slate-700 rounded-full h-2 overflow-hidden">
+                <div 
+                  className="bg-gradient-to-r from-blue-500 to-amber-400 h-full rounded-full transition-all duration-1000"
+                  style={{ width: `${((3 - countdown) / 3) * 100}%` }}
+                />
+              </div>
+            </div>
+
+            <button
+              onClick={() => router.push(`/payment?fileName=${encodeURIComponent(uploadedFileName || '')}`)}
+              className="w-full py-3 text-xs font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 rounded-xl transition shadow-md flex items-center justify-center gap-2"
+            >
+              <Zap className="h-4 w-4" />
+              Proceed to x402 Pay-Gate Immediately ➔
+            </button>
+          </div>
+        )}
 
         {/* Trust disclaimer */}
-        <div className="mt-8 text-center">
+        <div className="text-center">
           <p className="text-xs text-slate-400 max-w-xs mx-auto">
             Your document data is encrypted in transit and never stored on-chain. Only cryptographic hashes are recorded.
           </p>
