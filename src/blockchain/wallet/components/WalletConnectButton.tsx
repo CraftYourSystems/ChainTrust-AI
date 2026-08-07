@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useWalletIdentity } from "../hooks/useWalletIdentity";
-import { Wallet, X, CheckCircle2, ExternalLink } from "lucide-react";
+import { Wallet, X, CheckCircle2, ExternalLink, LogOut } from "lucide-react";
 
 export function WalletConnectButton() {
   const { status, address, providers, disconnect } = useWalletIdentity();
@@ -21,21 +21,18 @@ export function WalletConnectButton() {
   if ((status === "connected" || demoAddress) && activeAddr) {
     const shortAddr = `${activeAddr.slice(0, 4)}...${activeAddr.slice(-4)}`;
     return (
-      <div className="flex items-center gap-2">
-        <span className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-200 shadow-sm">
-          <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-          Connected: {shortAddr}
-        </span>
-        <button 
-          onClick={() => {
-            setDemoAddress(null);
-            disconnect();
-          }}
-          className="bg-slate-100 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-200 transition border border-slate-200"
-        >
-          Disconnect
-        </button>
-      </div>
+      <button
+        onClick={() => {
+          setDemoAddress(null);
+          disconnect();
+        }}
+        title="Click to Disconnect"
+        className="group inline-flex items-center gap-2 text-xs font-bold text-emerald-800 bg-emerald-50/90 hover:bg-red-50 hover:text-red-600 px-3.5 py-2 rounded-xl border border-emerald-200 hover:border-red-200 shadow-sm transition-all duration-200 cursor-pointer"
+      >
+        <span className="h-2 w-2 rounded-full bg-emerald-500 group-hover:bg-red-500 animate-pulse transition-colors" />
+        <span className="font-mono">{shortAddr}</span>
+        <LogOut className="h-3.5 w-3.5 text-slate-400 group-hover:text-red-500 transition-colors ml-1" />
+      </button>
     );
   }
 
@@ -43,9 +40,9 @@ export function WalletConnectButton() {
     <>
       <button
         onClick={() => setShowModal(true)}
-        className="inline-flex items-center gap-2 bg-brand-primary text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition shadow-sm"
+        className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm"
       >
-        <Wallet className="h-4 w-4" />
+        <Wallet className="h-3.5 w-3.5 text-brand-primary" />
         Connect Wallet
       </button>
 
