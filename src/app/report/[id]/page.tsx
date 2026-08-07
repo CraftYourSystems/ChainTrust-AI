@@ -98,7 +98,13 @@ export default function ReportDetailPage() {
           Analyze another contract
         </Link>
 
-
+        <Link
+          href={`/remediation/${id}`}
+          className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-700 hover:to-amber-700 text-white text-xs font-bold rounded-xl transition shadow-md shadow-red-500/10 hover:scale-105"
+        >
+          <ShieldAlert className="h-4 w-4" />
+          Generate Issue Highlights & Remediation Doc 📝
+        </Link>
       </div>
 
       {/* Main Grid Layout */}
