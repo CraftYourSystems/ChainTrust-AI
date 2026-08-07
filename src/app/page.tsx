@@ -13,14 +13,10 @@ import {
   Database,
   ArrowRight,
   Award,
-  Users,
   Cpu,
   CheckCircle2,
-  Lock,
   Code2,
-  Terminal,
   X,
-  ExternalLink,
   FlaskConical,
 } from "lucide-react";
 
@@ -37,7 +33,6 @@ function DemoModal({ title, badge, badgeColor, children, onClose }: DemoModalPro
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 backdrop-blur-md p-4">
       <div className="bg-white rounded-3xl w-full max-w-lg shadow-2xl border border-slate-200 relative animate-in fade-in zoom-in duration-200 overflow-hidden">
-        {/* Demo banner */}
         <div className={`w-full py-2 text-center text-xs font-extrabold tracking-widest uppercase flex items-center justify-center gap-2 ${badgeColor}`}>
           <FlaskConical className="h-3.5 w-3.5" />
           Demo Preview — No Real Transaction
@@ -110,7 +105,7 @@ export default function HomePage() {
         <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-1.5 font-mono">
           <div className="flex justify-between">
             <span className="text-slate-400">Asset ID</span>
-            <span className="font-bold text-slate-700">12345678</span>
+            <span className="font-bold text-slate-700">789410293</span>
           </div>
           <div className="flex justify-between">
             <span className="text-slate-400">Creator</span>
@@ -121,9 +116,6 @@ export default function HomePage() {
             <span className="text-emerald-600 font-bold">✓ Opted In</span>
           </div>
         </div>
-        <p className="text-slate-400 italic text-center">
-          The Proof-of-Audit NFT is minted automatically after you generate a real report.
-        </p>
       </div>
     ),
 
@@ -151,9 +143,6 @@ b8580283c3d5b58a4d8b64244b7be58f1a2ab24e
             <span className="font-bold text-emerald-600">Algorand TestNet ✓</span>
           </div>
         </div>
-        <p className="text-slate-400 italic text-center">
-          Notary data is generated live after your real report is produced.
-        </p>
       </div>
     ),
 
@@ -180,9 +169,6 @@ b8580283c3d5b58a4d8b64244b7be58f1a2ab24e
             <span className="font-bold text-slate-700">#48291231</span>
           </div>
         </div>
-        <p className="text-slate-400 italic text-center">
-          After generating a real report, you can verify it using the Notary & Verify buttons on your Certificate page.
-        </p>
       </div>
     ),
 
@@ -280,7 +266,7 @@ b8580283c3d5b58a4d8b64244b7be58f1a2ab24e
           </p>
         </div>
 
-        {/* 5-card grid — card 3 (Multisig) removed */}
+        {/* 5-card grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Feature 1: x402 Pay-Gate */}
           <div className="bg-white p-8 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl transition space-y-4 flex flex-col justify-between">
@@ -384,7 +370,7 @@ b8580283c3d5b58a4d8b64244b7be58f1a2ab24e
         </div>
       </section>
 
-      {/* Pristine Light Vertical Flow Timeline Section */}
+      {/* Pristine Light Vertical Flow Timeline Section with Connecting Line & Node Badges */}
       <section id="how-it-works" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-20 space-y-3">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-50 text-brand-primary text-xs font-bold border border-blue-100 shadow-sm">
@@ -399,42 +385,57 @@ b8580283c3d5b58a4d8b64244b7be58f1a2ab24e
           </p>
         </div>
 
-        {/* Vertical Pipeline Container */}
-        <div className="space-y-8 relative">
+        {/* Vertical Pipeline Container with Central Connecting Line */}
+        <div className="relative space-y-16 lg:space-y-24">
+          
+          {/* Central Dashed Visual Connector Line (Visible on Desktop) */}
+          <div className="absolute left-1/2 -ml-[1px] top-12 bottom-12 w-[2px] border-r-2 border-dashed border-slate-300 hidden lg:block pointer-events-none z-0" />
+
           {/* STEP 1 */}
-          <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-xl transition-all duration-300 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-5 bg-blue-50/50 p-6 rounded-2xl border border-blue-100 shadow-sm space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-[11px] font-black text-blue-700 bg-blue-100 px-3 py-1 rounded-full border border-blue-200">
-                  STEP 01
-                </span>
-                <div className="p-2 bg-blue-600 text-white rounded-xl shadow-sm">
-                  <Upload className="h-5 w-5" />
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+            {/* Step Node Badge (Center Desktop) */}
+            <div className="hidden lg:flex absolute left-1/2 -ml-6 top-1/2 -mt-6 w-12 h-12 rounded-full bg-blue-600 text-white font-black text-xs items-center justify-center border-4 border-white shadow-xl z-20">
+              01
+            </div>
+
+            {/* Action Card (Left on Desktop) */}
+            <div className="bg-white p-7 sm:p-8 rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-xl transition-all duration-300 space-y-5 flex flex-col justify-between min-h-[260px]">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-black text-blue-700 bg-blue-100 px-3 py-1 rounded-full border border-blue-200">
+                    STEP 01
+                  </span>
+                  <div className="p-2.5 bg-blue-600 text-white rounded-2xl shadow-sm">
+                    <Upload className="h-5 w-5" />
+                  </div>
                 </div>
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-slate-900 mb-1">Contract Ingestion</h3>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  Submit Solidity (`.sol`), PyTeal (`.teal`), or Legal PDFs for parsing.
-                </p>
+                <div>
+                  <h3 className="text-xl font-bold text-slate-900 mb-1">Contract Ingestion</h3>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    Submit Solidity (`.sol`), PyTeal (`.teal`), or Legal PDFs for parsing.
+                  </p>
+                </div>
               </div>
               <Link
                 href="/upload"
-                className="w-full inline-flex items-center justify-center gap-2 py-2.5 text-xs font-bold text-white bg-brand-primary hover:bg-blue-700 rounded-xl transition shadow-md"
+                className="w-full inline-flex items-center justify-center gap-2 py-3 text-xs font-bold text-white bg-brand-primary hover:bg-blue-700 rounded-xl transition shadow-md"
               >
                 Launch Step 1 Upload
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
 
-            <div className="lg:col-span-7 bg-gradient-to-br from-blue-50/80 via-slate-50 to-indigo-50/50 p-6 sm:p-7 rounded-2xl border border-blue-100 space-y-3">
-              <div className="flex items-center gap-2 text-blue-700 font-bold text-xs uppercase tracking-wider">
-                <Code2 className="h-4 w-4" />
-                <span>Feature Purpose & File Hashing</span>
+            {/* Info Card (Right on Desktop) */}
+            <div className="bg-gradient-to-br from-blue-50/90 via-slate-50 to-indigo-50/60 p-7 sm:p-8 rounded-3xl border border-blue-100 shadow-sm space-y-4 min-h-[260px] flex flex-col justify-between">
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 text-blue-700 font-bold text-xs uppercase tracking-wider">
+                  <Code2 className="h-4 w-4" />
+                  <span>Feature Purpose & File Hashing</span>
+                </div>
+                <p className="text-xs text-slate-700 leading-relaxed">
+                  <strong className="text-slate-900">Mechanism:</strong> Uses browser Web Crypto API (`crypto.subtle.digest`) to calculate instant client-side SHA-256 file fingerprints before backend transmission.
+                </p>
               </div>
-              <p className="text-xs text-slate-700 leading-relaxed">
-                <strong className="text-slate-900">Mechanism:</strong> Uses browser Web Crypto API (`crypto.subtle.digest`) to calculate instant client-side SHA-256 file fingerprints before backend transmission.
-              </p>
               <div className="p-3.5 bg-white/90 rounded-xl font-mono text-[11px] text-blue-700 border border-blue-200/80 shadow-sm truncate">
                 contractHash: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b93...
               </div>
@@ -442,38 +443,49 @@ b8580283c3d5b58a4d8b64244b7be58f1a2ab24e
           </div>
 
           {/* STEP 2 */}
-          <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-xl transition-all duration-300 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-7 bg-gradient-to-br from-amber-50/80 via-slate-50 to-orange-50/50 p-6 sm:p-7 rounded-2xl border border-amber-200/80 space-y-3 lg:order-1 order-2">
-              <div className="flex items-center gap-2 text-amber-800 font-bold text-xs uppercase tracking-wider">
-                <Coins className="h-4 w-4" />
-                <span>HTTP 402 Micro-Payment Protocol</span>
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+            {/* Step Node Badge */}
+            <div className="hidden lg:flex absolute left-1/2 -ml-6 top-1/2 -mt-6 w-12 h-12 rounded-full bg-amber-500 text-slate-950 font-black text-xs items-center justify-center border-4 border-white shadow-xl z-20">
+              02
+            </div>
+
+            {/* Info Card (Left on Desktop, Below on Mobile) */}
+            <div className="bg-gradient-to-br from-amber-50/90 via-slate-50 to-orange-50/60 p-7 sm:p-8 rounded-3xl border border-amber-200/80 shadow-sm space-y-4 min-h-[260px] flex flex-col justify-between order-2 lg:order-1">
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 text-amber-800 font-bold text-xs uppercase tracking-wider">
+                  <Coins className="h-4 w-4" />
+                  <span>HTTP 402 Micro-Payment Protocol</span>
+                </div>
+                <p className="text-xs text-slate-700 leading-relaxed">
+                  <strong className="text-slate-900">Mechanism:</strong> Enforces per-request 1.0 ALGO payments. Backend returns `402 Payment Required` until Algod RPC indexer confirms the on-chain TestNet transaction.
+                </p>
               </div>
-              <p className="text-xs text-slate-700 leading-relaxed">
-                <strong className="text-slate-900">Mechanism:</strong> Enforces per-request 1.0 ALGO payments. Backend returns `402 Payment Required` until Algod RPC indexer confirms the on-chain TestNet transaction.
-              </p>
               <div className="p-3.5 bg-white/90 rounded-xl font-mono text-[11px] text-amber-900 border border-amber-200/80 shadow-sm truncate">
                 Status: HTTP 402 Required ➔ Algod Confirmed (TxID: F5X4J9A2...)
               </div>
             </div>
 
-            <div className="lg:col-span-5 bg-amber-50/50 p-6 rounded-2xl border border-amber-200/80 shadow-sm space-y-4 lg:order-2 order-1">
-              <div className="flex items-center justify-between">
-                <span className="text-[11px] font-black text-amber-800 bg-amber-100 px-3 py-1 rounded-full border border-amber-200">
-                  STEP 02
-                </span>
-                <div className="p-2 bg-amber-500 text-white rounded-xl shadow-sm">
-                  <CreditCard className="h-5 w-5" />
+            {/* Action Card (Right on Desktop, Above on Mobile) */}
+            <div className="bg-white p-7 sm:p-8 rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-xl transition-all duration-300 space-y-5 flex flex-col justify-between min-h-[260px] order-1 lg:order-2">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-black text-amber-800 bg-amber-100 px-3 py-1 rounded-full border border-amber-200">
+                    STEP 02
+                  </span>
+                  <div className="p-2.5 bg-amber-500 text-slate-950 rounded-2xl shadow-sm">
+                    <CreditCard className="h-5 w-5" />
+                  </div>
                 </div>
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-slate-900 mb-1">x402 Pay-Gate</h3>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  Authorize 1.0 ALGO micro-payment on Algorand TestNet.
-                </p>
+                <div>
+                  <h3 className="text-xl font-bold text-slate-900 mb-1">x402 Pay-Gate</h3>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    Authorize 1.0 ALGO micro-payment on Algorand TestNet.
+                  </p>
+                </div>
               </div>
               <Link
                 href="/payment"
-                className="w-full inline-flex items-center justify-center gap-2 py-2.5 text-xs font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 rounded-xl transition shadow-md"
+                className="w-full inline-flex items-center justify-center gap-2 py-3 text-xs font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 rounded-xl transition shadow-md"
               >
                 Launch Step 2 Pay-Gate ⚡
                 <ArrowRight className="h-4 w-4" />
@@ -482,39 +494,50 @@ b8580283c3d5b58a4d8b64244b7be58f1a2ab24e
           </div>
 
           {/* STEP 3 */}
-          <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-xl transition-all duration-300 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-5 bg-purple-50/50 p-6 rounded-2xl border border-purple-100 shadow-sm space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-[11px] font-black text-purple-700 bg-purple-100 px-3 py-1 rounded-full border border-purple-200">
-                  STEP 03
-                </span>
-                <div className="p-2 bg-purple-600 text-white rounded-xl shadow-sm">
-                  <BrainCircuit className="h-5 w-5" />
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+            {/* Step Node Badge */}
+            <div className="hidden lg:flex absolute left-1/2 -ml-6 top-1/2 -mt-6 w-12 h-12 rounded-full bg-purple-600 text-white font-black text-xs items-center justify-center border-4 border-white shadow-xl z-20">
+              03
+            </div>
+
+            {/* Action Card (Left on Desktop) */}
+            <div className="bg-white p-7 sm:p-8 rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-xl transition-all duration-300 space-y-5 flex flex-col justify-between min-h-[260px]">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-black text-purple-700 bg-purple-100 px-3 py-1 rounded-full border border-purple-200">
+                    STEP 03
+                  </span>
+                  <div className="p-2.5 bg-purple-600 text-white rounded-2xl shadow-sm">
+                    <BrainCircuit className="h-5 w-5" />
+                  </div>
                 </div>
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-slate-900 mb-1">AI Risk Ingestion</h3>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  Extract reentrancy risks & indemnification clauses.
-                </p>
+                <div>
+                  <h3 className="text-xl font-bold text-slate-900 mb-1">AI Risk Ingestion</h3>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    Extract reentrancy risks & indemnification clauses.
+                  </p>
+                </div>
               </div>
               <Link
                 href="/ai-ingestion"
-                className="w-full inline-flex items-center justify-center gap-2 py-2.5 text-xs font-bold text-white bg-purple-600 hover:bg-purple-700 rounded-xl transition shadow-md"
+                className="w-full inline-flex items-center justify-center gap-2 py-3 text-xs font-bold text-white bg-purple-600 hover:bg-purple-700 rounded-xl transition shadow-md"
               >
                 Launch Step 3 AI Engine 🧠
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
 
-            <div className="lg:col-span-7 bg-gradient-to-br from-purple-50/80 via-slate-50 to-indigo-50/50 p-6 sm:p-7 rounded-2xl border border-purple-100 space-y-3">
-              <div className="flex items-center gap-2 text-purple-700 font-bold text-xs uppercase tracking-wider">
-                <BrainCircuit className="h-4 w-4" />
-                <span>AI Vulnerability Audit Engine</span>
+            {/* Info Card (Right on Desktop) */}
+            <div className="bg-gradient-to-br from-purple-50/90 via-slate-50 to-indigo-50/60 p-7 sm:p-8 rounded-3xl border border-purple-100 shadow-sm space-y-4 min-h-[260px] flex flex-col justify-between">
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 text-purple-700 font-bold text-xs uppercase tracking-wider">
+                  <BrainCircuit className="h-4 w-4" />
+                  <span>AI Vulnerability Audit Engine</span>
+                </div>
+                <p className="text-xs text-slate-700 leading-relaxed">
+                  <strong className="text-slate-900">Mechanism:</strong> Parses contract AST nodes and outputs structured risk scores (e.g. 78/100 High Risk) with actionable remediation steps.
+                </p>
               </div>
-              <p className="text-xs text-slate-700 leading-relaxed">
-                <strong className="text-slate-900">Mechanism:</strong> Parses contract AST nodes and outputs structured risk scores (e.g. 78/100 High Risk) with actionable remediation steps.
-              </p>
               <div className="p-3.5 bg-white/90 rounded-xl font-mono text-[11px] text-purple-700 border border-purple-200/80 shadow-sm truncate">
                 Risk Score: 78/100 • High Risk Reentrancy Detected in Balance Loop
               </div>
@@ -522,38 +545,49 @@ b8580283c3d5b58a4d8b64244b7be58f1a2ab24e
           </div>
 
           {/* STEP 4 */}
-          <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-xl transition-all duration-300 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-7 bg-gradient-to-br from-emerald-50/80 via-slate-50 to-teal-50/50 p-6 sm:p-7 rounded-2xl border border-emerald-100 space-y-3 lg:order-1 order-2">
-              <div className="flex items-center gap-2 text-emerald-800 font-bold text-xs uppercase tracking-wider">
-                <Database className="h-4 w-4" />
-                <span>Algorand ARC Note Field Notarization</span>
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+            {/* Step Node Badge */}
+            <div className="hidden lg:flex absolute left-1/2 -ml-6 top-1/2 -mt-6 w-12 h-12 rounded-full bg-emerald-600 text-white font-black text-xs items-center justify-center border-4 border-white shadow-xl z-20">
+              04
+            </div>
+
+            {/* Info Card (Left on Desktop, Below on Mobile) */}
+            <div className="bg-gradient-to-br from-emerald-50/90 via-slate-50 to-teal-50/60 p-7 sm:p-8 rounded-3xl border border-emerald-100 shadow-sm space-y-4 min-h-[260px] flex flex-col justify-between order-2 lg:order-1">
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 text-emerald-800 font-bold text-xs uppercase tracking-wider">
+                  <Database className="h-4 w-4" />
+                  <span>Algorand ARC Note Field Notarization</span>
+                </div>
+                <p className="text-xs text-slate-700 leading-relaxed">
+                  <strong className="text-slate-900">Mechanism:</strong> Writes `chaintrust:proof:v1:&lt;ReportHash&gt;:&lt;ContractHash&gt;` permanently into the Algorand transaction note field at Block Round `#48291231`.
+                </p>
               </div>
-              <p className="text-xs text-slate-700 leading-relaxed">
-                <strong className="text-slate-900">Mechanism:</strong> Writes `chaintrust:proof:v1:&lt;ReportHash&gt;:&lt;ContractHash&gt;` permanently into the Algorand transaction note field at Block Round `#48291231`.
-              </p>
               <div className="p-3.5 bg-white/90 rounded-xl font-mono text-[11px] text-emerald-700 border border-emerald-200/80 shadow-sm truncate">
                 Note Payload: chaintrust:proof:v1:b3b1b1ab... (Confirmed Round #48291231)
               </div>
             </div>
 
-            <div className="lg:col-span-5 bg-emerald-50/50 p-6 rounded-2xl border border-emerald-200/80 shadow-sm space-y-4 lg:order-2 order-1">
-              <div className="flex items-center justify-between">
-                <span className="text-[11px] font-black text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-200">
-                  STEP 04
-                </span>
-                <div className="p-2 bg-emerald-600 text-white rounded-xl shadow-sm">
-                  <Link2 className="h-5 w-5" />
+            {/* Action Card (Right on Desktop, Above on Mobile) */}
+            <div className="bg-white p-7 sm:p-8 rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-xl transition-all duration-300 space-y-5 flex flex-col justify-between min-h-[260px] order-1 lg:order-2">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-black text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-200">
+                    STEP 04
+                  </span>
+                  <div className="p-2.5 bg-emerald-600 text-white rounded-2xl shadow-sm">
+                    <Link2 className="h-5 w-5" />
+                  </div>
                 </div>
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-slate-900 mb-1">On-Chain Notary</h3>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  Anchor report SHA-256 hash to Algorand block.
-                </p>
+                <div>
+                  <h3 className="text-xl font-bold text-slate-900 mb-1">On-Chain Notary</h3>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    Anchor report SHA-256 hash to Algorand block.
+                  </p>
+                </div>
               </div>
               <Link
                 href="/notary"
-                className="w-full inline-flex items-center justify-center gap-2 py-2.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl transition shadow-md"
+                className="w-full inline-flex items-center justify-center gap-2 py-3 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl transition shadow-md"
               >
                 Launch Step 4 Notary ⛓️
                 <ArrowRight className="h-4 w-4" />
@@ -562,44 +596,56 @@ b8580283c3d5b58a4d8b64244b7be58f1a2ab24e
           </div>
 
           {/* STEP 5 */}
-          <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-xl transition-all duration-300 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-5 bg-cyan-50/50 p-6 rounded-2xl border border-cyan-100 shadow-sm space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-[11px] font-black text-cyan-700 bg-cyan-100 px-3 py-1 rounded-full border border-cyan-200">
-                  STEP 05
-                </span>
-                <div className="p-2 bg-cyan-600 text-white rounded-xl shadow-sm">
-                  <ShieldCheck className="h-5 w-5" />
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+            {/* Step Node Badge */}
+            <div className="hidden lg:flex absolute left-1/2 -ml-6 top-1/2 -mt-6 w-12 h-12 rounded-full bg-cyan-600 text-white font-black text-xs items-center justify-center border-4 border-white shadow-xl z-20">
+              05
+            </div>
+
+            {/* Action Card (Left on Desktop) */}
+            <div className="bg-white p-7 sm:p-8 rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-xl transition-all duration-300 space-y-5 flex flex-col justify-between min-h-[260px]">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-black text-cyan-700 bg-cyan-100 px-3 py-1 rounded-full border border-cyan-200">
+                    STEP 05
+                  </span>
+                  <div className="p-2.5 bg-cyan-600 text-white rounded-2xl shadow-sm">
+                    <ShieldCheck className="h-5 w-5" />
+                  </div>
                 </div>
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-slate-900 mb-1">Verified Audit Certificate</h3>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  Public tamper-proof certificate verification portal.
-                </p>
+                <div>
+                  <h3 className="text-xl font-bold text-slate-900 mb-1">Verified Audit Certificate</h3>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    Public tamper-proof certificate verification portal.
+                  </p>
+                </div>
               </div>
               <Link
                 href="/verify"
-                className="w-full inline-flex items-center justify-center gap-2 py-2.5 text-xs font-bold text-white bg-cyan-600 hover:bg-cyan-700 rounded-xl transition shadow-md"
+                className="w-full inline-flex items-center justify-center gap-2 py-3 text-xs font-bold text-white bg-cyan-600 hover:bg-cyan-700 rounded-xl transition shadow-md"
               >
                 Launch Step 5 Verify 🛡️
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
 
-            <div className="lg:col-span-7 bg-gradient-to-br from-cyan-50/80 via-slate-50 to-blue-50/50 p-6 sm:p-7 rounded-2xl border border-cyan-100 space-y-3">
-              <div className="flex items-center gap-2 text-cyan-700 font-bold text-xs uppercase tracking-wider">
-                <CheckCircle2 className="h-4 w-4" />
-                <span>Constant-Time Hash Verification</span>
+            {/* Info Card (Right on Desktop) */}
+            <div className="bg-gradient-to-br from-cyan-50/90 via-slate-50 to-blue-50/60 p-7 sm:p-8 rounded-3xl border border-cyan-100 shadow-sm space-y-4 min-h-[260px] flex flex-col justify-between">
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 text-cyan-700 font-bold text-xs uppercase tracking-wider">
+                  <CheckCircle2 className="h-4 w-4" />
+                  <span>Constant-Time Hash Verification</span>
+                </div>
+                <p className="text-xs text-slate-700 leading-relaxed">
+                  <strong className="text-slate-900">Mechanism:</strong> Verifies re-uploaded reports against Algorand state using `crypto.timingSafeEqual` to guarantee zero side-channel vulnerability.
+                </p>
               </div>
-              <p className="text-xs text-slate-700 leading-relaxed">
-                <strong className="text-slate-900">Mechanism:</strong> Verifies re-uploaded reports against Algorand state using `crypto.timingSafeEqual` to guarantee zero side-channel vulnerability.
-              </p>
               <div className="p-3.5 bg-white/90 rounded-xl font-mono text-[11px] text-cyan-700 border border-cyan-200/80 shadow-sm truncate">
                 Verification Status: ✓ 100% CRYPTOGRAPHICALLY VALID
               </div>
             </div>
           </div>
+
         </div>
       </section>
     </div>
