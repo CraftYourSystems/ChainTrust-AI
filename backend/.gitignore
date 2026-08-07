@@ -1,0 +1,10 @@
+.env
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Uploaded contracts must never be committed.
+app/uploads/*
+!app/uploads/.gitkeep
