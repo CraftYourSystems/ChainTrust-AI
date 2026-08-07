@@ -5,7 +5,11 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { ProgressIndicator } from '@/components/loading/ProgressIndicator';
 import { StepsList } from '@/components/loading/StepsList';
 import { MockAnalysisService, ProgressStep } from '@/services/mockAnalysis.service';
-import { ShieldAlert, BrainCircuit, Shield } from 'lucide-react';
+import { AnalysisService } from '@/services/analysis.service';
+import { getUploadedFile } from '@/services/fileStore';
+import { DueDiligenceReport } from '@/types/analysis';
+import { BrainCircuit, Shield, AlertCircle, ArrowLeft, RefreshCw } from 'lucide-react';
+import { Button } from '@/components/common/Button';
 
 function LoadingContent() {
   const router = useRouter();
@@ -14,28 +18,49 @@ function LoadingContent() {
   
   const [percentage, setPercentage] = useState(0);
   const [currentStep, setCurrentStep] = useState('Uploading Contract...');
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let active = true;
 
     const runAnalysis = async () => {
+      setError(null);
       try {
-        const report = await MockAnalysisService.analyzeContract(
-          fileName,
-          (step: ProgressStep) => {
-            if (active) {
-              setPercentage(step.percentage);
-              setCurrentStep(step.message);
+        const uploadedFile = getUploadedFile();
+        let report: DueDiligenceReport;
+
+        if (uploadedFile) {
+          // Real backend API analysis
+          report = await AnalysisService.analyzeContract(
+            uploadedFile,
+            (step: ProgressStep) => {
+              if (active) {
+                setPercentage(step.percentage);
+                setCurrentStep(step.message);
+              }
             }
-          }
-        );
+          );
+        } else {
+          // Fallback to mock analysis if no file in memory
+          report = await MockAnalysisService.analyzeContract(
+            fileName,
+            (step: ProgressStep) => {
+              if (active) {
+                setPercentage(step.percentage);
+                setCurrentStep(step.message);
+              }
+            }
+          );
+        }
 
         if (active) {
-          // Push to the resulting report page
           router.push(`/report/${report.analysisId}`);
         }
-      } catch (err) {
-        console.error('Analysis failed:', err);
+      } catch (err: any) {
+        if (active) {
+          console.error('Analysis execution error:', err);
+          setError(err?.message || 'Failed to complete contract analysis. Please try again.');
+        }
       }
     };
 
@@ -45,6 +70,30 @@ function LoadingContent() {
       active = false;
     };
   }, [fileName, router]);
+
+  if (error) {
+    return (
+      <div className="min-h-[70vh] flex flex-col items-center justify-center max-w-md mx-auto text-center px-4">
+        <div className="p-4 bg-red-50 text-brand-danger rounded-full mb-4">
+          <AlertCircle className="h-8 w-8" />
+        </div>
+        <h2 className="text-xl font-bold text-slate-900 mb-2">Analysis Failed</h2>
+        <p className="text-sm text-slate-600 mb-6 bg-red-50/50 p-4 rounded-xl border border-red-100 leading-relaxed text-left">
+          {error}
+        </p>
+        <div className="flex flex-col sm:flex-row gap-3 w-full justify-center">
+          <Button variant="outline" onClick={() => router.push('/upload')}>
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Upload New File
+          </Button>
+          <Button onClick={() => window.location.reload()}>
+            <RefreshCw className="h-4 w-4 mr-2" />
+            Retry Analysis
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-[80vh] flex flex-col items-center justify-center px-4 py-12">
@@ -63,7 +112,7 @@ function LoadingContent() {
           Analyzing Contract
         </h1>
         <p className="text-sm text-slate-500 max-w-sm mx-auto mb-8 leading-relaxed">
-          Please wait while we run our automated due diligence audit. This will take a few seconds.
+          Please wait while our backend engine processes document text and identifies legal risk factors.
         </p>
 
         {/* Progress bar */}

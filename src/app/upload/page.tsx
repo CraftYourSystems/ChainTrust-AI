@@ -6,10 +6,14 @@ import { UploadBox } from '@/components/upload/UploadBox';
 import { ArrowLeft, Shield } from 'lucide-react';
 import Link from 'next/link';
 
+import { setUploadedFile } from '@/services/fileStore';
+
 export default function UploadPage() {
   const router = useRouter();
 
   const handleUpload = (file: File) => {
+    // Store File in memory store
+    setUploadedFile(file);
     // Navigate to loading screen with the file name as a query parameter
     router.push(`/loading?fileName=${encodeURIComponent(file.name)}`);
   };

@@ -18,6 +18,8 @@ import { ActionItems } from '@/components/report/ActionItems';
 import { MockAnalysisService } from '@/services/mockAnalysis.service';
 import { DueDiligenceReport } from '@/types/analysis';
 
+import { AnalysisService } from '@/services/analysis.service';
+
 export default function ReportDetailPage() {
   const params = useParams();
   const router = useRouter();
@@ -29,7 +31,10 @@ export default function ReportDetailPage() {
   useEffect(() => {
     const fetchReport = async () => {
       setLoading(true);
-      const data = await MockAnalysisService.getReportById(id);
+      let data = await AnalysisService.getReportById(id);
+      if (!data) {
+        data = await MockAnalysisService.getReportById(id);
+      }
       setReport(data);
       setLoading(false);
     };
