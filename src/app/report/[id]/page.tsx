@@ -16,8 +16,8 @@ import { RiskGauge } from '@/components/report/RiskGauge';
 import { RiskCards } from '@/components/report/RiskCards';
 import { ActionItems } from '@/components/report/ActionItems';
 import { DueDiligenceReport } from '@/types/analysis';
-
 import { AnalysisService } from '@/services/analysis.service';
+import { ExplainTooltip } from '@/components/common/ExplainTooltip';
 
 export default function ReportDetailPage() {
   const params = useParams();
@@ -164,7 +164,13 @@ export default function ReportDetailPage() {
                   </span>
                 </div>
                 <div className="text-xs">
-                  <span className="text-slate-400 block mb-1">SHA-256 Report Hash</span>
+                  <div className="flex items-center gap-1 mb-1">
+                    <span className="text-slate-400">SHA-256 Fingerprint</span>
+                    <ExplainTooltip
+                      term="SHA-256"
+                      explanation="Creates a unique 64-character cryptographic fingerprint for this report that changes completely if any letter is modified."
+                    />
+                  </div>
                   <span className="font-mono text-slate-300 break-all select-all text-[10px]">
                     {getReportHash()}
                   </span>

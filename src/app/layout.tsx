@@ -4,6 +4,7 @@ import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { PipelineProgressTracker } from "@/components/layout/PipelineProgressTracker";
+import { LiveAuditTimeline } from "@/components/layout/LiveAuditTimeline";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -29,6 +30,7 @@ export default function RootLayout({
         <Navbar />
         <PipelineProgressTracker />
         <main className="flex-grow">{children}</main>
+        <LiveAuditTimeline />
         <Footer />
       </body>
     </html>
