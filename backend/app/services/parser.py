@@ -148,6 +148,11 @@ def _resolve_source(file: Any, filename: str | None) -> tuple[bytes, str]:
     raise DocumentParseError("Unsupported input: pass bytes, a path, or an uploaded file.")
 
 
+import logging
+
+logger = logging.getLogger("chaintrust.parser")
+
+
 def extract_text(file: Any, filename: str | None = None) -> str:
     """Extract clean, LLM-ready text from a contract document.
 
@@ -173,5 +178,23 @@ def extract_text(file: Any, filename: str | None = None) -> str:
 
     if not text:
         raise EmptyDocumentError()
+
+    char_count = len(text)
+    first_500 = text[:500]
+    last_500 = text[-500:] if char_count > 500 else text
+
+    logger.info(
+        "\n========================================\n"
+        "--- CONTRACT TEXT EXTRACTION AUDIT ---\n"
+        "  - File Name: %s\n"
+        "  - Extracted Character Count: %d\n"
+        "  - First 500 chars:\n%s\n\n"
+        "  - Last 500 chars:\n%s\n"
+        "========================================",
+        filename or "unknown",
+        char_count,
+        first_500,
+        last_500,
+    )
 
     return text

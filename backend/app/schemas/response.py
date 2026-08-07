@@ -94,6 +94,10 @@ class Clause(_CamelModel):
 class DueDiligenceReport(_CamelModel):
     """The full due diligence report returned by ``POST /analyze``."""
 
+    contract_type: str = Field(
+        default="Commercial Agreement",
+        description="Identified type of contract, e.g. Service Agreement, NDA, Employment Agreement."
+    )
     overall_risk: int = Field(ge=0, le=100, description="Aggregate risk score, 0 (safe) to 100 (severe).")
     risk_level: RiskLevel = Field(description="Band for overall_risk; derived if the model omits it.")
     executive_summary: str = Field(min_length=1, description="Plain-English summary for a decision maker.")
@@ -104,28 +108,26 @@ class DueDiligenceReport(_CamelModel):
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
-                "overallRisk": 84,
+                "contractType": "Consulting Agreement",
+                "overallRisk": 62,
                 "riskLevel": "High",
                 "executiveSummary": (
-                    "This master services agreement shifts substantially all commercial risk "
-                    "onto the supplier. Liability is uncapped, termination is one-sided, and "
-                    "IP assignment extends to pre-existing work."
+                    "This consulting agreement shifts commercial risk onto the consultant. "
+                    "Liability is uncapped and termination rights are unilateral."
                 ),
                 "keyFindings": [
                     "Liability is uncapped for all claim types.",
-                    "Customer may terminate for convenience on 7 days' notice; supplier may not.",
-                    "IP assignment sweeps in background IP developed before the effective date.",
+                    "Customer may terminate for convenience on 7 days' notice.",
                 ],
                 "actionItems": [
                     "Negotiate a liability cap at 12 months of fees.",
                     "Add a reciprocal termination-for-convenience right.",
-                    "Carve background IP out of the assignment clause.",
                 ],
                 "clauses": [
                     {
                         "title": "Limitation of Liability",
                         "risk": "Critical",
-                        "reason": "Clause 11.2 disclaims any cap on supplier liability, exposing the supplier to unbounded damages.",
+                        "reason": "Clause 11.2 disclaims any cap on supplier liability.",
                         "recommendation": "Insert a mutual cap equal to fees paid in the preceding 12 months.",
                     }
                 ],
@@ -159,5 +161,11 @@ class DueDiligenceReport(_CamelModel):
     @field_validator("key_findings", "action_items", mode="after")
     @classmethod
     def _drop_blank_entries(cls, values: list[str]) -> list[str]:
-        """Keep empty bullets out of the rendered report."""
-        return [item for item in (v.strip() for v in values) if item]
+        """Keep empty and duplicate bullets out of the rendered report."""
+        seen = set()
+        result = []
+        for item in (v.strip() for v in values):
+            if item and item.casefold() not in seen:
+                seen.add(item.casefold())
+                result.append(item)
+        return result
