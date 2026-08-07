@@ -23,6 +23,17 @@ export function WalletConnectButton() {
     );
   }
 
+  if (!providers || providers.length === 0) {
+    return (
+      <button
+        onClick={() => alert("Please install Pera Wallet browser extension or mobile app to connect.")}
+        className="bg-brand-primary text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition shadow-sm"
+      >
+        Connect Wallet
+      </button>
+    );
+  }
+
   return (
     <div className="flex gap-2">
       {providers?.map((provider: any) => (
@@ -30,7 +41,7 @@ export function WalletConnectButton() {
           key={provider.metadata.id}
           onClick={() => provider.connect()}
           disabled={status === "connecting"}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition disabled:opacity-50"
+          className="bg-brand-primary text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition disabled:opacity-50 shadow-sm"
         >
           Connect {provider.metadata.name}
         </button>

@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { ShieldCheck, ArrowRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { WalletConnectButton } from '@/blockchain/wallet/components/WalletConnectButton';
 
 export const Navbar: React.FC = () => {
   const router = useRouter();
@@ -30,10 +31,14 @@ export const Navbar: React.FC = () => {
             <Link href="/#how-it-works" className="text-sm font-medium text-slate-600 hover:text-brand-primary transition-colors">
               How It Works
             </Link>
+            <Link href="/verify" className="text-sm font-semibold text-cyan-600 hover:text-cyan-700 transition-colors">
+              Verify Portal
+            </Link>
           </div>
 
-          {/* CTA Buttons */}
+          {/* CTA Buttons & Wallet Connect */}
           <div className="flex items-center gap-4">
+            <WalletConnectButton />
             <button
               onClick={() => router.push('/upload')}
               className="inline-flex items-center gap-1.5 px-4.5 py-2 text-sm font-semibold text-white bg-brand-primary hover:bg-blue-700 transition-colors rounded-lg shadow-sm"
