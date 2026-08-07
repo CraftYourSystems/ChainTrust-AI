@@ -14,10 +14,7 @@ import {
   ArrowRight,
   Award,
   Users,
-  Lock,
-  Cpu,
-  Sparkles,
-  CheckCircle2
+  Cpu
 } from "lucide-react";
 
 export default function HomePage() {
@@ -62,121 +59,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 5-Step Workflow Section */}
-      <section id="how-it-works" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16 space-y-3">
-          <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">
-            Five Automated Workflow Steps
-          </h2>
-          <p className="text-slate-500 text-sm max-w-lg mx-auto leading-relaxed">
-            Click any step card below to open its dedicated application page.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
-          {/* Step 1 Button */}
-          <Link
-            href="/upload"
-            className="group bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-2 hover:border-blue-500 hover:ring-4 hover:ring-blue-500/10 transition-all duration-300 flex flex-col items-center text-center cursor-pointer min-h-[260px] justify-between"
-          >
-            <div className="flex flex-col items-center">
-              <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center mb-4 group-hover:bg-brand-primary group-hover:scale-110 transition-all duration-300">
-                <Upload className="h-6 w-6 text-brand-primary group-hover:text-white transition" />
-              </div>
-              <span className="text-[10px] font-extrabold text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded-full mb-2">Step 1</span>
-              <h3 className="font-bold text-slate-900 text-sm mb-1.5 group-hover:text-blue-600 transition">Upload Contract</h3>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                Submit PDF, DOCX, or Solidity files for ingestion.
-              </p>
-            </div>
-            <span className="text-xs font-bold text-brand-primary bg-blue-50 group-hover:bg-blue-600 group-hover:text-white px-3.5 py-1.5 rounded-full transition-colors duration-300">
-              Try Upload ➔
-            </span>
-          </Link>
-
-          {/* Step 2 Button */}
-          <Link
-            href="/payment"
-            className="group bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-2 hover:border-amber-500 hover:ring-4 hover:ring-amber-500/10 transition-all duration-300 flex flex-col items-center text-center cursor-pointer min-h-[260px] justify-between"
-          >
-            <div className="flex flex-col items-center">
-              <div className="w-14 h-14 rounded-2xl bg-amber-50 flex items-center justify-center mb-4 group-hover:bg-amber-500 group-hover:scale-110 transition-all duration-300">
-                <CreditCard className="h-6 w-6 text-amber-500 group-hover:text-white transition" />
-              </div>
-              <span className="text-[10px] font-extrabold text-amber-600 bg-amber-50 px-2.5 py-0.5 rounded-full mb-2">Step 2</span>
-              <h3 className="font-bold text-slate-900 text-sm mb-1.5 group-hover:text-amber-600 transition">x402 Pay-Gate</h3>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                Authorize 1.0 ALGO micro-payment on Algorand TestNet.
-              </p>
-            </div>
-            <span className="text-xs font-bold text-amber-700 bg-amber-50 group-hover:bg-amber-500 group-hover:text-white px-3.5 py-1.5 rounded-full transition-colors duration-300">
-              Launch Gateway ⚡
-            </span>
-          </Link>
-
-          {/* Step 3 Button */}
-          <Link
-            href="/ai-ingestion"
-            className="group bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-2 hover:border-purple-500 hover:ring-4 hover:ring-purple-500/10 transition-all duration-300 flex flex-col items-center text-center cursor-pointer min-h-[260px] justify-between"
-          >
-            <div className="flex flex-col items-center">
-              <div className="w-14 h-14 rounded-2xl bg-purple-50 flex items-center justify-center mb-4 group-hover:bg-purple-600 group-hover:scale-110 transition-all duration-300">
-                <BrainCircuit className="h-6 w-6 text-purple-600 group-hover:text-white transition" />
-              </div>
-              <span className="text-[10px] font-extrabold text-purple-600 bg-purple-50 px-2.5 py-0.5 rounded-full mb-2">Step 3</span>
-              <h3 className="font-bold text-slate-900 text-sm mb-1.5 group-hover:text-purple-600 transition">AI Ingestion</h3>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                LLM model audits clauses & vulnerability risk scores.
-              </p>
-            </div>
-            <span className="text-xs font-bold text-purple-700 bg-purple-50 group-hover:bg-purple-600 group-hover:text-white px-3.5 py-1.5 rounded-full transition-colors duration-300">
-              Open AI Engine 🧠
-            </span>
-          </Link>
-
-          {/* Step 4 Button */}
-          <Link
-            href="/notary"
-            className="group bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-2 hover:border-emerald-500 hover:ring-4 hover:ring-emerald-500/10 transition-all duration-300 flex flex-col items-center text-center cursor-pointer min-h-[260px] justify-between"
-          >
-            <div className="flex flex-col items-center">
-              <div className="w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center mb-4 group-hover:bg-emerald-600 group-hover:scale-110 transition-all duration-300">
-                <Link2 className="h-6 w-6 text-emerald-600 group-hover:text-white transition" />
-              </div>
-              <span className="text-[10px] font-extrabold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full mb-2">Step 4</span>
-              <h3 className="font-bold text-slate-900 text-sm mb-1.5 group-hover:text-emerald-600 transition">On-Chain Notary</h3>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                SHA-256 report hash notarized on Algorand block.
-              </p>
-            </div>
-            <span className="text-xs font-bold text-emerald-700 bg-emerald-50 group-hover:bg-emerald-600 group-hover:text-white px-3.5 py-1.5 rounded-full transition-colors duration-300">
-              Open Notary ⛓️
-            </span>
-          </Link>
-
-          {/* Step 5 Button */}
-          <Link
-            href="/verify"
-            className="group bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-2 hover:border-cyan-500 hover:ring-4 hover:ring-cyan-500/10 transition-all duration-300 flex flex-col items-center text-center cursor-pointer min-h-[260px] justify-between"
-          >
-            <div className="flex flex-col items-center">
-              <div className="w-14 h-14 rounded-2xl bg-cyan-50 flex items-center justify-center mb-4 group-hover:bg-cyan-600 group-hover:scale-110 transition-all duration-300">
-                <ShieldCheck className="h-6 w-6 text-cyan-600 group-hover:text-white transition" />
-              </div>
-              <span className="text-[10px] font-extrabold text-cyan-600 bg-cyan-50 px-2.5 py-0.5 rounded-full mb-2">Step 5</span>
-              <h3 className="font-bold text-slate-900 text-sm mb-1.5 group-hover:text-cyan-600 transition">Verified Audit</h3>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                Public tamper-proof certificate verification portal.
-              </p>
-            </div>
-            <span className="text-xs font-bold text-cyan-700 bg-cyan-50 group-hover:bg-cyan-600 group-hover:text-white px-3.5 py-1.5 rounded-full transition-colors duration-300">
-              Verify Portal 🛡️
-            </span>
-          </Link>
-        </div>
-      </section>
-
-      {/* Advanced Blockchain Features & Purpose Explanation Section */}
+      {/* Advanced Blockchain Features & Purpose Explanation Section (MOVED ABOVE) */}
       <section id="features" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16 space-y-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 text-emerald-400 text-xs font-mono font-bold">
@@ -305,6 +188,120 @@ export default function HomePage() {
               Open AI Ingestion Engine 🧠 ➔
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* 5-Step Workflow Section */}
+      <section id="how-it-works" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16 space-y-3">
+          <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">
+            Five Automated Workflow Steps
+          </h2>
+          <p className="text-slate-500 text-sm max-w-lg mx-auto leading-relaxed">
+            Click any step card below to open its dedicated application page.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+          {/* Step 1 Button */}
+          <Link
+            href="/upload"
+            className="group bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-2 hover:border-blue-500 hover:ring-4 hover:ring-blue-500/10 transition-all duration-300 flex flex-col items-center text-center cursor-pointer min-h-[260px] justify-between"
+          >
+            <div className="flex flex-col items-center">
+              <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center mb-4 group-hover:bg-brand-primary group-hover:scale-110 transition-all duration-300">
+                <Upload className="h-6 w-6 text-brand-primary group-hover:text-white transition" />
+              </div>
+              <span className="text-[10px] font-extrabold text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded-full mb-2">Step 1</span>
+              <h3 className="font-bold text-slate-900 text-sm mb-1.5 group-hover:text-blue-600 transition">Upload Contract</h3>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                Submit PDF, DOCX, or Solidity files for ingestion.
+              </p>
+            </div>
+            <span className="text-xs font-bold text-brand-primary bg-blue-50 group-hover:bg-blue-600 group-hover:text-white px-3.5 py-1.5 rounded-full transition-colors duration-300">
+              Try Upload ➔
+            </span>
+          </Link>
+
+          {/* Step 2 Button */}
+          <Link
+            href="/payment"
+            className="group bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-2 hover:border-amber-500 hover:ring-4 hover:ring-amber-500/10 transition-all duration-300 flex flex-col items-center text-center cursor-pointer min-h-[260px] justify-between"
+          >
+            <div className="flex flex-col items-center">
+              <div className="w-14 h-14 rounded-2xl bg-amber-50 flex items-center justify-center mb-4 group-hover:bg-amber-500 group-hover:scale-110 transition-all duration-300">
+                <CreditCard className="h-6 w-6 text-amber-500 group-hover:text-white transition" />
+              </div>
+              <span className="text-[10px] font-extrabold text-amber-600 bg-amber-50 px-2.5 py-0.5 rounded-full mb-2">Step 2</span>
+              <h3 className="font-bold text-slate-900 text-sm mb-1.5 group-hover:text-amber-600 transition">x402 Pay-Gate</h3>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                Authorize 1.0 ALGO micro-payment on Algorand TestNet.
+              </p>
+            </div>
+            <span className="text-xs font-bold text-amber-700 bg-amber-50 group-hover:bg-amber-500 group-hover:text-white px-3.5 py-1.5 rounded-full transition-colors duration-300">
+              Launch Gateway ⚡
+            </span>
+          </Link>
+
+          {/* Step 3 Button */}
+          <Link
+            href="/ai-ingestion"
+            className="group bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-2 hover:border-purple-500 hover:ring-4 hover:ring-purple-500/10 transition-all duration-300 flex flex-col items-center text-center cursor-pointer min-h-[260px] justify-between"
+          >
+            <div className="flex flex-col items-center">
+              <div className="w-14 h-14 rounded-2xl bg-purple-50 flex items-center justify-center mb-4 group-hover:bg-purple-600 group-hover:scale-110 transition-all duration-300">
+                <BrainCircuit className="h-6 w-6 text-purple-600 group-hover:text-white transition" />
+              </div>
+              <span className="text-[10px] font-extrabold text-purple-600 bg-purple-50 px-2.5 py-0.5 rounded-full mb-2">Step 3</span>
+              <h3 className="font-bold text-slate-900 text-sm mb-1.5 group-hover:text-purple-600 transition">AI Ingestion</h3>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                LLM model audits clauses & vulnerability risk scores.
+              </p>
+            </div>
+            <span className="text-xs font-bold text-purple-700 bg-purple-50 group-hover:bg-purple-600 group-hover:text-white px-3.5 py-1.5 rounded-full transition-colors duration-300">
+              Open AI Engine 🧠
+            </span>
+          </Link>
+
+          {/* Step 4 Button */}
+          <Link
+            href="/notary"
+            className="group bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-2 hover:border-emerald-500 hover:ring-4 hover:ring-emerald-500/10 transition-all duration-300 flex flex-col items-center text-center cursor-pointer min-h-[260px] justify-between"
+          >
+            <div className="flex flex-col items-center">
+              <div className="w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center mb-4 group-hover:bg-emerald-600 group-hover:scale-110 transition-all duration-300">
+                <Link2 className="h-6 w-6 text-emerald-600 group-hover:text-white transition" />
+              </div>
+              <span className="text-[10px] font-extrabold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full mb-2">Step 4</span>
+              <h3 className="font-bold text-slate-900 text-sm mb-1.5 group-hover:text-emerald-600 transition">On-Chain Notary</h3>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                SHA-256 report hash notarized on Algorand block.
+              </p>
+            </div>
+            <span className="text-xs font-bold text-emerald-700 bg-emerald-50 group-hover:bg-emerald-600 group-hover:text-white px-3.5 py-1.5 rounded-full transition-colors duration-300">
+              Open Notary ⛓️
+            </span>
+          </Link>
+
+          {/* Step 5 Button */}
+          <Link
+            href="/verify"
+            className="group bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-2 hover:border-cyan-500 hover:ring-4 hover:ring-cyan-500/10 transition-all duration-300 flex flex-col items-center text-center cursor-pointer min-h-[260px] justify-between"
+          >
+            <div className="flex flex-col items-center">
+              <div className="w-14 h-14 rounded-2xl bg-cyan-50 flex items-center justify-center mb-4 group-hover:bg-cyan-600 group-hover:scale-110 transition-all duration-300">
+                <ShieldCheck className="h-6 w-6 text-cyan-600 group-hover:text-white transition" />
+              </div>
+              <span className="text-[10px] font-extrabold text-cyan-600 bg-cyan-50 px-2.5 py-0.5 rounded-full mb-2">Step 5</span>
+              <h3 className="font-bold text-slate-900 text-sm mb-1.5 group-hover:text-cyan-600 transition">Verified Audit</h3>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                Public tamper-proof certificate verification portal.
+              </p>
+            </div>
+            <span className="text-xs font-bold text-cyan-700 bg-cyan-50 group-hover:bg-cyan-600 group-hover:text-white px-3.5 py-1.5 rounded-full transition-colors duration-300">
+              Verify Portal 🛡️
+            </span>
+          </Link>
         </div>
       </section>
     </div>
