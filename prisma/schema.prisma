@@ -1,0 +1,181 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum PaymentQuoteStatus {
+  PENDING
+  PAID
+  EXPIRED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  VERIFYING
+  CONFIRMED
+  FAILED
+  EXPIRED
+  REFUNDED
+}
+
+enum RiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum LedgerStatus {
+  SUBMITTED
+  CONFIRMED
+  FAILED
+}
+
+model User {
+  id            String         @id @default(uuid())
+  walletAddress String         @unique
+  createdAt     DateTime       @default(now())
+  lastLogin     DateTime?
+  status        String         @default("ACTIVE")
+  sessions      Session[]
+  wallet        Wallet?
+  quotes        PaymentQuote[]
+  payments      Payment[]
+  contracts     Contract[]
+  reports       Report[]
+  hashRecords   HashRecord[]
+  ledgerRecords LedgerRecord[]
+  auditLogs     AuditLog[]
+}
+
+model Wallet {
+  walletAddress String    @id
+  provider      String
+  network       String
+  lastConnected DateTime  @default(now())
+  user          User      @relation(fields: [walletAddress], references: [walletAddress])
+}
+
+model Session {
+  sessionId     String    @id @default(uuid())
+  userId        String
+  issuedAt      DateTime  @default(now())
+  expiresAt     DateTime
+  ip            String?
+  userAgent     String?
+  revoked       Boolean   @default(false)
+  user          User      @relation(fields: [userId], references: [id])
+}
+
+model ChallengeNonce {
+  nonce         String    @id
+  wallet        String
+  createdAt     DateTime  @default(now())
+  expiresAt     DateTime
+  used          Boolean   @default(false)
+}
+
+model PaymentQuote {
+  id               String             @id @default(uuid())
+  amount           BigInt
+  recipient        String
+  purpose          String             @default("DUE_DILIGENCE")
+  expiresAt        DateTime
+  status           PaymentQuoteStatus @default(PENDING)
+  signature        String
+  createdAt        DateTime           @default(now())
+  userId           String
+  user             User               @relation(fields: [userId], references: [id])
+  payment          Payment?
+}
+
+model Payment {
+  id                  String        @id @default(uuid())
+  txId                String        @unique
+  quoteId             String        @unique
+  senderAddress       String
+  recipientAddress    String
+  amount              BigInt
+  assetId             BigInt?       @default(0)
+  status              PaymentStatus @default(CONFIRMED)
+  network             String
+  confirmedRound      BigInt
+  verificationLatency Int?
+  failureReason       String?
+  metadata            String?
+  createdAt           DateTime      @default(now())
+  userId              String
+  user                User          @relation(fields: [userId], references: [id])
+  quote               PaymentQuote  @relation(fields: [quoteId], references: [id])
+}
+
+model Contract {
+  id           String   @id @default(uuid())
+  filename     String
+  fileHash     String
+  fileSize     Int
+  contractType String   @default("SMART_CONTRACT")
+  uploadedAt   DateTime @default(now())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  reports      Report[]
+}
+
+model Report {
+  id               String        @id @default(uuid())
+  contractId       String
+  userId           String
+  summary          String
+  riskLevel        RiskLevel
+  reportHash       String
+  structuredOutput String
+  createdAt        DateTime      @default(now())
+  user             User          @relation(fields: [userId], references: [id])
+  contract         Contract      @relation(fields: [contractId], references: [id])
+  hashRecord       HashRecord?
+  ledgerRecord     LedgerRecord?
+}
+
+model HashRecord {
+  id            String   @id @default(uuid())
+  reportId      String   @unique
+  contractHash  String
+  reportHash    String
+  combinedHash  String
+  canonicalJson String
+  createdAt     DateTime @default(now())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id])
+  report        Report   @relation(fields: [reportId], references: [id])
+}
+
+model LedgerRecord {
+  id             String       @id @default(uuid())
+  reportId       String       @unique
+  txId           String       @unique
+  confirmedRound BigInt
+  notePayload    String
+  senderAddress  String
+  status         LedgerStatus @default(CONFIRMED)
+  createdAt      DateTime     @default(now())
+  userId         String
+  user           User         @relation(fields: [userId], references: [id])
+  report         Report       @relation(fields: [reportId], references: [id])
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  action    String
+  resource  String
+  ip        String?
+  userAgent String?
+  metadata  String?
+  timestamp DateTime @default(now())
+  user      User?    @relation(fields: [userId], references: [id])
+}
