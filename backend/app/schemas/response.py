@@ -16,7 +16,8 @@ returns ``overall_risk`` instead of ``overallRisk`` still validates.
 from __future__ import annotations
 
 from enum import Enum
-from typing import Any
+from typing import Any, Literal
+from uuid import uuid4
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 from pydantic.alias_generators import to_camel
@@ -91,9 +92,31 @@ class Clause(_CamelModel):
     recommendation: str = Field(min_length=1, description="Concrete redline or negotiation ask.")
 
 
+class Verification(_CamelModel):
+    """Blockchain anchoring state for a report.
+
+    Python only ever emits the default "Pending". The TypeScript ledger layer
+    fills in the transaction details after anchoring, so the response shape is
+    stable from the moment the report is returned.
+    """
+
+    status: Literal["Pending", "Verified"] = "Pending"
+
+
+def new_analysis_id() -> str:
+    """Server-generated identifier, stable enough to key a hash record."""
+    return f"ANL-{uuid4().hex[:12].upper()}"
+
+
 class DueDiligenceReport(_CamelModel):
     """The full due diligence report returned by ``POST /analyze``."""
 
+    # Server-generated, not model-generated. The route overwrites whatever
+    # lands here, so an id invented by the LLM can never reach the client.
+    analysis_id: str = Field(
+        default_factory=new_analysis_id,
+        description="Server-generated identifier for this analysis.",
+    )
     contract_type: str = Field(
         default="Commercial Agreement",
         description="Identified type of contract, e.g. Service Agreement, NDA, Employment Agreement."
@@ -104,6 +127,10 @@ class DueDiligenceReport(_CamelModel):
     key_findings: list[str] = Field(default_factory=list, description="Headline risks, one per entry.")
     action_items: list[str] = Field(default_factory=list, description="Recommended next steps, one per entry.")
     clauses: list[Clause] = Field(default_factory=list, description="Per-clause breakdown.")
+    verification: Verification = Field(
+        default_factory=Verification,
+        description="Blockchain anchoring state; Pending until the ledger layer updates it.",
+    )
 
     model_config = ConfigDict(
         json_schema_extra={

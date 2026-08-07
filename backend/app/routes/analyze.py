@@ -15,7 +15,7 @@ from typing import Annotated
 from fastapi import APIRouter, File, UploadFile
 
 from app.config import settings
-from app.schemas.response import DueDiligenceReport
+from app.schemas.response import DueDiligenceReport, new_analysis_id
 from app.services.llm_service import LLMService
 from app.services.parser import SUPPORTED_EXTENSIONS, extract_text
 from app.services.validator import validate_report
@@ -69,4 +69,10 @@ async def analyze_contract(
 
     contract_text = extract_text(data, filename=file.filename)
     raw_reply = await LLMService().analyse(contract_text)
-    return validate_report(raw_reply)
+    report = validate_report(raw_reply)
+
+    # Assigned here, not by the model: the id must be server-authoritative for
+    # the TypeScript ledger to anchor against it. verification stays Pending
+    # until that layer records the transaction.
+    report.analysis_id = new_analysis_id()
+    return report
