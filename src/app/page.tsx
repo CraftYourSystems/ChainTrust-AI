@@ -154,7 +154,7 @@ export default function Home() {
 
               {/* Step 2 Button */}
               <Link 
-                href="/upload"
+                href="/payment"
                 className="group flex flex-col items-center text-center bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-1.5 hover:border-amber-500 hover:ring-2 hover:ring-amber-500/20 transition-all duration-300 lg:self-end lg:h-[230px] cursor-pointer"
               >
                 <div className="relative mb-3">
@@ -170,7 +170,7 @@ export default function Home() {
                   Authorize a secure micropayment on Algorand TestNet to unlock analysis.
                 </p>
                 <span className="mt-auto inline-flex items-center gap-1 text-[11px] font-extrabold text-amber-700 bg-amber-50 group-hover:bg-amber-500 group-hover:text-white px-3 py-1 rounded-full transition-colors">
-                  Try x402 Gate ⚡
+                  Launch Payment Gateway ⚡
                 </span>
               </Link>
 
