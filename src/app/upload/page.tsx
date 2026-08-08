@@ -31,11 +31,19 @@ export default function UploadPage() {
       return;
     }
 
-    // Store File & Report ID in session
+    // Clear any previous payment/report state so each upload forces re-payment
+    sessionStorage.removeItem("payment_confirmed");
+    sessionStorage.removeItem("current_report_id");
+    sessionStorage.removeItem("payment_fee_algo");
+
+    // Persist filename for report history
+    sessionStorage.setItem("last_upload_filename", file.name);
+
+    // Store File in module-level store
     setUploadedFile(file);
     setUploadedFileName(file.name);
-    sessionStorage.setItem("current_report_id", "ANL-58440");
     setParsing(true);
+
 
     // Auto-advance countdown
     let timer = 3;

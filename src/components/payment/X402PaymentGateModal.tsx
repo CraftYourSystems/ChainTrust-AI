@@ -20,6 +20,19 @@ interface X402PaymentGateProps {
   onPaymentSuccess: () => void;
 }
 
+// Helper function to dynamically calculate the fee based on the document type/extension
+const getFeeForFile = (fileName: string) => {
+  if (!fileName) return { algo: "1.0", micro: "1,000,000", purpose: "DUE_DILIGENCE" };
+  const lower = fileName.toLowerCase();
+  if (lower.endsWith(".sol")) {
+    return { algo: "5.0", micro: "5,000,000", purpose: "ENTERPRISE_AUDIT" };
+  } else if (lower.endsWith(".teal")) {
+    return { algo: "2.0", micro: "2,000,000", purpose: "EXPRESS_AUDIT" };
+  } else {
+    return { algo: "1.0", micro: "1,000,000", purpose: "DUE_DILIGENCE" };
+  }
+};
+
 export function X402PaymentGateModal({ fileName, onPaymentSuccess }: X402PaymentGateProps) {
   const [paymentState, setPaymentState] = useState<"quote" | "submitting" | "verifying" | "success">("quote");
   const [copied, setCopied] = useState(false);
@@ -27,6 +40,7 @@ export function X402PaymentGateModal({ fileName, onPaymentSuccess }: X402Payment
 
   const receiverAddress = "DH3AHUSOLFED3M5NNZH6V2FDDCR2ZD4G6JXJFC5BNRYMWQ4AZEYWGLR6HE";
   const hmacSig = "hmac_sha256_7f8a9b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a";
+  const feeInfo = getFeeForFile(fileName);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -94,8 +108,8 @@ export function X402PaymentGateModal({ fileName, onPaymentSuccess }: X402Payment
           <div className="flex justify-between items-center pb-3 border-b border-slate-700/50">
             <span className="text-xs font-semibold text-slate-400">Analysis Fee</span>
             <div className="text-right">
-              <span className="text-2xl font-black text-emerald-400 font-mono">1.0 ALGO</span>
-              <span className="text-[10px] text-slate-400 block font-mono">1,000,000 mALGO</span>
+              <span className="text-2xl font-black text-emerald-400 font-mono">{feeInfo.algo} ALGO</span>
+              <span className="text-[10px] text-slate-400 block font-mono">{feeInfo.micro} mALGO</span>
             </div>
           </div>
 
@@ -136,7 +150,7 @@ export function X402PaymentGateModal({ fileName, onPaymentSuccess }: X402Payment
               className="w-full py-4 px-6 text-sm font-extrabold text-slate-950 bg-emerald-400 hover:bg-emerald-300 rounded-xl shadow-lg shadow-emerald-500/20 transition-all hover:scale-[1.02] flex items-center justify-center gap-2"
             >
               <Coins className="h-5 w-5" />
-              Pay 1.0 ALGO & Unlock AI Audit ⚡
+              Pay {feeInfo.algo} ALGO & Unlock AI Audit ⚡
             </button>
           )}
 
@@ -144,7 +158,7 @@ export function X402PaymentGateModal({ fileName, onPaymentSuccess }: X402Payment
             <div className="p-4 bg-blue-950/60 border border-blue-500/30 rounded-xl text-center flex items-center justify-center gap-3">
               <Clock className="h-5 w-5 text-blue-400 animate-spin" />
               <span className="text-xs font-bold text-blue-300">
-                Submitting 1.0 ALGO Payment to Algorand TestNet...
+                Submitting {feeInfo.algo} ALGO Payment to Algorand TestNet...
               </span>
             </div>
           )}

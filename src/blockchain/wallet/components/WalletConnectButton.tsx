@@ -1,36 +1,45 @@
 "use client";
 
-import React, { useState } from "react";
-import { useWalletIdentity } from "../hooks/useWalletIdentity";
+import React, { useState, useEffect } from "react";
+import { walletStore, DEMO_WALLET, STARTING_BALANCE } from "@/services/walletStore";
 import { Wallet, X, CheckCircle2, ExternalLink, LogOut } from "lucide-react";
 
 export function WalletConnectButton() {
-  const { status, address, providers, disconnect } = useWalletIdentity();
+  const [walletState, setWalletState] = useState(() =>
+    typeof window !== "undefined" ? walletStore.getState() : { address: null, balance: STARTING_BALANCE, connected: false }
+  );
   const [showModal, setShowModal] = useState(false);
-  const [demoAddress, setDemoAddress] = useState<string | null>(null);
 
-  const demoWallet = "PIKPW7D6G4RCGAU35ACWQWGXDCOYYGGD35L3BTNU27CGVU7GTNVALN3VAY";
+  useEffect(() => {
+    const handleUpdate = () => setWalletState(walletStore.getState());
+    window.addEventListener("wallet-balance-updated", handleUpdate);
+    handleUpdate(); // sync on mount in case localStorage already has state
+    return () => window.removeEventListener("wallet-balance-updated", handleUpdate);
+  }, []);
 
   const handleDemoConnect = () => {
-    setDemoAddress(demoWallet);
+    walletStore.connect(DEMO_WALLET);
     setShowModal(false);
   };
 
-  const activeAddr = address || demoAddress;
+  const handleDisconnect = () => {
+    walletStore.disconnect();
+  };
 
-  if ((status === "connected" || demoAddress) && activeAddr) {
-    const shortAddr = `${activeAddr.slice(0, 4)}...${activeAddr.slice(-4)}`;
+  if (walletState.connected && walletState.address) {
+    const addr = walletState.address;
+    const shortAddr = `${addr.slice(0, 4)}...${addr.slice(-4)}`;
     return (
       <button
-        onClick={() => {
-          setDemoAddress(null);
-          disconnect();
-        }}
-        title="Click to Disconnect"
+        onClick={handleDisconnect}
+        title="Click to Disconnect (resets to 10.0 ALGO)"
         className="group inline-flex items-center gap-2 text-xs font-bold text-emerald-800 bg-emerald-50/90 hover:bg-red-50 hover:text-red-600 px-3.5 py-2 rounded-xl border border-emerald-200 hover:border-red-200 shadow-sm transition-all duration-200 cursor-pointer"
       >
         <span className="h-2 w-2 rounded-full bg-emerald-500 group-hover:bg-red-500 animate-pulse transition-colors" />
         <span className="font-mono">{shortAddr}</span>
+        <span className="font-black text-emerald-700 group-hover:text-red-500 transition-colors">
+          • {walletState.balance.toFixed(1)} ALGO
+        </span>
         <LogOut className="h-3.5 w-3.5 text-slate-400 group-hover:text-red-500 transition-colors ml-1" />
       </button>
     );
@@ -71,51 +80,37 @@ export function WalletConnectButton() {
               {/* Option 1: Demo Auditor Wallet */}
               <button
                 onClick={handleDemoConnect}
-                className="w-full text-left p-4 rounded-xl border border-blue-200 bg-blue-50/50 hover:bg-blue-50 transition flex items-center justify-between group"
+                className="w-full text-left p-4 rounded-xl border-2 border-blue-300 bg-blue-50/60 hover:bg-blue-50 transition flex items-center justify-between group"
               >
                 <div>
                   <div className="flex items-center gap-1.5 font-bold text-slate-900 text-sm">
                     <span>⚡ Demo Auditor Account</span>
-                    <span className="text-[10px] font-bold bg-blue-600 text-white px-2 py-0.5 rounded-full">Fast Test</span>
+                    <span className="text-[10px] font-bold bg-blue-600 text-white px-2 py-0.5 rounded-full">
+                      Pre-funded
+                    </span>
                   </div>
                   <span className="text-xs text-slate-500 block mt-0.5 font-mono">
-                    PIKPW7D6G4...N3VAY (10 ALGO)
+                    PIKPW7...N3VAY • {STARTING_BALANCE.toFixed(1)} ALGO starting balance
                   </span>
                 </div>
                 <CheckCircle2 className="h-5 w-5 text-brand-primary opacity-0 group-hover:opacity-100 transition" />
               </button>
 
-              {/* Option 2: Real Pera Extension */}
-              {providers && providers.length > 0 ? (
-                providers.map((provider: any) => (
-                  <button
-                    key={provider.metadata.id}
-                    onClick={() => {
-                      provider.connect();
-                      setShowModal(false);
-                    }}
-                    className="w-full text-left p-4 rounded-xl border border-slate-200 hover:border-blue-500 hover:bg-blue-50/20 transition flex items-center justify-between"
-                  >
-                    <div>
-                      <span className="font-bold text-slate-900 text-sm block">
-                        {provider.metadata.name} Wallet
-                      </span>
-                      <span className="text-xs text-slate-500">Connect via Pera Extension or Mobile QR</span>
-                    </div>
-                  </button>
-                ))
-              ) : (
-                <a
-                  href="https://perawallet.app/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full text-left p-4 rounded-xl border border-slate-200 hover:bg-slate-50 transition flex items-center justify-between text-slate-700 text-xs font-semibold"
-                >
-                  <span>Install Pera Chrome Extension 🔗</span>
-                  <ExternalLink className="h-4 w-4 text-slate-400" />
-                </a>
-              )}
+              {/* Option 2: Pera Install Link */}
+              <a
+                href="https://perawallet.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full text-left p-4 rounded-xl border border-slate-200 hover:bg-slate-50 transition flex items-center justify-between text-slate-700 text-xs font-semibold"
+              >
+                <span>Install Pera Chrome Extension 🔗</span>
+                <ExternalLink className="h-4 w-4 text-slate-400" />
+              </a>
             </div>
+
+            <p className="text-[10px] text-slate-400 text-center mt-4">
+              Demo wallet starts with {STARTING_BALANCE.toFixed(1)} ALGO. Balance resets on disconnect.
+            </p>
           </div>
         </div>
       )}

@@ -51,6 +51,8 @@ function LoadingContent() {
         }
 
         if (active) {
+          // Store report ID so payment guard knows where to redirect
+          sessionStorage.setItem('current_report_id', report.analysisId);
           router.push(`/report/${report.analysisId}`);
         }
       } catch (err: any) {
