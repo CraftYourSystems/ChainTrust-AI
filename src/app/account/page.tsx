@@ -12,54 +12,67 @@ import {
   Coins, 
   CheckCircle2, 
   ArrowRight,
-  Shield
+  ShieldAlert,
+  Trash2,
+  Upload
 } from "lucide-react";
-import { useWalletIdentity } from "@/blockchain/wallet/hooks/useWalletIdentity";
+import { walletStore } from "@/services/walletStore";
+import { reportHistory, ReportHistoryEntry } from "@/services/reportHistory";
 
-interface AuditHistoryItem {
-  id: string;
-  contractName: string;
-  date: string;
-  riskLevel: "Low" | "Medium" | "High";
-  txId: string;
-  confirmedRound: number;
-}
+const demoHistory: ReportHistoryEntry[] = [
+  {
+    id: "ANL-98421",
+    fileName: "TokenVault.sol",
+    contractType: "Solidity Smart Contract",
+    riskLevel: "High",
+    riskScore: 78,
+    date: "2026-08-07T12:00:00Z",
+    feeAlgo: "5.0",
+  },
+  {
+    id: "ANL-98418",
+    fileName: "StakingPool.teal",
+    contractType: "PyTeal Approval Program",
+    riskLevel: "Low",
+    riskScore: 18,
+    date: "2026-08-06T15:30:00Z",
+    feeAlgo: "2.0",
+  },
+];
 
 export default function UserAccountPage() {
-  const { address, status } = useWalletIdentity();
-  const activeAddr = address || "PIKPW7D6G4RCGAU35ACWQWGXDCOYYGGD35L3BTNU27CGVU7GTNVALN3VAY";
+  const [walletState, setWalletState] = useState(() =>
+    typeof window !== "undefined" ? walletStore.getState() : { address: null, balance: 10.0, connected: false }
+  );
+  const [realHistory, setRealHistory] = useState<ReportHistoryEntry[]>([]);
 
-  const [history, setHistory] = useState<AuditHistoryItem[]>([
-    {
-      id: "ANL-98421",
-      contractName: "TokenVault.sol",
-      date: "2026-08-07",
-      riskLevel: "High",
-      txId: "F5X4J9A2K7839102938472910293847281903847",
-      confirmedRound: 48291231,
-    },
-    {
-      id: "ANL-98418",
-      contractName: "StakingPool.teal",
-      date: "2026-08-06",
-      riskLevel: "Low",
-      txId: "A910238472910293847281903847F5X4J9A2K78",
-      confirmedRound: 48289410,
-    },
-  ]);
-
-  const [balance, setBalance] = useState("10.0");
+  const refreshWallet = () => setWalletState(walletStore.getState());
+  const refreshHistory = () => setRealHistory(reportHistory.getHistory());
 
   useEffect(() => {
-    fetch(`/api/wallet/balance?address=${activeAddr}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.balance) {
-          setBalance(data.balance);
-        }
-      })
-      .catch(() => setBalance("9.0"));
-  }, [activeAddr]);
+    refreshWallet();
+    refreshHistory();
+
+    window.addEventListener("wallet-balance-updated", refreshWallet);
+    window.addEventListener("report-history-updated", refreshHistory);
+
+    return () => {
+      window.removeEventListener("wallet-balance-updated", refreshWallet);
+      window.removeEventListener("report-history-updated", refreshHistory);
+    };
+  }, []);
+
+  const activeAddr =
+    walletState.address || "PIKPW7D6G4RCGAU35ACWQWGXDCOYYGGD35L3BTNU27CGVU7GTNVALN3VAY";
+
+  // Combine real user history from localStorage with demo history fallback
+  const displayHistory = realHistory.length > 0 ? realHistory : demoHistory;
+  const isRealData = realHistory.length > 0;
+
+  const handleClearHistory = () => {
+    reportHistory.clearHistory();
+    refreshHistory();
+  };
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -77,7 +90,7 @@ export default function UserAccountPage() {
 
         <Link
           href="/upload"
-          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-bold text-white bg-brand-primary hover:bg-blue-700 transition rounded-xl shadow-sm"
+          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-bold text-white bg-brand-primary hover:bg-blue-700 transition rounded-xl shadow-sm hover:scale-105"
         >
           Analyze New Contract
           <ArrowRight className="h-4 w-4" />
@@ -96,7 +109,7 @@ export default function UserAccountPage() {
               <span className="text-xs font-semibold text-slate-400 block uppercase">Wallet Identity</span>
               <span className="text-xs font-bold text-emerald-600 flex items-center gap-1">
                 <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                Active Session
+                {walletState.connected ? "Connected Wallet" : "Demo Auditor Session"}
               </span>
             </div>
           </div>
@@ -117,8 +130,10 @@ export default function UserAccountPage() {
             </div>
           </div>
           <div className="bg-slate-50 p-3 rounded-xl border border-slate-100 flex justify-between items-center">
-            <span className="text-xs text-slate-500 font-medium">TestNet Balance</span>
-            <span className="text-sm font-extrabold text-slate-900 font-mono">{balance} ALGO</span>
+            <span className="text-xs text-slate-500 font-medium">Available Balance</span>
+            <span className="text-sm font-extrabold text-slate-900 font-mono">
+              {walletState.balance.toFixed(1)} ALGO
+            </span>
           </div>
         </div>
 
@@ -133,8 +148,8 @@ export default function UserAccountPage() {
               <span className="text-xs font-bold text-emerald-600">Enterprise Verified</span>
             </div>
           </div>
-          <div className="bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs text-slate-600">
-            x402 Pay-Gated • HMAC-SHA256 Authenticated
+          <div className="bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs text-slate-600 font-medium">
+            x402 Pay-Gated • HMAC-SHA256 Notarized
           </div>
         </div>
       </div>
@@ -146,53 +161,73 @@ export default function UserAccountPage() {
             <FileText className="h-5 w-5 text-brand-primary" />
             <h2 className="text-lg font-bold text-slate-900">Your Audited Documents & Certificates</h2>
           </div>
-          <span className="text-xs font-semibold text-slate-400 bg-slate-100 px-2.5 py-1 rounded-full">
-            {history.length} Audits
-          </span>
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-semibold text-slate-600 bg-slate-100 px-3 py-1 rounded-full">
+              {displayHistory.length} {displayHistory.length === 1 ? "Audit" : "Audits"}
+            </span>
+            {isRealData && (
+              <button
+                onClick={handleClearHistory}
+                title="Clear user history"
+                className="p-1 text-slate-400 hover:text-red-500 transition"
+              >
+                <Trash2 className="h-4 w-4" />
+              </button>
+            )}
+          </div>
         </div>
 
         <div className="divide-y divide-slate-100">
-          {history.map((item) => (
-            <div key={item.id} className="p-6 hover:bg-slate-50/60 transition flex flex-col sm:flex-row justify-between sm:items-center gap-4">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <span className="font-bold text-slate-900 text-base">{item.contractName}</span>
-                  <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full border ${
-                    item.riskLevel === "High" 
-                      ? "bg-red-50 text-red-600 border-red-200" 
-                      : "bg-emerald-50 text-emerald-600 border-emerald-200"
-                  }`}>
-                    {item.riskLevel} Risk
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 text-xs text-slate-500 font-mono">
-                  <span>ID: {item.id}</span>
-                  <span>•</span>
-                  <span>Date: {item.date}</span>
-                  <span>•</span>
-                  <span>Round: #{item.confirmedRound}</span>
-                </div>
-              </div>
+          {displayHistory.map((item) => {
+            const riskKey = item.riskLevel.toLowerCase();
+            const isHigh = riskKey.includes("high");
+            const isMedium = riskKey.includes("medium");
 
-              <div className="flex items-center gap-3">
-                <Link
-                  href={`/report/${item.id}`}
-                  className="px-4 py-2 text-xs font-bold text-brand-primary bg-blue-50 hover:bg-blue-100 rounded-xl transition"
-                >
-                  View Report & Certificate 📄
-                </Link>
-                <a
-                  href={`https://testnet.explorer.perawallet.app/tx/${item.txId}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-3 py-2 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition flex items-center gap-1"
-                >
-                  Pera Explorer
-                  <ExternalLink className="h-3.5 w-3.5" />
-                </a>
+            return (
+              <div
+                key={item.id}
+                className="p-6 hover:bg-slate-50/60 transition flex flex-col sm:flex-row justify-between sm:items-center gap-4"
+              >
+                <div className="space-y-1.5">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="font-bold text-slate-900 text-base">{item.fileName}</span>
+                    <span
+                      className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full border ${
+                        isHigh
+                          ? "bg-red-50 text-red-600 border-red-200"
+                          : isMedium
+                          ? "bg-amber-50 text-amber-600 border-amber-200"
+                          : "bg-emerald-50 text-emerald-600 border-emerald-200"
+                      }`}
+                    >
+                      {item.riskLevel} Risk
+                    </span>
+                    <span className="text-xs font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100">
+                      {item.feeAlgo} ALGO Paid
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3 text-xs text-slate-500 font-mono flex-wrap">
+                    <span>ID: {item.id}</span>
+                    <span>•</span>
+                    <span>Type: {item.contractType || "Smart Contract"}</span>
+                    <span>•</span>
+                    <span>
+                      Date: {new Date(item.date).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3 shrink-0">
+                  <Link
+                    href={`/report/${item.id}`}
+                    className="px-4 py-2 text-xs font-bold text-brand-primary bg-blue-50 hover:bg-blue-100 rounded-xl transition flex items-center gap-1.5"
+                  >
+                    View Report & Certificate 📄
+                  </Link>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>
