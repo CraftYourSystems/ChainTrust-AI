@@ -1,15 +1,15 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { 
-  ShieldCheck, 
-  Upload, 
-  CreditCard, 
-  BrainCircuit, 
-  Link2, 
-  Zap, 
-  Coins, 
+import {
+  ShieldCheck,
+  Upload,
+  CreditCard,
+  BrainCircuit,
+  Link2,
+  Zap,
+  Coins,
   Database,
   ArrowRight,
   Award,
@@ -18,12 +18,214 @@ import {
   CheckCircle2,
   Lock,
   Code2,
-  Terminal
+  Terminal,
+  X,
+  ExternalLink,
+  FlaskConical,
 } from "lucide-react";
 
+// ─── Demo Preview Modal ──────────────────────────────────────────────────────
+type DemoModalProps = {
+  title: string;
+  badge: string;
+  badgeColor: string;
+  children: React.ReactNode;
+  onClose: () => void;
+};
+
+function DemoModal({ title, badge, badgeColor, children, onClose }: DemoModalProps) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 backdrop-blur-md p-4">
+      <div className="bg-white rounded-3xl w-full max-w-lg shadow-2xl border border-slate-200 relative animate-in fade-in zoom-in duration-200 overflow-hidden">
+        {/* Demo banner */}
+        <div className={`w-full py-2 text-center text-xs font-extrabold tracking-widest uppercase flex items-center justify-center gap-2 ${badgeColor}`}>
+          <FlaskConical className="h-3.5 w-3.5" />
+          Demo Preview — No Real Transaction
+        </div>
+
+        <div className="p-6">
+          <button
+            onClick={onClose}
+            className="absolute top-10 right-4 text-slate-400 hover:text-slate-700 p-1.5 hover:bg-slate-100 rounded-lg transition"
+          >
+            <X className="h-5 w-5" />
+          </button>
+
+          <h3 className="text-lg font-extrabold text-slate-900 mb-4">{title}</h3>
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function HomePage() {
+  const [activeDemo, setActiveDemo] = useState<string | null>(null);
+
+  const demos: Record<string, React.ReactNode> = {
+    payment: (
+      <div className="space-y-4 text-xs text-slate-600">
+        <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 space-y-2">
+          <div className="flex justify-between items-center">
+            <span className="font-semibold text-slate-700">Required Amount</span>
+            <span className="font-black text-amber-700 text-base font-mono">1.0 ALGO</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-slate-500">Protocol</span>
+            <span className="font-mono text-amber-600 font-bold">HTTP 402</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-slate-500">Network</span>
+            <span className="font-bold text-slate-700">Algorand TestNet</span>
+          </div>
+        </div>
+        <div className="bg-slate-900 text-emerald-400 rounded-xl p-4 font-mono text-[11px] space-y-1">
+          <p className="text-slate-400"># HTTP Response Headers</p>
+          <p>HTTP/1.1 402 Payment Required</p>
+          <p>X-Payment-Amount: 1000000</p>
+          <p>X-Payment-Asset: ALGO</p>
+          <p>X-Payment-Receiver: DH3A...R6HE</p>
+        </div>
+        <div className="flex items-center gap-2 p-3 bg-blue-50 border border-blue-200 rounded-xl text-blue-700 font-semibold">
+          <Zap className="h-4 w-4 shrink-0" />
+          In the real flow: upload a contract → connect wallet → pay → get your report.
+        </div>
+      </div>
+    ),
+
+    nft: (
+      <div className="space-y-4 text-xs text-slate-600">
+        <div className="bg-slate-900 rounded-2xl p-5 text-center space-y-3">
+          <div className="mx-auto w-14 h-14 bg-amber-500/20 rounded-2xl flex items-center justify-center">
+            <Award className="h-8 w-8 text-amber-400" />
+          </div>
+          <div>
+            <p className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest">
+              Algorand Standard Asset (ASA)
+            </p>
+            <p className="text-white font-extrabold text-base">ChainTrust Audit Badge</p>
+            <p className="text-slate-400 text-[11px]">Unit Name: AUDITNFT • Total Supply: 1 (Non-Fungible)</p>
+          </div>
+        </div>
+        <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-1.5 font-mono">
+          <div className="flex justify-between">
+            <span className="text-slate-400">Asset ID</span>
+            <span className="font-bold text-slate-700">12345678</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-slate-400">Creator</span>
+            <span className="font-bold text-slate-700">PIKPW7...N3VAY</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-slate-400">Status</span>
+            <span className="text-emerald-600 font-bold">✓ Opted In</span>
+          </div>
+        </div>
+        <p className="text-slate-400 italic text-center">
+          The Proof-of-Audit NFT is minted automatically after you generate a real report.
+        </p>
+      </div>
+    ),
+
+    notary: (
+      <div className="space-y-4 text-xs text-slate-600">
+        <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2 font-mono">
+          <p className="text-[11px] text-slate-400 uppercase font-bold font-sans">Sample ARC Note Field</p>
+          <pre className="text-emerald-700 text-[11px] whitespace-pre-wrap break-all bg-white border border-slate-200 rounded-lg p-3">
+{`chaintrust:proof:v1:b3b1b1ab12e4a7d5362110b2
+b8580283c3d5b58a4d8b64244b7be58f1a2ab24e
+:e3b0c44298fc1c149afbf4c8996fb92427ae41e4`}
+          </pre>
+        </div>
+        <div className="space-y-2">
+          <div className="flex justify-between items-center p-2 bg-slate-50 rounded-lg border border-slate-200">
+            <span className="text-slate-500">Algorithm</span>
+            <span className="font-bold text-slate-700">RFC 8785 + SHA-256</span>
+          </div>
+          <div className="flex justify-between items-center p-2 bg-slate-50 rounded-lg border border-slate-200">
+            <span className="text-slate-500">Confirmed Block</span>
+            <span className="font-mono font-bold text-slate-700">#48291231</span>
+          </div>
+          <div className="flex justify-between items-center p-2 bg-slate-50 rounded-lg border border-slate-200">
+            <span className="text-slate-500">Chain</span>
+            <span className="font-bold text-emerald-600">Algorand TestNet ✓</span>
+          </div>
+        </div>
+        <p className="text-slate-400 italic text-center">
+          Notary data is generated live after your real report is produced.
+        </p>
+      </div>
+    ),
+
+    verify: (
+      <div className="space-y-4 text-xs text-slate-600">
+        <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 space-y-1 text-center">
+          <CheckCircle2 className="h-8 w-8 text-emerald-500 mx-auto" />
+          <p className="font-black text-emerald-700 text-sm">✓ 100% CRYPTOGRAPHICALLY VERIFIED</p>
+          <p className="text-slate-500 text-[11px]">
+            SHA-256 hash matches the immutable record on Algorand.
+          </p>
+        </div>
+        <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-1.5 font-mono">
+          <div className="flex justify-between">
+            <span className="text-slate-400">Report ID</span>
+            <span className="text-cyan-600 font-bold">ANL-58440</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-slate-400">On-Chain Hash</span>
+            <span className="text-slate-700 font-bold truncate max-w-[180px]">b3b1b1ab...2ab24e</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-slate-400">Block Round</span>
+            <span className="font-bold text-slate-700">#48291231</span>
+          </div>
+        </div>
+        <p className="text-slate-400 italic text-center">
+          After generating a real report, you can verify it using the Notary & Verify buttons on your Certificate page.
+        </p>
+      </div>
+    ),
+
+    ai: (
+      <div className="space-y-4 text-xs text-slate-600">
+        <div className="bg-slate-900 rounded-2xl p-4 font-mono text-[11px] text-slate-300 space-y-1 leading-relaxed">
+          <p className="text-purple-400"># AI Risk Analysis Output (Sample)</p>
+          <p><span className="text-slate-400">contract:</span> TokenVault.sol</p>
+          <p><span className="text-slate-400">risk_score:</span> <span className="text-red-400 font-bold">78/100 (HIGH)</span></p>
+          <p><span className="text-slate-400">critical_findings:</span></p>
+          <p className="pl-3 text-red-300">- Reentrancy in withdrawBalance()</p>
+          <p className="pl-3 text-amber-300">- Uncapped indemnification (§4.2)</p>
+          <p className="pl-3 text-amber-300">- Missing ReentrancyGuard</p>
+          <p><span className="text-slate-400">model:</span> <span className="text-emerald-400">gemini-2.0-flash</span></p>
+        </div>
+        <div className="flex items-center gap-2 p-3 bg-purple-50 border border-purple-200 rounded-xl text-purple-700 font-semibold">
+          <BrainCircuit className="h-4 w-4 shrink-0" />
+          Upload any .sol, .teal, .pdf or .docx to run a real AI analysis.
+        </div>
+      </div>
+    ),
+  };
+
   return (
     <div className="space-y-28 py-12">
+      {/* Demo Modal */}
+      {activeDemo && (
+        <DemoModal
+          title={
+            activeDemo === "payment" ? "x402 Payment Gateway — Demo Preview" :
+            activeDemo === "nft"     ? "Proof-of-Audit ASA NFT — Demo Preview" :
+            activeDemo === "notary"  ? "SHA-256 Canonical Notary — Demo Preview" :
+            activeDemo === "verify"  ? "Tamper Verification — Demo Preview" :
+                                       "AI Risk Scoring Engine — Demo Preview"
+          }
+          badge="Demo"
+          badgeColor="bg-amber-100 text-amber-700"
+          onClose={() => setActiveDemo(null)}
+        >
+          {demos[activeDemo]}
+        </DemoModal>
+      )}
+
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-8 pb-12">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-8">
@@ -52,18 +254,18 @@ export default function HomePage() {
               <ArrowRight className="h-5 w-5" />
             </Link>
 
-            <Link
-              href="/payment"
+            <button
+              onClick={() => setActiveDemo("payment")}
               className="px-8 py-4 text-base font-bold text-slate-700 bg-white hover:bg-slate-50 transition rounded-xl border border-slate-200 shadow-sm flex items-center gap-2"
             >
               <CreditCard className="h-5 w-5 text-amber-500" />
               x402 Pay Gateway
-            </Link>
+            </button>
           </div>
         </div>
       </section>
 
-      {/* Advanced Blockchain Features & Purpose Explanation Section */}
+      {/* Advanced Blockchain Features Section */}
       <section id="features" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16 space-y-3">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-50 text-brand-primary text-xs font-mono font-bold border border-blue-100">
@@ -78,6 +280,7 @@ export default function HomePage() {
           </p>
         </div>
 
+        {/* 5-card grid — card 3 (Multisig) removed */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Feature 1: x402 Pay-Gate */}
           <div className="bg-white p-8 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl transition space-y-4 flex flex-col justify-between">
@@ -90,12 +293,13 @@ export default function HomePage() {
                 <strong className="text-slate-700">Purpose:</strong> Replaces expensive monthly subscriptions with per-request 1.0 ALGO micro-payments. API endpoints return <code className="text-amber-700 font-mono">HTTP 402 Payment Required</code> until confirmed on-chain.
               </p>
             </div>
-            <Link
-              href="/payment"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-700 hover:text-amber-800 pt-2"
+            <button
+              onClick={() => setActiveDemo("payment")}
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-700 hover:text-amber-800 pt-2 group"
             >
+              <FlaskConical className="h-3.5 w-3.5 text-amber-500" />
               Launch Payment Gateway ⚡ ➔
-            </Link>
+            </button>
           </div>
 
           {/* Feature 2: ASA Audit NFT Badges */}
@@ -109,88 +313,73 @@ export default function HomePage() {
                 <strong className="text-slate-700">Purpose:</strong> Mints an official Algorand Standard Asset (<code className="text-amber-700 font-mono">Unit: AUDITNFT</code>) directly into the auditor's Web3 wallet as non-fungible proof of compliance.
               </p>
             </div>
-            <Link
-              href="/nft-badge"
+            <button
+              onClick={() => setActiveDemo("nft")}
               className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-600 hover:text-amber-700 pt-2"
             >
+              <FlaskConical className="h-3.5 w-3.5 text-amber-400" />
               Mint ASA Audit NFT 🏆 ➔
-            </Link>
+            </button>
           </div>
 
-          {/* Feature 3: Multisig Governance */}
-          <div className="bg-white p-8 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl transition space-y-4 flex flex-col justify-between">
-            <div className="space-y-3">
-              <div className="p-3 bg-blue-50 text-brand-primary rounded-2xl w-fit">
-                <Users className="h-6 w-6" />
-              </div>
-              <h3 className="text-lg font-bold text-slate-900">3. 2-of-3 Multisig Governance</h3>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                <strong className="text-slate-700">Purpose:</strong> Requires co-signatures from security auditor, AI key, and client officer before issuing enterprise-grade certificates on high-value contracts.
-              </p>
-            </div>
-            <Link
-              href="/nft-badge"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-primary hover:text-blue-700 pt-2"
-            >
-              Inspect Multisig Governance 🏛️ ➔
-            </Link>
-          </div>
-
-          {/* Feature 4: SHA-256 Canonical Notary */}
+          {/* Feature 3: SHA-256 Canonical Notary */}
           <div className="bg-white p-8 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl transition space-y-4 flex flex-col justify-between">
             <div className="space-y-3">
               <div className="p-3 bg-emerald-50 text-emerald-600 rounded-2xl w-fit">
                 <Database className="h-6 w-6" />
               </div>
-              <h3 className="text-lg font-bold text-slate-900">4. SHA-256 Canonical Notary</h3>
+              <h3 className="text-lg font-bold text-slate-900">3. SHA-256 Canonical Notary</h3>
               <p className="text-xs text-slate-500 leading-relaxed">
                 <strong className="text-slate-700">Purpose:</strong> Implements RFC 8785 JSON canonicalization to compute deterministic 64-character report fingerprints anchored into Algorand transaction note fields.
               </p>
             </div>
-            <Link
-              href="/notary"
+            <button
+              onClick={() => setActiveDemo("notary")}
               className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 hover:text-emerald-700 pt-2"
             >
+              <FlaskConical className="h-3.5 w-3.5 text-emerald-400" />
               Open Ledger Notary ⛓️ ➔
-            </Link>
+            </button>
           </div>
 
-          {/* Feature 5: Public Tamper Verification */}
+          {/* Feature 4: Public Tamper Verification */}
           <div className="bg-white p-8 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl transition space-y-4 flex flex-col justify-between">
             <div className="space-y-3">
               <div className="p-3 bg-cyan-50 text-cyan-600 rounded-2xl w-fit">
                 <ShieldCheck className="h-6 w-6" />
               </div>
-              <h3 className="text-lg font-bold text-slate-900">5. Public Tamper Verification</h3>
+              <h3 className="text-lg font-bold text-slate-900">4. Public Tamper Verification</h3>
               <p className="text-xs text-slate-500 leading-relaxed">
                 <strong className="text-slate-700">Purpose:</strong> Allows anyone to upload a report JSON file to publicly verify its cryptographic SHA-256 hash against the Algorand blockchain in real-time.
               </p>
             </div>
-            <Link
-              href="/verify"
+            <button
+              onClick={() => setActiveDemo("verify")}
               className="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-600 hover:text-cyan-700 pt-2"
             >
+              <FlaskConical className="h-3.5 w-3.5 text-cyan-400" />
               Open Verification Portal 🛡️ ➔
-            </Link>
+            </button>
           </div>
 
-          {/* Feature 6: TEAL Smart Contract State */}
+          {/* Feature 5: AI Risk Scoring Engine */}
           <div className="bg-white p-8 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl transition space-y-4 flex flex-col justify-between">
             <div className="space-y-3">
               <div className="p-3 bg-purple-50 text-purple-600 rounded-2xl w-fit">
                 <BrainCircuit className="h-6 w-6" />
               </div>
-              <h3 className="text-lg font-bold text-slate-900">6. AI Risk Scoring Engine</h3>
+              <h3 className="text-lg font-bold text-slate-900">5. AI Risk Scoring Engine</h3>
               <p className="text-xs text-slate-500 leading-relaxed">
                 <strong className="text-slate-700">Purpose:</strong> Evaluates legal clauses, reentrancy vulnerabilities, and compliance rulesets with structured executive summary outputs.
               </p>
             </div>
-            <Link
-              href="/ai-ingestion"
+            <button
+              onClick={() => setActiveDemo("ai")}
               className="inline-flex items-center gap-1.5 text-xs font-bold text-purple-600 hover:text-purple-700 pt-2"
             >
+              <FlaskConical className="h-3.5 w-3.5 text-purple-400" />
               Open AI Ingestion Engine 🧠 ➔
-            </Link>
+            </button>
           </div>
         </div>
       </section>
