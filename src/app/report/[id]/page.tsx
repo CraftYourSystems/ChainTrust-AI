@@ -36,14 +36,14 @@ function NotaryModal({
   onClose: () => void;
 }) {
   const [copied, setCopied] = useState(false);
-  const txId = report.verification?.transactionId || 'F5X4J9A2K7839102938472910293847281903847';
-  const round = report.verification?.confirmedRound || 48291231;
-  const reportHash =
-    report.verification?.reportHash ||
-    'b3b1b1ab12e4a7d5362110b2b8580283c3d5b58a4d8b64244b7be58f1a2ab24e';
-  const notePayload = `chaintrust:proof:v1:${reportHash}:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`;
+  const txId = report.verification?.transactionId || null;
+  const round = report.verification?.confirmedRound || null;
+  const reportHash = report.verification?.reportHash || null;
+  const anchored = Boolean(txId);
+  const notePayload = `chaintrust:proof:v1:${reportHash || 'Computed when anchored'}:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`;
 
   const handleCopy = () => {
+    if (!txId) return;
     navigator.clipboard.writeText(txId);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -67,7 +67,7 @@ function NotaryModal({
             <h3 className="font-bold text-white text-base">On-Chain Notary Proof</h3>
             <span className="text-xs text-emerald-400 font-mono flex items-center gap-1">
               <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-              CONFIRMED ON ALGORAND BLOCK #{round}
+              {anchored ? `CONFIRMED ON ALGORAND BLOCK #${round}` : 'NOT YET ANCHORED ON-CHAIN'}
             </span>
           </div>
         </div>
@@ -78,7 +78,7 @@ function NotaryModal({
               Algorand TxID
             </span>
             <div className="flex items-center justify-between">
-              <span className="font-mono text-xs text-slate-200 truncate select-all mr-2">{txId}</span>
+              <span className="font-mono text-xs text-slate-200 truncate select-all mr-2">{txId || 'Awaiting on-chain record'}</span>
               <button onClick={handleCopy} className="text-slate-400 hover:text-white p-1 transition">
                 {copied ? (
                   <Check className="h-4 w-4 text-emerald-400" />
@@ -93,7 +93,7 @@ function NotaryModal({
             <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
               SHA-256 Report Fingerprint
             </span>
-            <span className="font-mono text-xs text-emerald-300 break-all select-all">{reportHash}</span>
+            <span className="font-mono text-xs text-emerald-300 break-all select-all">{reportHash || 'Computed when anchored'}</span>
           </div>
 
           <div className="space-y-2">
@@ -106,7 +106,7 @@ function NotaryModal({
           </div>
 
           <a
-            href={`https://testnet.explorer.perawallet.app/tx/${txId}`}
+            href={`https://testnet.explorer.perawallet.app/tx/${txId || 'Awaiting on-chain record'}`}
             target="_blank"
             rel="noopener noreferrer"
             className="w-full inline-flex items-center justify-center gap-2 py-2.5 text-xs font-bold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 px-4 rounded-xl border border-slate-700 transition"
@@ -130,17 +130,17 @@ function VerifyModal({
 }) {
   const [loading, setLoading] = useState(false);
   const [verified, setVerified] = useState<boolean | null>(null);
-  const txId = report.verification?.transactionId || 'F5X4J9A2K7839102938472910293847281903847';
-  const confirmedRound = report.verification?.confirmedRound || 48291231;
-  const recordedHash =
-    report.verification?.reportHash ||
-    'b3b1b1ab12e4a7d5362110b2b8580283c3d5b58a4d8b64244b7be58f1a2ab24e';
+  const txId = report.verification?.transactionId || null;
+  const confirmedRound = report.verification?.confirmedRound || null;
+  const recordedHash = report.verification?.reportHash || null;
+  const anchored = Boolean(txId);
 
   const handleVerify = async () => {
     setLoading(true);
     setVerified(null);
-    await new Promise((r) => setTimeout(r, 1800)); // simulate verification
-    setVerified(true);
+    await new Promise((r) => setTimeout(r, 800));
+    // Only a real on-chain record can verify a report.
+    setVerified(anchored);
     setLoading(false);
   };
 
@@ -171,15 +171,15 @@ function VerifyModal({
           </div>
           <div className="flex justify-between">
             <span className="text-slate-400">Algorand TxID:</span>
-            <span className="text-slate-300 truncate max-w-[220px]">{txId}</span>
+            <span className="text-slate-300 truncate max-w-[220px]">{txId || 'Awaiting on-chain record'}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-slate-400">Block Round:</span>
-            <span className="text-slate-200 font-bold">#{confirmedRound}</span>
+            <span className="text-slate-200 font-bold">#{confirmedRound ?? '—'}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-slate-400">On-Chain Hash:</span>
-            <span className="text-amber-300 truncate max-w-[220px]">{recordedHash}</span>
+            <span className="text-amber-300 truncate max-w-[220px]">{recordedHash || 'No on-chain record'}</span>
           </div>
         </div>
 
@@ -212,7 +212,7 @@ function VerifyModal({
           </button>
 
           <a
-            href={`https://testnet.explorer.perawallet.app/tx/${txId}`}
+            href={`https://testnet.explorer.perawallet.app/tx/${txId || 'Awaiting on-chain record'}`}
             target="_blank"
             rel="noopener noreferrer"
             className="w-full inline-flex items-center justify-center gap-2 py-2.5 text-xs font-bold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 px-4 rounded-xl border border-slate-700 transition"
@@ -265,22 +265,14 @@ export default function ReportDetailPage() {
     fetchReport();
   }, [id]);
 
-  const getReportHash = () => {
-    if (report?.verification?.reportHash) return report.verification.reportHash;
-    if (!report) return '';
-    const seed = report.executiveSummary + report.analysisId;
-    let hash = 0;
-    for (let i = 0; i < seed.length; i++) {
-      hash = (hash << 5) - hash + seed.charCodeAt(i);
-      hash |= 0;
-    }
-    const hex =
-      Math.abs(hash).toString(16).padStart(8, '0') +
-      Math.abs(hash * 31).toString(16).padStart(8, '0') +
-      Math.abs(hash * 17).toString(16).padStart(8, '0') +
-      Math.abs(hash * 13).toString(16).padStart(8, '0');
-    return hex.slice(0, 40);
-  };
+  // Only ever show a hash the blockchain layer actually produced. Deriving a
+  // hash-looking string on the client would be presenting fabricated proof.
+  const getReportHash = () => report?.verification?.reportHash || null;
+
+  // The certificate is only "certified" once the ledger layer has recorded it.
+  const isAnchored = Boolean(
+    report?.verification?.status === 'Verified' && report?.verification?.transactionId
+  );
 
   const handleAnalyzeNew = () => {
     // Clear payment state so next upload requires payment again
@@ -363,7 +355,6 @@ export default function ReportDetailPage() {
           <div className="space-y-6">
             <RiskGauge score={report.overallRisk} level={report.riskLevel} />
 
-            {/* Blockchain Certificate Panel */}
             <div className="bg-slate-900 text-white rounded-2xl p-6 shadow-xl border border-slate-800">
               <div className="flex items-center gap-2 pb-4 mb-4 border-b border-slate-800">
                 <div className="p-1.5 bg-blue-500/20 text-blue-400 rounded-lg">
@@ -377,10 +368,17 @@ export default function ReportDetailPage() {
               <div className="space-y-4">
                 <div className="flex justify-between items-center text-xs">
                   <span className="text-slate-400 font-medium">Status</span>
-                  <span className="inline-flex items-center gap-1.5 font-bold text-emerald-400 bg-emerald-950/60 px-2.5 py-1 rounded-full border border-emerald-500/30">
-                    <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
-                    ✓ ON-CHAIN CERTIFIED
-                  </span>
+                  {isAnchored ? (
+                    <span className="inline-flex items-center gap-1.5 font-bold text-emerald-400 bg-emerald-950/60 px-2.5 py-1 rounded-full border border-emerald-500/30">
+                      <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
+                      ✓ ON-CHAIN CERTIFIED
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1.5 font-bold text-amber-400 bg-amber-950/60 px-2.5 py-1 rounded-full border border-amber-500/30">
+                      <span className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
+                      PENDING ANCHORING
+                    </span>
+                  )}
                 </div>
 
                 <div className="bg-slate-800/80 rounded-xl p-4 space-y-3 border border-slate-700/50">
@@ -391,13 +389,15 @@ export default function ReportDetailPage() {
                   <div className="text-xs">
                     <span className="text-slate-400 block mb-1">Confirmed Round</span>
                     <span className="font-mono text-slate-200 font-bold">
-                      #{report.verification?.confirmedRound || '48291231'}
+                      {report.verification?.confirmedRound
+                        ? `#${report.verification.confirmedRound}`
+                        : 'Not yet recorded'}
                     </span>
                   </div>
                   <div className="text-xs">
                     <span className="text-slate-400 block mb-1">Transaction ID</span>
                     <span className="font-mono text-blue-400 break-all select-all text-[11px]">
-                      {report.verification?.transactionId || 'F5X4J9A2K78391029384729102938472'}
+                      {report.verification?.transactionId || 'Awaiting on-chain record'}
                     </span>
                   </div>
                   <div className="text-xs">
@@ -409,7 +409,7 @@ export default function ReportDetailPage() {
                       />
                     </div>
                     <span className="font-mono text-slate-300 break-all select-all text-[10px]">
-                      {getReportHash()}
+                      {getReportHash() || 'Computed when the report is anchored'}
                     </span>
                   </div>
                 </div>
@@ -430,17 +430,20 @@ export default function ReportDetailPage() {
                     <ShieldCheck className="h-3.5 w-3.5" />
                     Verify Authenticity 🛡️
                   </button>
-                  <a
-                    href={
-                      report.verification?.explorerUrl ||
-                      `https://testnet.explorer.perawallet.app/tx/${report.verification?.transactionId || 'F5X4J9A2K78391029384729102938472'}`
-                    }
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 text-xs font-semibold text-slate-300 bg-slate-800 hover:bg-slate-700 transition-colors rounded-xl border border-slate-700"
-                  >
-                    View on Pera Explorer 🔗
-                  </a>
+                  {/* Explorer link only when a real transaction exists. */}
+                  {isAnchored && (
+                    <a
+                      href={
+                        report.verification?.explorerUrl ||
+                        `https://testnet.explorer.perawallet.app/tx/${report.verification?.transactionId}`
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 text-xs font-semibold text-slate-300 bg-slate-800 hover:bg-slate-700 transition-colors rounded-xl border border-slate-700"
+                    >
+                      View on Pera Explorer 🔗
+                    </a>
+                  )}
                 </div>
               </div>
             </div>

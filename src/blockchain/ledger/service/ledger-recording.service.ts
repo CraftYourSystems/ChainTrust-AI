@@ -16,6 +16,50 @@ export class LedgerRecordingService {
   }
 
   /**
+   * Anchors a proof without touching Postgres.
+   *
+   * recordProofOnLedger() below is the full pipeline: it reads the Report and
+   * HashRecord rows, persists a LedgerRecord, and requires an authenticated
+   * session. Reports produced by the Python AI engine have no database rows,
+   * so this variant takes the hashes directly and does nothing but sign and
+   * submit. It reuses the same note format, platform wallet, and algod client.
+   *
+   * Throws on failure — the caller decides how to degrade.
+   */
+  async recordProofDirect(reportHash: string, contractHash: string) {
+    const noteString = this.formatNotePayload(reportHash, contractHash);
+    const noteBytes = new Uint8Array(Buffer.from(noteString, "utf8"));
+
+    const platformAccount = platformWalletService.getAccount();
+    const rawAddr = platformAccount.addr;
+    const sender = typeof rawAddr === "string" ? rawAddr : (rawAddr as any).toString();
+
+    const params = await algorandClient.algod.getTransactionParams().do();
+    const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+      sender,
+      receiver: sender,
+      amount: 0,
+      note: noteBytes,
+      suggestedParams: params
+    });
+
+    const signedTxn = txn.signTxn(platformAccount.sk);
+    const txId = txn.txID();
+
+    await algorandClient.algod.sendRawTransaction(signedTxn).do();
+    const confirmation = await algosdk.waitForConfirmation(algorandClient.algod, txId, 4);
+    const confirmedRound =
+      confirmation.confirmedRound || (confirmation as any)["confirmed-round"] || 0;
+
+    return {
+      txId,
+      confirmedRound: confirmedRound.toString(),
+      senderAddress: sender,
+      notePayload: noteString
+    };
+  }
+
+  /**
    * Submits a zero-ALGO proof transaction to Algorand with exponential backoff retries.
    */
   async recordProofOnLedger(userId: string, reportId: string) {

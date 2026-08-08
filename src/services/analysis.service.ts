@@ -2,187 +2,133 @@ import { DueDiligenceReport, ProgressStep } from '../types/analysis';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
+const REPORT_KEY = (id: string) => `report:${id}`;
+
 export class AnalysisService {
   /**
-   * Calls POST /analyze on the FastAPI backend
+   * Uploads the contract to the Python FastAPI engine and returns the real
+   * DueDiligenceReport.
+   *
+   * There is no fallback report. If the backend fails, this throws and the
+   * caller shows the error — fabricating an analysis would be worse than
+   * showing nothing.
    */
   static async analyzeContract(
     file: File,
     onProgress: (step: ProgressStep) => void
   ): Promise<DueDiligenceReport> {
-    onProgress({ percentage: 15, message: 'Uploading contract to API server...' });
+    onProgress({ percentage: 10, message: 'Uploading contract to analysis engine...' });
 
     const formData = new FormData();
     formData.append('file', file);
 
-    onProgress({ percentage: 40, message: 'AI model analyzing document clauses & legal risks...' });
+    onProgress({ percentage: 30, message: 'Extracting document text...' });
 
-    let response: Response | null = null;
+    let response: Response;
     try {
-      // First try Next.js internal API route /api/analysis/submit
-      response = await fetch('/api/analysis/submit', {
+      // No Content-Type header: the browser must set the multipart boundary.
+      response = await fetch(`${API_BASE_URL}/analyze`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contractText: file.name, walletAddress: "PIKPW7D6G4RCGAU35ACWQWGXDCOYYGGD35L3BTNU27CGVU7GTNVALN3VAY" }),
+        body: formData,
       });
     } catch {
-      // If endpoint fails, fall back to process.env.NEXT_PUBLIC_API_URL or local mock
-      try {
-        response = await fetch(`${API_BASE_URL}/analyze`, {
-          method: 'POST',
-          body: formData,
-        });
-      } catch {
-        response = null;
-      }
+      throw new Error(
+        `Could not reach the analysis engine at ${API_BASE_URL}. ` +
+        `Make sure the Python backend is running on port 8000.`
+      );
     }
 
-    onProgress({ percentage: 85, message: 'Structuring report response...' });
+    onProgress({ percentage: 75, message: 'AI analysing clauses and legal risk...' });
 
-    let data: DueDiligenceReport;
-
-    if (response && response.ok) {
-      data = await response.json();
-    } else {
-      // Client-side resilient fallback with 100% complete AI & Blockchain proof structure
-      const reportId = `ANL-${Math.floor(10000 + Math.random() * 90000)}`;
-      const sampleTxId = "F5X4J9A2K7839102938472910293847281903847";
-      const sampleRound = 48291231;
-      const sampleHash = "b3b1b1ab12e4a7d5362110b2b8580283c3d5b58a4d8b64244b7be58f1a2ab24e";
-
-      data = {
-        analysisId: reportId,
-        contractType: file.name.endsWith('.sol') ? 'Solidity Smart Contract' : 'Legal Agreement',
-        overallRisk: 78,
-        riskLevel: 'High',
-        executiveSummary: `Automated compliance & security audit completed for ${file.name}. Identified 1 high-risk reentrancy vector in withdrawal logic and 2 ambiguous indemnity liability clauses.`,
-        keyFindings: [
-          'High risk reentrancy vulnerability detected in balance state modification loop.',
-          'Missing explicit ReentrancyGuard modifier or Checks-Effects-Interactions pattern.',
-          'Uncapped indemnification liability clause in Section 4.2.'
-        ],
-        actionItems: [
-          'Implement OpenZeppelin ReentrancyGuard before contract deployment.',
-          'Reorder state updates prior to external contract call execution.',
-          'Cap maximum financial liability to 1x contract value.'
-        ],
-        clauses: [
-          {
-            title: 'Withdrawal Balance Logic',
-            risk: 'High',
-            reason: 'External state call occurs prior to zeroing mapping balance.',
-            recommendation: 'Update state mapping before calling msg.sender.call().'
-          },
-          {
-            title: 'Indemnification Obligations',
-            risk: 'Medium',
-            reason: 'Uncapped third-party financial liability exposure.',
-            recommendation: 'Insert mutual liability cap of $50,000 USD.'
-          }
-        ],
-        verification: {
-          status: 'Verified',
-          walletAddress: 'PIKPW7D6G4RCGAU35ACWQWGXDCOYYGGD35L3BTNU27CGVU7GTNVALN3VAY',
-          transactionId: sampleTxId,
-          confirmedRound: sampleRound,
-          reportHash: sampleHash,
-          contractHash: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
-          explorerUrl: `https://testnet.explorer.perawallet.app/tx/${sampleTxId}`
-        }
-      };
+    // fetch() does not throw on 4xx/5xx — check explicitly.
+    if (!response.ok) {
+      const body = await response.json().catch(() => null);
+      throw new Error(
+        body?.detail || body?.error || `Analysis failed (HTTP ${response.status})`
+      );
     }
 
-    // Ensure analysisId and verification metadata exist
-    if (!data.analysisId) {
-      data.analysisId = `ANL-${Math.floor(10000 + Math.random() * 90000)}`;
-    }
-    if (!data.verification) {
-      data.verification = {
-        status: 'Verified',
-        transactionId: "F5X4J9A2K7839102938472910293847281903847",
-        confirmedRound: 48291231,
-        reportHash: "b3b1b1ab12e4a7d5362110b2b8580283c3d5b58a4d8b64244b7be58f1a2ab24e",
-        explorerUrl: "https://testnet.explorer.perawallet.app/tx/F5X4J9A2K7839102938472910293847281903847"
-      };
+    const data: DueDiligenceReport = await response.json();
+
+    // The backend owns analysisId. If it is missing, something is wrong with
+    // the API contract — fail loudly rather than inventing one.
+    if (!data?.analysisId) {
+      throw new Error('Analysis engine returned a report without an analysisId.');
     }
 
-    // Cache the report in sessionStorage so report details page can render it
+    onProgress({ percentage: 90, message: 'Anchoring report proof on Algorand...' });
+
+    // Anchoring must never block or invalidate the analysis. If it fails, the
+    // report is returned unchanged with verification left Pending/Failed.
+    const verified = await AnalysisService.anchorReport(data);
+
+    onProgress({ percentage: 95, message: 'Preparing due diligence report...' });
+
+    // Hand the report to the report page. sessionStorage keeps this simple —
+    // no database is needed just to move one object between two routes.
     try {
-      sessionStorage.setItem(`report_${data.analysisId}`, JSON.stringify(data));
-      sessionStorage.setItem('latest_report', JSON.stringify(data));
+      sessionStorage.setItem(REPORT_KEY(verified.analysisId), JSON.stringify(verified));
+      sessionStorage.setItem('latest_report', JSON.stringify(verified));
     } catch (e) {
       console.warn('Could not cache report in sessionStorage', e);
     }
 
     onProgress({ percentage: 100, message: 'Ready' });
 
-    return data;
+    return verified;
   }
 
   /**
-   * Retrieves report details by ID with resilient mock fallback
+   * Records the report's SHA-256 proof on Algorand TestNet.
+   *
+   * Always resolves. On failure the report comes back with a truthful
+   * Pending/Failed verification rather than a fabricated transaction.
+   */
+  private static async anchorReport(report: DueDiligenceReport): Promise<DueDiligenceReport> {
+    try {
+      const response = await fetch('/api/ledger/anchor', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ report }),
+      });
+
+      const body = await response.json().catch(() => null);
+
+      if (body?.success && body?.data?.transactionId) {
+        return { ...report, verification: body.data };
+      }
+
+      // Anchoring did not complete. Keep the real hash when we have one.
+      return {
+        ...report,
+        verification: {
+          ...report.verification,
+          status: 'Pending',
+          reportHash: body?.data?.reportHash,
+        },
+      };
+    } catch {
+      return { ...report, verification: { ...report.verification, status: 'Pending' } };
+    }
+  }
+
+  /**
+   * Retrieves a previously analysed report from the session cache.
+   *
+   * Returns null when it is not there — the report page renders a proper
+   * "not available" state rather than fabricated data.
    */
   static async getReportById(id: string): Promise<DueDiligenceReport | null> {
     try {
-      const cached = sessionStorage.getItem(`report_${id}`) || sessionStorage.getItem('latest_report');
-      if (cached) {
-        const parsed = JSON.parse(cached) as DueDiligenceReport;
-        if (parsed.analysisId === id) {
-          return parsed;
-        }
-      }
+      const cached =
+        sessionStorage.getItem(REPORT_KEY(id)) || sessionStorage.getItem('latest_report');
+      if (!cached) return null;
+
+      const parsed = JSON.parse(cached) as DueDiligenceReport;
+      return parsed.analysisId === id ? parsed : null;
     } catch (e) {
       console.warn('Could not retrieve cached report', e);
+      return null;
     }
-
-    // Default resilient audit report data for any requested ID
-    const sampleTxId = "F5X4J9A2K7839102938472910293847281903847";
-    const sampleRound = 48291231;
-    const sampleHash = "b3b1b1ab12e4a7d5362110b2b8580283c3d5b58a4d8b64244b7be58f1a2ab24e";
-
-    const defaultReport: DueDiligenceReport = {
-      analysisId: id,
-      contractType: id.includes("98418") ? "PyTeal Smart Contract" : "Solidity Smart Contract",
-      overallRisk: id.includes("98418") ? 12 : 78,
-      riskLevel: id.includes("98418") ? "Low" : "High",
-      executiveSummary: `Automated compliance & security audit completed for contract ID ${id}. Evaluated contract state schema, reentrancy vulnerabilities, and indemnification risk factors.`,
-      keyFindings: [
-        id.includes("98418") 
-          ? "State schema checks opt-in status before updating asset balances."
-          : "High risk reentrancy vulnerability detected in balance state modification loop.",
-        "Missing explicit ReentrancyGuard modifier or Checks-Effects-Interactions pattern.",
-        "Uncapped indemnification liability clause in Section 4.2."
-      ],
-      actionItems: [
-        "Implement OpenZeppelin ReentrancyGuard before contract deployment.",
-        "Reorder state updates prior to external contract call execution.",
-        "Cap maximum financial liability to 1x contract value."
-      ],
-      clauses: [
-        {
-          title: "Withdrawal Balance Logic",
-          risk: id.includes("98418") ? "Low" : "High",
-          reason: "External state call occurs prior to zeroing mapping balance.",
-          recommendation: "Update state mapping before calling msg.sender.call()."
-        },
-        {
-          title: "Indemnification Obligations",
-          risk: "Medium",
-          reason: "Uncapped third-party financial liability exposure.",
-          recommendation: "Insert mutual liability cap of $50,000 USD."
-        }
-      ],
-      verification: {
-        status: "Verified",
-        walletAddress: "PIKPW7D6G4RCGAU35ACWQWGXDCOYYGGD35L3BTNU27CGVU7GTNVALN3VAY",
-        transactionId: sampleTxId,
-        confirmedRound: sampleRound,
-        reportHash: sampleHash,
-        contractHash: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        explorerUrl: `https://testnet.explorer.perawallet.app/tx/${sampleTxId}`
-      }
-    };
-
-    return defaultReport;
   }
 }

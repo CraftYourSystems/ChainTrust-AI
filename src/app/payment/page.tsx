@@ -48,9 +48,9 @@ function PaymentPageContent() {
   const [insufficientFunds, setInsufficientFunds] = useState(false);
 
   const receiverWallet = "DH3AHUSOLFED3M5NNZH6V2FDDCR2ZD4G6JXJFC5BNRYMWQ4AZEYWGLR6HE";
-  const confirmedRound = 48291231;
-  const sampleTxId = "F5X4J9A2K7839102938472910293847281903847";
-  const hmacSig = "hmac_sha256_7f8a9b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a";
+  // No transaction constants here by design. Until a real x402 settlement is
+  // wired, this page must not display a transaction id, confirmed round, or
+  // signature that did not come from Algorand.
 
   // Sync wallet state
   useEffect(() => {
@@ -320,12 +320,12 @@ function PaymentPageContent() {
             </div>
           )}
           {step === "success" && (
-            <div className="p-4 bg-emerald-950 border border-emerald-500/50 rounded-xl text-center space-y-1">
-              <span className="text-xs font-bold text-emerald-400 block">
-                ✓ PAYMENT CONFIRMED ON ALGORAND BLOCK #{confirmedRound}!
+            <div className="p-4 bg-amber-950 border border-amber-500/50 rounded-xl text-center space-y-1">
+              <span className="text-xs font-bold text-amber-400 block">
+                x402 PAYMENT FLOW — DEMONSTRATION ONLY
               </span>
               <span className="text-[11px] text-slate-400 block">
-                Launching AI analysis pipeline...
+                No on-chain payment was submitted. Continuing to Step 3 AI Risk Analysis...
               </span>
             </div>
           )}
@@ -345,22 +345,22 @@ function PaymentPageContent() {
           </div>
           <div className="bg-slate-950 p-4 rounded-xl border border-slate-800">
             <span className="text-slate-400 block mb-1 uppercase font-sans text-[10px]">Confirmed Round</span>
-            <span className="text-emerald-400 font-bold">#{confirmedRound}</span>
+            <span className="text-slate-500 font-bold">Not submitted</span>
           </div>
           <div className="bg-slate-950 p-4 rounded-xl border border-slate-800">
-            <span className="text-slate-400 block mb-1 uppercase font-sans text-[10px]">HMAC Signature</span>
-            <span className="text-slate-300 truncate block">{hmacSig}</span>
+            <span className="text-slate-400 block mb-1 uppercase font-sans text-[10px]">Settlement</span>
+            <span className="text-slate-300 truncate block">Off-chain demo</span>
           </div>
         </div>
         <div className="pt-2 flex justify-between items-center text-xs">
-          <span className="text-slate-400">Algorand TxID: {sampleTxId.slice(0, 16)}...</span>
+          <span className="text-slate-400">Algorand TxID: awaiting a real settlement</span>
           <a
-            href={`https://testnet.explorer.perawallet.app/tx/${sampleTxId}`}
+            href="https://testnet.explorer.perawallet.app/"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 font-bold text-blue-400 hover:text-blue-300"
           >
-            Verify on Pera Explorer
+            Open Pera TestNet Explorer
             <ExternalLink className="h-3.5 w-3.5" />
           </a>
         </div>

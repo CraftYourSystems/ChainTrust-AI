@@ -10,7 +10,9 @@ export async function GET(req: NextRequest) {
       success: true,
       data: {
         network: algorandConfig.network,
-        round: (status as any).lastRound || (status as any)["last-round"] || 0,
+        // algosdk v3 returns round numbers as BigInt, which JSON.stringify
+        // cannot serialize. Same conversion as /api/ledger/record.
+        round: ((status as any).lastRound ?? (status as any)["last-round"] ?? 0).toString(),
         provider: algorandConfig.provider
       },
       timestamp: new Date().toISOString()

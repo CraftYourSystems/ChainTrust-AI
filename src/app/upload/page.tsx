@@ -39,7 +39,8 @@ export default function UploadPage() {
     // Persist filename for report history
     sessionStorage.setItem("last_upload_filename", file.name);
 
-    // Store File in module-level store
+    // Store the File for the analysis step. The report ID is issued by the
+    // Python backend after analysis — never seeded on the client.
     setUploadedFile(file);
     setUploadedFileName(file.name);
     setParsing(true);

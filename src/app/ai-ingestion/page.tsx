@@ -3,6 +3,9 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { AnalysisService } from "@/services/analysis.service";
+import { getUploadedFile } from "@/services/fileStore";
+import { DueDiligenceReport } from "@/types/analysis";
 import { 
   BrainCircuit, 
   ShieldAlert, 
@@ -22,28 +25,40 @@ export default function AIIngestionPage() {
   const [progress, setProgress] = useState(0);
   const [stageText, setStageText] = useState("Initializing LLM Auditor...");
   const [scanComplete, setScanComplete] = useState(false);
+  const [report, setReport] = useState<DueDiligenceReport | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleRunScan = async () => {
     setScanning(true);
     setScanComplete(false);
-    setProgress(15);
-    setStageText("1. Reading Contract AST Structure...");
+    setError(null);
+    setProgress(5);
+    setStageText("Preparing contract for analysis...");
 
-    await new Promise((r) => setTimeout(r, 600));
-    setProgress(45);
-    setStageText("2. Extracting Reentrancy & Access Control Vectors...");
+    const file = getUploadedFile();
+    if (!file) {
+      setScanning(false);
+      setError(
+        "No contract found in this session. Please go back to the upload step and select a file."
+      );
+      return;
+    }
 
-    await new Promise((r) => setTimeout(r, 800));
-    setProgress(75);
-    setStageText("3. Evaluating Compliance & Indemnification Clauses...");
+    try {
+      // Progress reflects the real request; the HTTP response — not a timer —
+      // determines when the analysis is complete.
+      const result = await AnalysisService.analyzeContract(file, (step) => {
+        setProgress(step.percentage);
+        setStageText(step.message);
+      });
 
-    await new Promise((r) => setTimeout(r, 800));
-    setProgress(100);
-    setStageText("4. Computing Final Risk Score Matrix...");
-
-    await new Promise((r) => setTimeout(r, 600));
-    setScanning(false);
-    setScanComplete(true);
+      setReport(result);
+      setScanning(false);
+      setScanComplete(true);
+    } catch (err: any) {
+      setScanning(false);
+      setError(err?.message || "Analysis failed. Please try again.");
+    }
   };
 
   return (
@@ -110,9 +125,37 @@ export default function AIIngestionPage() {
           </div>
         )}
 
-        {scanComplete && (
+        {error && !scanning && (
+          <div className="space-y-4 bg-slate-950 p-6 rounded-2xl border border-red-500/40">
+            <div className="flex items-start gap-3">
+              <div className="p-3 bg-red-500/20 text-red-400 rounded-xl shrink-0">
+                <ShieldAlert className="h-6 w-6" />
+              </div>
+              <div>
+                <h3 className="font-bold text-white text-base mb-1">Analysis Failed</h3>
+                <p className="text-xs text-slate-400 leading-relaxed">{error}</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+              <button
+                onClick={handleRunScan}
+                className="w-full py-3.5 text-xs font-bold text-white bg-purple-600 hover:bg-purple-500 rounded-xl transition flex items-center justify-center gap-2"
+              >
+                Retry Analysis
+              </button>
+              <button
+                onClick={() => router.push("/upload")}
+                className="w-full py-3.5 text-xs font-bold text-white bg-slate-800 hover:bg-slate-700 rounded-xl transition border border-slate-700 flex items-center justify-center gap-2"
+              >
+                Upload a Different Contract
+              </button>
+            </div>
+          </div>
+        )}
+
+        {scanComplete && report && (
           <div className="space-y-6 animate-in fade-in zoom-in duration-300">
-            {/* Score Banner */}
+            {/* Score Banner — values come from the Python analysis */}
             <div className="p-6 bg-slate-950 rounded-2xl border border-red-500/40 flex flex-col sm:flex-row justify-between items-center gap-4">
               <div className="flex items-center gap-3">
                 <div className="p-3 bg-red-500/20 text-red-400 rounded-xl">
@@ -120,13 +163,18 @@ export default function AIIngestionPage() {
                 </div>
                 <div>
                   <h3 className="font-bold text-white text-base">Audit Scan Completed</h3>
-                  <p className="text-xs text-slate-400">Identified 1 Critical Vulnerability & 2 Indemnity Risks</p>
+                  <p className="text-xs text-slate-400">
+                    {report.contractType || "Contract"} • {report.clauses.length} clauses reviewed •{" "}
+                    {report.keyFindings.length} key findings
+                  </p>
                 </div>
               </div>
 
               <div className="text-right bg-slate-900 px-4 py-2 rounded-xl border border-slate-800">
                 <span className="text-[10px] text-slate-400 block font-mono uppercase">Overall Risk Score</span>
-                <span className="text-2xl font-black text-red-500 font-mono">78 / 100 HIGH</span>
+                <span className="text-2xl font-black text-red-500 font-mono">
+                  {report.overallRisk} / 100 {report.riskLevel.toUpperCase()}
+                </span>
               </div>
             </div>
 
@@ -141,7 +189,7 @@ export default function AIIngestionPage() {
               </button>
 
               <button
-                onClick={() => router.push("/report/ANL-58440")}
+                onClick={() => router.push(`/report/${report.analysisId}`)}
                 className="w-full py-3.5 text-xs font-bold text-white bg-slate-800 hover:bg-slate-700 rounded-xl transition border border-slate-700 flex items-center justify-center gap-2"
               >
                 Open Full Due Diligence Report 📄
