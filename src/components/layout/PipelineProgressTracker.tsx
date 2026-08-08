@@ -16,8 +16,13 @@ export const PipelineProgressTracker: React.FC = () => {
   const getCurrentStepIndex = (): number => {
     if (pathname.includes("upload")) return 0;
     if (pathname.includes("payment") || pathname.includes("loading")) return 1;
-    // Only the actual report page (not demo pages like /nft-badge, /notary, /verify, /ai-ingestion)
-    if (pathname.startsWith("/report/")) return 2;
+    if (
+      pathname.includes("/report/") ||
+      pathname.includes("nft-badge") ||
+      pathname.includes("remediation") ||
+      pathname.includes("final-report")
+    )
+      return 2;
     return -1;
   };
 
