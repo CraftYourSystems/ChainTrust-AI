@@ -25,10 +25,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-8 pb-12">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-8">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 text-brand-primary text-xs font-bold border border-blue-100/80 shadow-sm">
-            <Zap className="h-4 w-4 text-brand-primary animate-pulse" />
-            Algorand Hackathon MVP • x402 Micro-Payment Secured
-          </div>
+
 
           <h1 className="text-4xl sm:text-6xl font-black text-slate-900 tracking-tight leading-tight">
             Contract Intelligence, <br />
