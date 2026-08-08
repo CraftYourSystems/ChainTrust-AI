@@ -1,0 +1,8 @@
+# The Python analysis engine runs on your own machine, not on Vercel.
+# Excluding it keeps it out of the deployment upload.
+backend/
+
+# Local-only artefacts
+.claude/
+scratchpad/
+*.tsbuildinfo

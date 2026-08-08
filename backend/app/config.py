@@ -48,10 +48,22 @@ class Settings(BaseSettings):
     max_file_size_mb: int = Field(default=10, gt=0)
     upload_directory: Path = BACKEND_ROOT / "app" / "uploads"
 
+    # --- CORS -------------------------------------------------------------
+    # Comma-separated browser origins allowed to call this API. The default
+    # keeps the open-to-everything behaviour that local development relies on.
+    # Set it to the Vercel URL (e.g. "https://chaintrust-ai.vercel.app") to
+    # restrict which deployed frontend may reach this machine.
+    allowed_origins: str = "*"
+
     @property
     def max_file_size_bytes(self) -> int:
         """Upload ceiling in bytes, for comparing against a request body."""
         return self.max_file_size_mb * 1024 * 1024
+
+    @property
+    def allowed_origins_list(self) -> list[str]:
+        """ALLOWED_ORIGINS split into the list CORSMiddleware expects."""
+        return [origin.strip() for origin in self.allowed_origins.split(",") if origin.strip()]
 
     @field_validator("llm_provider", mode="before")
     @classmethod
